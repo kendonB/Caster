@@ -4,13 +4,14 @@ Created on May 23, 2017
 @author: shippy
 '''
 
-from dragonfly import Dictation, MappingRule, Choice
+from dragonfly import Dictation, MappingRule, Choice, Repeat
 
 from caster.lib import control
 from caster.lib.actions import Key, Text
 from caster.lib.ccr.standard import SymbolSpecs
 from caster.lib.dfplus.merge.mergerule import MergeRule
 from caster.lib.dfplus.state.short import R
+from caster.lib.dfplus.additions import IntegerRefST
 
 
 class Rlang(MergeRule):
@@ -48,8 +49,11 @@ class Rlang(MergeRule):
         SymbolSpecs.IMPORT:
             R(Text("library()") + Key("left"), rdescript="Rlang: Import"),
         #
-        SymbolSpecs.FUNCTION:
-            R(Text("function()") + Key("left"), rdescript="Rlang: Function"),
+        # SymbolSpecs.FUNCTION:
+        #     R(Text("function()") + Key("left"), rdescript="Rlang: Function"),
+		SymbolSpecs.FUNCTION:               
+		    R(Text("function()") + Key("leftbrace, rightbrace, left, enter, c-left, c-left, c-left, right"), rdescript="R: Function"),
+
         # SymbolSpecs.CLASS:          R(Text("setClass()") + Key("left"), rdescript="Rlang: Class"),
         #
         SymbolSpecs.COMMENT:
@@ -98,6 +102,36 @@ class Rlang(MergeRule):
               rdescript="Rlang: insert a ggplot function"),
         "pack <pacfun>":
             R(Text("%(pacfun)s()") + Key("left"), rdescript="Rlang: insert a pacman function"),
+		
+		"temp":
+            R(Text("tmp"), rdescript="Rlang: tmp"),
+		
+# should be in rstudio		
+		"run it <n>":                    
+	        Key("home")+R(Key("s-down"), rdescript="R: Run command") * Repeat(extra="n") + Key("c-enter") + Key("right"), 
+	    "run it":                    
+	        Key("c-enter"),		
+        "run it terminal":                    
+	        Key("ca-enter"),
+	    "run stay":
+	        Key("a-enter"), 
+	    "run this":
+	        Key("c-right, cs-left, c-enter"),
+        "run script":                    
+	        Key("cs-s"),
+        "run above":                    
+	        Key("ca-b"),
+        "run below":                    
+	        Key("ca-e"),
+			
+		"focus console":
+            R(Key("c-2"), rdescript="RStudio: Focus Console"),
+        "focus main":
+            R(Key("c-1"), rdescript="RStudio: Focus Main"),
+        "help this":                        
+		    R(Key("f1"), rdescript="R: Help for function at cursor"),
+		
+	
     }
 
     extras = [
@@ -111,6 +145,7 @@ class Rlang(MergeRule):
                 "as factor": "as.factor",
                 "as numeric": "as.numeric",
                 "bind rows": "bind_rows",
+				"browser": "browser", 
                 "case when": "case_when",
                 "count": "count",
                 "drop NA": "drop_na",
@@ -121,16 +156,15 @@ class Rlang(MergeRule):
                 "head": "head",
                 "inner join": "inner_join",
                 "install packages":"install.packages",
-                "is NA":"is.na",
+                "is dot na":"is.na",
                 "left join": "left_join",
                 "length": "length",
                 "library": "library",
                 "list": "list",
-                "(LM | linear model)": "lm",
                 "mean": "mean",
                 "mutate": "mutate",
                 "names": "names",
-                "paste": "paste0",
+                "paste oh": "paste0",
                 "read CSV": "read_csv",
                 "rename": "rename",
                 "select": "select",
@@ -138,13 +172,13 @@ class Rlang(MergeRule):
                 "string detect": "str_detect",
                 "string replace": "str_replace",
                 "string replace all": "str_replace_all",
+                "string subset": "str_subset",
                 "starts with": "starts_with",
                 "sum": "sum",
                 "summarise": "summarise",
                 "tail":"tail",
-                "trim white space": "trimws",
                 "ungroup": "ungroup",
-                "vector": "c",
+				"unique": "unique",
             }),
         Choice(
             "ggfun", {
@@ -176,6 +210,7 @@ class Rlang(MergeRule):
                 "unload":"p_unload",
                 "update":"p_update",
             }),
+		IntegerRefST("n", 1, 10000),
     ]
     defaults = {}
 

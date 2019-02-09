@@ -35,10 +35,10 @@ class RStudioRule(MergeRule):
     "[go to] line <n>":
         R(Key("as-g") + Pause("10") + Text("%(n)s") + Key("enter"),
           rdescript="RStudio: Go to Line #"),
-    "focus console":
-        R(Key("c-2"), rdescript="RStudio: Focus Console"),
-    "focus main":
-        R(Key("c-1"), rdescript="RStudio: Focus Main"),
+    #"focus console":
+    #    R(Key("c-2"), rdescript="RStudio: Focus Console"),
+    #"focus main":
+    #    R(Key("c-1"), rdescript="RStudio: Focus Main"),
 
     "next tab":
         R(Key("c-f12"), rdescript="RStudio: Next Tab"),
