@@ -3,13 +3,13 @@ Created on Sep 1, 2015
 
 @author: synkarius
 '''
-from dragonfly import Function, Choice, Repeat, Dictation
+from dragonfly import Key, Mimic, Text, Dictation, Repeat
 
-from castervoice.lib import control
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-from castervoice.lib.ccr.standard import SymbolSpecs
+from caster.lib import control
+from caster.lib.ccr.standard import SymbolSpecs
+from caster.lib.dfplus.merge.mergerule import MergeRule
+from caster.lib.dfplus.state.short import R
+
 
 class LaTeX(MergeRule):
     auto = [".tex",".Rnw"]

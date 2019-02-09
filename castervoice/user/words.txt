@@ -1,0 +1,14 @@
+<<<SPEC>>>
+focus -> look
+console -> soul
+main -> ed
+assign -> ass
+<<<NOT_SPECS>>>
+sing -> dock
+gum -> flat
+echo -> eco-
+shin -> shine
+goof -> gas
+Sierra -> sugar
+<<<ANY>>>
+#
