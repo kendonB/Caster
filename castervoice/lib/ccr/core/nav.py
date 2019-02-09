@@ -3,7 +3,7 @@ Created on Sep 1, 2015
 
 @author: synkarius
 '''
-from dragonfly import Repeat, Function, Dictation, Choice, MappingRule, Playback
+from dragonfly import Repeat, Function, Dictation, Choice, MappingRule
 
 from castervoice.lib import context, navigation, alphanumeric, textformat, text_utils
 from castervoice.lib import control
@@ -245,51 +245,6 @@ class Navigation(MergeRule):
         "dredge":
             R(Key("a-tab"), rdescript="Alt-Tab"),
 
-			    # keyboard shortcuts
-	
-	    "quit":                   
-		    R(Key("escape"), rdescript="Press escape"),		
-		"end":                   
-		    R(Key("end"), rdescript="End of the line"),		
-		"hum":                   
-		    R(Key("home"), rdescript="Start of the line"),		
-		"dock start":                   
-		    R(Key("c-home"), rdescript="Start of the document"),		
-		"dock end":                   
-		    R(Key("c-end"), rdescript="End of the document"),		
-		
-		"doon [<nnavi500>]":                   
-		    R(Key("pgdown"), rdescript="Page down") * Repeat(extra="nnavi500"),		
-		"sun [<nnavi500>]":                   
-		    R(Key("pgup"), rdescript="Page up") * Repeat(extra="nnavi500"),		
-		
-		"laib [<nnavi500>]":                   
-		    R(Key("c-left"), rdescript="Left by words") * Repeat(extra="nnavi500"),		
-		"rope [<nnavi500>]":                   
-		    R(Key("c-right"), rdescript="Right by words") * Repeat(extra="nnavi500"),			
-		
-		"nope [<nnavi500>]":                   
-		    R(Key("cs-left"), rdescript="Delete left by words") * Repeat(extra="nnavi500") + Key("backspace"),		
-		"kay [<nnavi500>]":                   
-		    R(Key("cs-right"), rdescript="Delete right by words") * Repeat(extra="nnavi500") + Key("backspace"),		
-    # text formatting
-        "(<capitalization> <spacing> | <capitalization> | <spacing>) <textnv> [brunt]":
-            R(Function(textformat.master_format_text), rdescript="Text Format"),
-		"shine hum":
-            R(Playback([(["shine", "lease", "Wally"], 0.0)]), rdescript="My spec: Select to start of line"),
-		"shine end":
-            R(Playback([(["shine", "Ross", "Wally"], 0.0)]), rdescript="My spec: Select to end of line"),
-		"ren":
-		    R(Key("lparen"), rdescript="My spec: Open parenthesis"),
-		"glow ren":
-		    R(Key("rparen"), rdescript="My spec: Close parenthesis"),
-		"bray":
-		    R(Key("lbrace"), rdescript="My spec: Open curly"),
-		"glow bray":
-		    R(Key("rbrace"), rdescript="My spec: Close curly"),
-		"bake techie":
-		    R(Key("backtick"), rdescript="My spec: Backtick"),
-
     }
 
     extras = [
@@ -310,15 +265,15 @@ class Navigation(MergeRule):
             "yell": 1,
             "tie": 2,
             "Gerrish": 3,
-            "dock": 4,
+            "sing": 4,
             "laws": 5
         }),
         Choice(
             "spacing", {
-                "flat": 1,
-                "flat": 1,
+                "gum": 1,
+                "gun": 1,
                 "spine": 2,
-                "score": 3,
+                "snake": 3,
                 "pebble": 4,
                 "incline": 5,
                 "dissent": 6,
@@ -338,9 +293,9 @@ class Navigation(MergeRule):
         navigation.TARGET_CHOICE,
         navigation.get_direction_choice("mtn_dir"),
         Choice("mtn_mode", {
-            "shine": "s",
+            "shin": "s",
             "queue": "cs",
-            "schmookiepook": "c",
+            "fly": "c",
         }),
         Choice("extreme", {
             "Wally": "way",

@@ -71,7 +71,7 @@ class Rlang(MergeRule):
             R(Text("FALSE"), rdescript="Rlang: False"),
 
         # Rlang specific
-        "ass":
+        "assign":
             R(Text(" <- "), rdescript="Rlang: Assignment"),
         "contained in":
             R(Key('space, percent, i, n, percent, space'),
@@ -93,9 +93,9 @@ class Rlang(MergeRule):
             R(Text("csv"), rdescript="Rlang: csv"),
 
 
- #       "tidy verse":
- #           R(Text("tidyverse"), rdescript="Rlang: tidyverse"),
-        "fun <function>":
+        "tidy verse":
+            R(Text("tidyverse"), rdescript="Rlang: tidyverse"),
+        "<function>":
             R(Text("%(function)s()") + Key("left"), rdescript="Rlang: insert a function"),
         "graph <ggfun>":
             R(Text("%(ggfun)s()") + Key("left"),
@@ -124,34 +124,13 @@ class Rlang(MergeRule):
         "run below":                    
 	        Key("ca-e"),
 			
-		"look soul":
+		"focus console":
             R(Key("c-2"), rdescript="RStudio: Focus Console"),
-        "look ed":
+        "focus main":
             R(Key("c-1"), rdescript="RStudio: Focus Main"),
-		"look terminal":                    
-	        R(Key("as-t"), rdescript="R: Focus terminal"),
-
         "help this":                        
 		    R(Key("f1"), rdescript="R: Help for function at cursor"),
-		"package deep":                           
-		    R(Text("dplyr::"), rdescript="R: dplyr package prefix"),
-		"package dev tools":                           
-		    R(Text("devtools::"), rdescript="R: devtools package prefix"),
-		"package data table":                           
-		    R(Text("data.table::"), rdescript="R: data table package prefix"),
-		"package per":                           
-		    R(Text("purrr::"), rdescript="R: purrr package prefix"),
-		"package tidy are":                           
-		    R(Text("tidyr::"), rdescript="R: tidyr prefix"),
-        "package lubricate":                          
-		    R(Text("lubridate::"), rdescript="R: lubridate"),		
-		"package string are":                          
-		    R(Text("stringr::str_"), rdescript="R: stringr package prefix"),		
-		"package tibble":                     
-		    R(Text("tibble::"), rdescript="R: tibble package prefix"),		
-        "package Magruder":                     
-		    R(Text("magrittr::"), rdescript="R: magrittr package prefix"),		
-
+		
 	
     }
 
@@ -176,8 +155,6 @@ class Rlang(MergeRule):
                 "group by": "group_by",
                 "head": "head",
                 "inner join": "inner_join",
-                "install": "install",
-                "install github": "install_github",
                 "install packages":"install.packages",
                 "is dot na":"is.na",
                 "left join": "left_join",
