@@ -8,6 +8,7 @@
 - [Dragon](#dragon)
 - [Eclipse](#eclipse)
 - [Emacs](#emacs)
+- [Excel](#excel)
 - [Internet Explorer](#internet-explorer)
 - [File Dialogues](#file-dialogues)
 - [Firefox](#firefox)
@@ -16,13 +17,16 @@
 - [Foxit Reader](#foxit-reader)
 - [Git Bash](#git-bash)
 - [Gitter](#gitter)
+- [GitHub Desktop](#github-desktop)
 - [Jetbrains](#jetbrains)
 - [Microsoft Visual Studio](#microsoft-visual-studio)
 - [Notepad++](#notepad)
+- [Outlook](#outlook)
 - [RStudio](#rstudio)
 - [SQL Developer](#sql-developer)
 - [SQL Server Management Studio](#sql-server-management-studio)
 - [Sublime](#sublime)
+- [Typora](#typora)
 - [Visual Studio](#visual-studio)
 - [Visual Studio Code](#visual-studio-code)
 
@@ -31,7 +35,7 @@
 # Atom
 
 | Command                               | Command                                           | Command                             |
-| ------------------------------------- | ------------------------------------------------- | ----------------------------------- |
+|:--------------------------------------|:--------------------------------------------------|:------------------------------------|
 | `[add] select above [<n>]`            | `git add`                                         | `open folder`                       |
 | `[add] select below [<n>]`            | `git add [and] commit`                            | `open settings`                     |
 | `[go to] line <n>`                    | `git add all`                                     | `paste [<n>]`                       |
@@ -109,32 +113,47 @@
 
 # Google Chrome
 
-| Command                    | Command              | Command              |
-| -------------------------- | -------------------- | -------------------- |
-| `IRC identify`             | `close all tabs`     | `show history`       |
-| `[add] bookmark`           | `deny notification`  | `step into`          |
-| `[find] next match [<n>]`  | `developer tools`    | `step out`           |
-| `[find] prior match [<n>]` | `focus notification` | `step over`          |
-| `[new] incognito window`   | `go back [<n>]`      | `super refresh`      |
-| `[toggle] bookmark bar`    | `go forward [<n>]`   | `switch focus [<n>]` |
-| `[toggle] caret browsing`  | `home page`          | `switch user`        |
-| `[toggle] full-screen`     | `new tab [<n>]`      | `view [page] source` |
-| `address bar`              | `reopen tab [<n>]`   | `zoom in [<n>]`      |
-| `allow notification`       | `resume`             | `zoom out [<n>]`     |
-| `bookmark all tabs`        | `show bookmarks`     | `zoom reset`         |
-| `chrome task manager`      | `show downloads`     |                      |
+| Command                                | Command                              | Command                      |
+|:---------------------------------------|:-------------------------------------|:-----------------------------|
+| `new window`                           | `(new incognito window / incognito)` | `new tab [<n>]`              |
+| `reopen tab [<n>]`                     | `close tab [<n>]`                    | `close all tabs`             |
+| `next tab [<n>]`                       | `previous tab [<n>]`                 | `new tab that`               |
+| `<nth> tab`                            | `last tab`                           | `second last tab`            |
+| `go back [<n>]`                        | `go forward [<n>]`                   | `zoom in [<n>]`              |
+| `zoom out [<n>]`                       | `zoom reset`                         | `super refresh`              |
+| `switch focus [<n>]`                   | `[find] next match [<n>]`            | `[find] prior match [<n>]`   |
+| `[toggle] caret browsing`              | `home page`                          | `[show] history`             |
+| `address bar`                          | `show downloads`                     | `add bookmark`               |
+| `bookmark all tabs`                    | `[toggle] bookmark bar`              | `[show] bookmarks`           |
+| `switch user`                          | `chrome task manager`                | `[toggle] full-screen`       |
+| `focus notification`                   | `allow notification`                 | `deny notification`          |
+| `developer tools`                      | `view [page] source`                 | `resume`                     |
+| `step over`                            | `step into`                          | `step out`                   |
+| `IRC identify`                         | `google that`                        | `duplicate tab`              |
+| `duplicate window`                     | `extensions`                         | `(menu / three dots)`        |
+| `settings`                             | `downloads`                          | `chrome task manager`        |
+| `clear browsing data`                  | `developer tools`                    | `more tools`                 |
+
+## Click by voice plug-in
+Options:
+* go, click, push, tab, window, hover, link, copy
+| Command                                | Command                              | Command                      |
+|:---------------------------------------|:-------------------------------------|:-----------------------------|
+| `<numbers> <dictation>`                | `go <numbers> <dictation>`           | `next <numbers> <dictation>` |
+| `<numbers> [<click_by_voice_options>]` | `hide hints`                         | `show hints`                 |
+
 
 # Command prompt
 
 | Command   | Command | Command          |
-| --------- | ------- | ---------------- |
+|:----------|:--------|:-----------------|
 | `C drive` | `CD up` | `list`           |
 | `CD`      | `exit`  | `make directory` |
 
 # Dragon
 
 | Command                      | Command             | Command       |
-| ---------------------------- | ------------------- | ------------- |
+|:-----------------------------|:--------------------|:--------------|
 | `(lock Dragon / deactivate)` | `dictation mode`    | `right point` |
 | `(number/numbers) mode`      | `fix dragon double` | `scratch`     |
 | `center point`               | `left point`        | `spell mode`  |
@@ -144,7 +163,7 @@
 # Eclipse
 
 | Command                                | Command                            | Command                 |
-| -------------------------------------- | ---------------------------------- | ----------------------- |
+|:---------------------------------------|:-----------------------------------|:------------------------|
 | `(debug / run) last`                   | `find word <text> [<back>] [<go>]` | `resume`                |
 | `build it`                             | `format code`                      | `split view horizontal` |
 | `comment line`                         | `jump to source`                   | `split view vertical`   |
@@ -158,7 +177,7 @@
 # Emacs
 
 | Command               | Command               | Command            |
-| --------------------- | --------------------- | ------------------ |
+|:----------------------|:----------------------|:-------------------|
 | `C function backward` | `forward delete word` | `paste`            |
 | `C function forward`  | `go to line <n>`      | `paste number <n>` |
 | `begin selection`     | `incremental reverse` | `prior bracket`    |
@@ -171,10 +190,24 @@
 | `document forward`    | `paragraph backward`  | `word backward`    |
 | `forward delete`      | `paragraph forward`   | `word forward`     |
 
+# Excel
+
+| Command                                                  | Command                          | Command                            |
+|:---------------------------------------------------------|:---------------------------------|:-----------------------------------|
+| `next sheet [<n>]`                                       | `(prior / previous) sheet [<n>]` | `[select] cell <column_1> <row_1>` |
+| `select <column_1> <row_1> through <column_2> <row_2>  ` | `go to cell`                     | `select current column`            |
+| `select current row`                                     | `top of column`                  | `beginning of row  `               |
+| `insert stuff`                                           | `insert row`                     | `insert column`                    |
+| `insert cell [to the] left`                              | `insert cell above  `            | `insert pivot table`               |
+| `insert pivot chart`                                     | `add-ins`                        | `add border`                       |
+| `arrange Windows`                                        | `auto sum`                       | `freeze panes`                     |
+| `toggle edit cell`                                       | ` `                              | ` `                                |
+
+
 # Internet Explorer
 
 | Command                             | Command       | Command      |
-| ----------------------------------- | ------------- | ------------ |
+|:------------------------------------|:--------------|:-------------|
 | `(show / file / folder) properties` | `get forward` | `new folder` |
 | `address bar`                       | `get up`      |              |
 | `get back`                          | `new file`    |              |
@@ -189,7 +222,7 @@
 # Firefox
 
 | Command            | Command          | Command         |
-| ------------------ | ---------------- | --------------- |
+|:-------------------|:-----------------|:----------------|
 | `IRC identify`     | `resume`         | `step over`     |
 | `[add] bookmark`   | `show downloads` | `super refresh` |
 | `developer tools`  | `show history`   | `zoom in <n>`   |
@@ -199,7 +232,7 @@
 # Flash Develop
 
 | Command              | Command            | Command                 |
-| -------------------- | ------------------ | ----------------------- |
+|:---------------------|:-------------------|:------------------------|
 | `(debug / run) last` | `jump away`        | `split view horizontal` |
 | `auto complete`      | `jump to source`   | `step into`             |
 | `build it`           | `next tab [<n>]`   | `step out [of]`         |
@@ -224,13 +257,13 @@
 
 # Foxit Reader
 | Command           | Command          | Command           |
-| ----------------- | ---------------- | ----------------- |
+|:------------------|:-----------------|:------------------|
 | `close tab [<n>]` | `next tab [<n>]` | `prior tab [<n>]` |
 
 # Git Bash
 
 | Command                       | Command                    | Command                     |
-| ----------------------------- | -------------------------- | --------------------------- |
+|:------------------------------|:---------------------------|:----------------------------|
 | `(get push / push)`           | `fetch`                    | `search recursive filetype` |
 | `(undo changes / reset hard)` | `gooey blame`              | `stash`                     |
 | `CD`                          | `initialize repository`    | `stash apply [<n>]`         |
@@ -246,10 +279,24 @@
 | `commit`                      | `search recursive`         |                             |
 | `exit`                        | `search recursive count`   |                             |
 
+
+# GitHub Desktop
+| Command                            | Command                 | Command                       |
+|:-----------------------------------|:------------------------|:------------------------------|
+| `new repository`                   | `add local repository`  | `clone repository`            |
+| `options`                          | `changes`               | `history`                     |
+| `(repositories / repository list)` | `branches [list]`       | `zoom in [<n>]`               |
+| `zoom out [<n>]`                   | `reset zoom`            | `push [repository]`           |
+| `pull [repository]`                | `remove repository`     | `view on github`              |
+| `(terminal / command prompt)`      | `explorer`              | `edit`                        |
+| `new branch`                       | `rename branch`         | `delete branch`               |
+| `update from master`               | `compare to branch`     | `merge into current [branch]` |
+| `compare on github`                | `[create] pull request` | ` `                           |
+
 # Gitter
 
 | Command       | Command          | Command       |
-| ------------- | ---------------- | ------------- |
+|:--------------|:-----------------|:--------------|
 | `block quote` | `formatted code` | `insert item` |
 | `bold`        | `insert code`    | `insert link` |
 | `emphasize`   | `insert image`   | `mention`     |
@@ -257,7 +304,7 @@
 # Jetbrains
 
 | Command         | Command           | Command             |
-| --------------- | ----------------- | ------------------- |
+|:----------------|:------------------|:--------------------|
 | `Jen method`    | `find in current` | `search everywhere` |
 | `auto complete` | `format code`     | `search symbol`     |
 | `build`         | `go to line`      | `select ex`         |
@@ -269,7 +316,7 @@
 # Microsoft Visual Studio
 
 | Command                     | Command          | Command             |
-| --------------------------- | ---------------- | ------------------- |
+|:----------------------------|:-----------------|:--------------------|
 | `(do imports / import all)` | `debug [last]`   | `resume`            |
 | `breakpoint`                | `format code`    | `set bookmark`      |
 | `build [last]`              | `go to line`     | `snippet`           |
@@ -281,14 +328,44 @@
 # Notepad++
 
 | Command              | Command        |
-| -------------------- | -------------- |
+|:---------------------|:---------------|
 | `function list`      | `remove style` |
 | `preview in browser` | `stylize <n2>` |
+
+# Outlook
+
+| Command                            | Command                            | Command                             |
+|:-----------------------------------|:-----------------------------------|:------------------------------------|
+| `new (appointment / event)`        | `new contact`                      | `new folder`                        |
+| `advanced (search / find)`         | `new office document`              | `(inbox / go to inbox)`             |
+| `new journal entry`                | `new task`                         | `new contact group`                 |
+| `(new message / new mail)`         | `new note`                         | `open the new search folder window` |
+| `new meeting request`              | `new task request`                 | `to field`                          |
+| `c c field`                        | `subject [field]`                  | `subject <text>`                    |
+| `attach file`                      | `add to dictionary`                | `click send message`                |
+| `find and replace`                 | `check names`                      | `spell check`                       |
+| `save as`                          | `expand [that]`                    | `collapse [that]`                   |
+| `[go to] sent mail`                | `go to drafts`                     | `go to trash`                       |
+| `go to spam`                       | `go to starred`                    | `go to important`                   |
+| `go to outbox`                     | `sort by [<sort_by>]`              | `reverse sort`                      |
+| `block sender`                     | `search [bar] [<dict>]`            | `(message list / messages)`         |
+| `empty search [bar]`               | `refresh [mail]`                   | `open attachment`                   |
+| `[open] attachment menu`           | `next message [<n>]`               | `(prior / previous) message [<n>]`  |
+| `[select] next link`               | `[select] (previous / prior) link` | `workweek [view]`                   |
+| `full week [view]`                 | `month view`                       | `reply all`                         |
+| `forward`                          | `Mark as read`                     | `Mark as unread`                    |
+| `reply`                            | `(folder / go to folder)`          | `next pane [<n>]`                   |
+| `(un /prior /previous) pane [<n>]` | `mail view`                        | `calendar`                          |
+| `contacts`                         | `tasks`                            | `go to notes`                       |
+| `folder list`                      | `find contact`                     | `address book`                      |
+| `next open message`                | `(prior / previous) open message`  | `previous view`                     |
+| `next view`                        | `[go] back`                        | ` `                                 |
+
 
 # RStudio
 
 | Command                     | Command      | Command         |
-| --------------------------- | ------------ | --------------- |
+|:----------------------------|:-------------|:----------------|
 | `[go to] line <n>`          | `focus main` | `previous plot` |
 | `close tab`                 | `last tab`   | `previous tab`  |
 | `comment (line / selected)` | `new file`   | `run document`  |
@@ -299,13 +376,13 @@
 # SQL Developer
 
 | Command        | Command       | Command          |
-| -------------- | ------------- | ---------------- |
+|:---------------|:--------------|:-----------------|
 | `comment line` | `format code` | `run this query` |
 
 # SQL Server Management Studio
 
 | Command                   | Command          | Command           |
-| ------------------------- | ---------------- | ----------------- |
+|:--------------------------|:-----------------|:------------------|
 | `(set / toggle) bookmark` | `comment block`  | `prior tab [<n>]` |
 | `(un / on) comment block` | `comment line`   | `resume`          |
 | `(un / on) comment line`  | `go to line`     | `step into`       |
@@ -336,11 +413,31 @@
 | `toggle side bar`        | ``                             | ``                                |
 
 
+# Typora
+| Command              | Command                        | Command                        |
+|:---------------------|:-------------------------------|:-------------------------------|
+| `new file`           | `new window`                   | `open file`                    |
+| `go [to] file`       | `reopen [closed] file`         | `save as`                      |
+| `close file`         | `new line <h>`                 | `copy [as] markdown`           |
+| `delete row <n>`     | `select [cell / scope]`        | `[select] word <n>`            |
+| `delete word <n>`    | `jump [to] buttom`             | `find"`                        |
+| `find next`          | `replace`                      | `heading <h>`                  |
+| `paragraph`          | `increase heading [level] <h>` | `decrease heading [level] <h>` |
+| `table`              | `code fences`                  | `math block`                   |
+| `quote`              | `ordered list`                 | `indent <h>`                   |
+| `out dent <h>`       | `strong / bold`                | `emphasis / italicize`         |
+| `underline`          | `code`                         | `strike`                       |
+| `hyperlink`          | `image`                        | `clear [format]`               |
+| `[toggle] sidebar`   | `outline`                      | `articles`                     |
+| `file tree`          | `source code [mode]`           | `focus mode`                   |
+| `typewriter [mode]`  | `[toggle] fullscreen`          | `actual size`                  |
+| `zoom in <n>`        | `zoom out <n>`                 | `switch documnets`             |
+| `toggle [dev] tools` | ` `                            | ` `                            |
 
 # Visual Studio
 
 | Command                            | Command                      | Command                             |
-| ---------------------------------- | ---------------------------- | ----------------------------------- |
+|:-----------------------------------|:-----------------------------|:------------------------------------|
 | `(list / show) documents`          | `collapse to definitions`    | `run all tests`                     |
 | `(set / toggle) bookmark`          | `comment block`              | `run tests`                         |
 | `(show / view) history`            | `comment line`               | `solution explorer`                 |
@@ -357,7 +454,7 @@
 # Visual Studio Code
 
 | Command                                       | Command                       | Command                |
-| --------------------------------------------- | ----------------------------- | ---------------------- |
+|:----------------------------------------------|:------------------------------|:-----------------------|
 | `(Find / Jump [to]) next <text>`              | `Go forward [<n>]`            | `[toggle] full screen` |
 | `(Find / Jump [to]) previous <text>`          | `Go to ( bottom / last line)` | `beol`                 |
 | `(Open [file] / Go to [tab]) [<text>]`        | `Go to (top / first line)`    | `ee-ol`                |

@@ -4,12 +4,14 @@ main Caster module
 Created on Jun 29, 2014
 '''
 
+import os
 import logging
 logging.basicConfig()
 
-import time
-from dragonfly import (Function, Grammar, Playback, Dictation, Choice, Pause)
+import time, socket
+from dragonfly import (Function, Grammar, Playback, Dictation, Choice, Pause, RunCommand)
 from castervoice.lib.ccr.standard import SymbolSpecs
+
 
 def _wait_for_wsr_activation():
     count = 1
@@ -22,6 +24,7 @@ def _wait_for_wsr_activation():
                   % count)
             count += 1
             time.sleep(1)
+
 
 _NEXUS = None
 from castervoice.lib import settings  # requires nothing
@@ -37,6 +40,7 @@ from castervoice.apps import *
 from castervoice.asynch import *
 from castervoice.lib import context
 from castervoice.lib.actions import Key
+from castervoice.lib.terminal import TerminalCommand
 import castervoice.lib.dev.dev
 from castervoice.asynch.sikuli import sikuli
 from castervoice.lib import navigation
@@ -54,6 +58,89 @@ from castervoice.lib.dev import dev
 from castervoice.lib.dfplus.hint.nodes import css
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.merge import gfilter
+
+def internetcheck(host="1.1.1.1", port=53, timeout=3):
+    """
+    Checks for network connection via DNS resolution.
+    :param host: CloudFire DNS
+    :param port: 53/tcp
+    :param timeout: An integer
+    :return: True or False
+    """
+    try:
+        socket.setdefaulttimeout(timeout)
+        socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))
+        return True
+    except Exception as error:
+        print (error.message)
+        return False
+
+
+# Find the pip.exe script for Python 2.7. Fallback on pip.exe.
+PIP_PATH = "pip.exe"
+python_scripts = os.path.join("Python27", "Scripts")
+for path in os.environ["PATH"].split(";"):
+    pip = os.path.join(path, "pip.exe")
+    if path.endswith(python_scripts) and os.path.isfile(pip):
+        PIP_PATH = pip
+        break
+
+
+class DependencyCheck(TerminalCommand):
+    trusted = True  # Command will execute silently without ConfirmAction
+    synchronous = True
+
+    def process_command(self, proc):
+        update = False
+        for line in iter(proc.stdout.readline, b''):
+            if "INSTALLED" and "latest" in line:
+                update = True
+
+        return update
+
+
+class CasterCheck(DependencyCheck):
+    command = [PIP_PATH, "search", "castervoice"]
+
+    def process_command(self, proc):
+        if DependencyCheck.process_command(self, proc):
+            print ("Caster: Caster is up-to-date")
+        else:
+            print ("Caster: Say 'Update Caster' to update.")
+
+
+class DragonflyCheck(DependencyCheck):
+    command = [PIP_PATH, "search", "dragonfly2"]
+
+    def process_command(self, proc):
+        if DependencyCheck.process_command(self, proc):
+            print ("Caster: Dragonfly is up-to-date")
+        else:
+            print ("Caster: Say 'Update Dragonfly' to update.")
+
+
+class DependencyUpdate(RunCommand):
+    synchronous = True
+
+    def process_command(self, proc):
+        # Process the output from the command.
+        RunCommand.process_command(self, proc)
+
+        # Only reboot dragon if the command was successful and there is an
+        # internet connection; 'pip install ...' may exit successfully even
+        # if there were connection errors.
+        if proc.wait() == 0 and internetcheck():
+            Playback([(["reboot", "dragon"], 0.0)]).execute()
+
+
+if settings.SETTINGS["miscellaneous"]["online_mode"]:
+    if internetcheck():
+        CasterCheck().execute()
+        DragonflyCheck().execute()
+    else:
+        print("\nCaster: Network off-line check network connection\n")
+else:
+    print("\nCaster: Off-line mode is enabled\n")
 
 
 def change_monitor():
@@ -79,44 +166,51 @@ class MainRule(MergeRule):
         return Choice("name2", choices)
 
     mapping = {
-        # Dragon NaturallySpeaking commands moved to dragon.py
+        # update management
+        "update caster":    R(DependencyUpdate([PIP_PATH, "install", "--upgrade", "castervoice"]),
+                        rdescript="Core: Update and restart Caster"),
+
+        "update dragonfly":    R(DependencyUpdate([PIP_PATH, "install", "--upgrade", "dragonfly2"]),
+                        rdescript="Core: Update dragonfly2 and restart Caster"),
 
         # hardware management
         "volume <volume_mode> [<n>]":
-            R(Function(navigation.volume_control, extra={'n', 'volume_mode'}),
+            R(Function(navigation.volume_control, 
+              extra={'n', 'volume_mode'}),
               rdescript="Volume Control"),
-        "change monitor":
-            R(Key("w-p") + Pause("100") + Function(change_monitor),
-              rdescript="Change Monitor"),
+
+        "change monitor":   R(Key("w-p") + Pause("100") + Function(change_monitor),
+                        rdescript="Change Monitor"),
+
 
         # window management
-        'minimize':
-            Playback([(["minimize", "window"], 0.0)]),
-        'maximize':
-            Playback([(["maximize", "window"], 0.0)]),
-        "remax":
-            R(Key("a-space/10,r/10,a-space/10,x"), rdescript="Force Maximize"),
+        'minimize':   R(Playback([(["minimize", "window"], 0.0)]), 
+                        rdescript="Minimize Window"),
+        'maximize':   R(Playback([(["maximize", "window"], 0.0)]), 
+                        rdescript="Maximize Window"),
+        "remax":   R(Key("a-space/10,r/10,a-space/10,x"), 
+                        rdescript="Force Maximize Window"),
 
         # passwords
 
         # mouse alternatives
-        "legion [<monitor>]":
-            R(Function(navigation.mouse_alternates, mode="legion", nexus=_NEXUS),
-              rdescript="Activate Legion"),
-        "rainbow [<monitor>]":
-            R(Function(navigation.mouse_alternates, mode="rainbow", nexus=_NEXUS),
-              rdescript="Activate Rainbow Grid"),
-        "douglas [<monitor>]":
-            R(Function(navigation.mouse_alternates, mode="douglas", nexus=_NEXUS),
-              rdescript="Activate Douglas Grid"),
+        "legion [<monitor>]":   R(Function(navigation.mouse_alternates, mode="legion", nexus=_NEXUS),
+                        rdescript="Activate Legion"),
+
+        "rainbow [<monitor>]":   R(Function(navigation.mouse_alternates, mode="rainbow", nexus=_NEXUS),
+                        rdescript="Activate Rainbow Grid"),
+
+        "douglas [<monitor>]":  R(Function(navigation.mouse_alternates, mode="douglas", nexus=_NEXUS),
+                        rdescript="Activate Douglas Grid"),
+
 
         # ccr de/activation
-        "<enable> <name>":
-            R(Function(_NEXUS.merger.global_rule_changer(), save=True),
-              rdescript="Toggle CCR Module"),
-        "<enable> <name2>":
-            R(Function(_NEXUS.merger.selfmod_rule_changer(), save=True),
-              rdescript="Toggle sm-CCR Module"),
+        "<enable> <name>":   R(Function(_NEXUS.merger.global_rule_changer(), save=True),
+                        rdescript="Toggle CCR Module"),
+
+        "<enable> <name2>":   R(Function(_NEXUS.merger.selfmod_rule_changer(), save=True),
+                        rdescript="Toggle sm-CCR Module"),
+
     }
     extras = [
         IntegerRefST("n", 1, 50),
@@ -137,7 +231,6 @@ class MainRule(MergeRule):
         IntegerRefST("monitor", 1, 10)
     ]
     defaults = {"n": 1, "nnv": 1, "text": "", "volume_mode": "setsysvolume", "enable": -1}
-
 
 grammar = Grammar('general')
 main_rule = MainRule()
@@ -164,7 +257,7 @@ _NEXUS.merger.update_config()
 _NEXUS.merger.merge(MergeInf.BOOT)
 
 
-print("*- Starting " + settings.SOFTWARE_NAME + " -*")
+print("\n*- Starting " + settings.SOFTWARE_NAME + " -*")
 
 if settings.WSR:
     import pythoncom
