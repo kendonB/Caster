@@ -62,8 +62,8 @@ class Punctuation(MergeRule):
             R(Text(","), rdescript="Core: Comma"),
         "carrot":
             R(Text("^"), rdescript="Core: Carat"),
-        "(period | dot)":
-            R(Text("."), rdescript="Core: Dot"),
+        "(period | dot) [<npunc>]":
+            R(Text("."), rdescript="Core: Dot")*Repeat(extra="npunc"),
         "atty":
             R(Text("@"), rdescript="Core: At Sign"),
         "hash tag":
@@ -88,6 +88,15 @@ class Punctuation(MergeRule):
             R(Key("ampersand"), rdescript="Core: Ampersand"),
         "tilde":
             R(Key("tilde"), rdescript="Core: Tilde"),
+		"ren":
+            R(Key("lparen"), rdescript="Core: Left Parentheses"),
+		"glow ren":
+            R(Key("rparen"), rdescript="Core: Right Parentheses"),
+		"bray":
+            R(Key("lbrace"), rdescript="Core: Left Brace"),
+		"glow bray":
+            R(Key("rbrace"), rdescript="Core: Right Brace"),
+		
 
     }
 

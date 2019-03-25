@@ -38,6 +38,8 @@ class NPPRule(MergeRule):
         # requires function list plug-in:
         "function list":
             R(Key("cas-l"), rdescript="Notepad++: Function List"),
+        "open":
+            R(Key("c-o"), rdescript="Notepad++: Open"),
     }
     extras = [
         Dictation("text"),

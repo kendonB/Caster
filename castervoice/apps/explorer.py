@@ -29,6 +29,13 @@ class IERule(MergeRule):
             R(Key("a-left"), rdescript="Explorer: Navigate back"),
         "get forward":
             R(Key("a-right"), rdescript="Explorer: Navigate forward"),
+		"(files | file list)":
+            R(Key("a-d, f6:3"), rdescript="File Dialogue: Files list"),
+        "navigation [pane]":
+            R(Key("a-d, f6:2"), rdescript="File Dialogue: Navigation pane"),
+        "[file] name":
+            R(Key("a-d, f6:5"), rdescript="File Dialogue: File name"),
+
     }
     extras = [
         Dictation("text"),

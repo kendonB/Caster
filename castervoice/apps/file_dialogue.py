@@ -13,11 +13,11 @@ class FileDialogueRule(MergeRule):
     pronunciation = "file dialogue"
 
     mapping = {
-        "up [<n>]":
+        "[get] up [<n>]":
             R(Key("a-up"), rdescript="File Dialogue: Navigate up")*Repeat(extra="n"),
-        "back [<n>]":
+        "[get] back [<n>]":
             R(Key("a-left"), rdescript="File Dialogue: Navigate back")*Repeat(extra="n"),
-        "forward [<n>]":
+        "[get] forward [<n>]":
             R(Key("a-right"), rdescript="File Dialogue: Navigate forward")*
             Repeat(extra="n"),
         "(files | file list)":

@@ -73,7 +73,7 @@ class Rlang(MergeRule):
         # Rlang specific
         "assign":
             R(Text(" <- "), rdescript="Rlang: Assignment"),
-        "contained in":
+        "our in":
             R(Key('space, percent, i, n, percent, space'),
               rdescript="Rlang: In operator"),
         "slurp | chain":
@@ -93,10 +93,14 @@ class Rlang(MergeRule):
             R(Text("csv"), rdescript="Rlang: csv"),
 
 
-        "tidy verse":
-            R(Text("tidyverse"), rdescript="Rlang: tidyverse"),
-        "<function>":
+        #"tidy verse":
+        #    R(Text("tidyverse"), rdescript="Rlang: tidyverse"),
+        "fun <function>":
             R(Text("%(function)s()") + Key("left"), rdescript="Rlang: insert a function"),
+        "new fun <text>":
+            R(Text("%(text)s()") + Key("left"), rdescript="Rlang: insert a function"),
+        "package <package>":
+            R(Text("%(package)s::"), rdescript="Rlang: insert a package"),
         "graph <ggfun>":
             R(Text("%(ggfun)s()") + Key("left"),
               rdescript="Rlang: insert a ggplot function"),
@@ -131,6 +135,9 @@ class Rlang(MergeRule):
         "help this":                        
 		    R(Key("f1"), rdescript="R: Help for function at cursor"),
 		
+		"run with function <runwithfunction>":  
+		    R(Key("c-c") + Key("c-2") + Key("c-a, backspace") + Text("%(runwithfunction)s") + Key("s-9") +
+		        Key("c-v") + Key("enter/100") + Key("c-1"), rdescript="R: Run with function"),
 	
     }
 
@@ -138,36 +145,85 @@ class Rlang(MergeRule):
         Dictation("text"),
         Choice(
             "function", {
+                "anti join": "anti_join",
                 "arrange": "arrange",
                 "as character": "as.character",
                 "as data frame": "as.data.frame",
+				"as date": "as_date",
                 "as double": "as.double",
                 "as factor": "as.factor",
                 "as numeric": "as.numeric",
-                "bind rows": "bind_rows",
+                "as tibble": "as_tibble",
+                "bind cols": "bind_cols",
+                "bind plans": "bind_plans",
+				"bind rows": "bind_rows",
 				"browser": "browser", 
                 "case when": "case_when",
+                "combine": "combine",
+                "complete": "complete",
                 "count": "count",
+                "cross": "cross",
+                "crossing": "crossing",
+				"debug": "debug",
+                "desk": "desc",
+                "distinct": "distinct",
+                "drake plan": "drake_plan",
                 "drop NA": "drop_na",
-                "filter": "filter",
+                "expand": "expand",
+				"extract": "extract",
+				"filter": "filter",
+				"file path": "file.path",
+				"fixed": "fixed",
+				"flatten": "flatten",
+				"floor date": "floor_date",
                 "full join": "full_join",
+                "funds": "funs",
                 "gather": "gather",
                 "group by": "group_by",
                 "head": "head",
+                "if else": "if_else",
                 "inner join": "inner_join",
                 "install packages":"install.packages",
                 "is dot na":"is.na",
+                "lag": "lag",
                 "left join": "left_join",
                 "length": "length",
                 "library": "library",
                 "list": "list",
+                "list files": "list.files",
+                "make": "make",
+                "matches": "matches",
+                "map": "map",
+                "map logical": "map_lgl",
+                "map character": "map_chr",
+                "map double": "map_dbl",
+                "pee map": "pmap",
+                "pee map logical": "pmap_lgl",
+                "pee map character": "pee map_chr",
+                "pee map double": "pee map_dbl",
                 "mean": "mean",
                 "mutate": "mutate",
+                "mutate at": "mutate_at",
+                "mutate if": "mutate_if",
+                "mutate each": "mutate_each",
+                "en": "n",
                 "names": "names",
+                "nest": "nest",
                 "paste oh": "paste0",
+				"print": "print",
+				"pull": "pull",
                 "read CSV": "read_csv",
                 "rename": "rename",
+                "roxygenize": "roxygenize",
+                "safely": "safely",
+                "sample en": "sample_n",
                 "select": "select",
+                "set diff": "setdiff",
+                "set names": "set_names",
+                "set (W D | working directory)": "setwd",
+				"get (W D | working directory)": "getwd",
+                "slice": "slice",
+                "spread": "spread",
                 "string contains": "str_contains",
                 "string detect": "str_detect",
                 "string replace": "str_replace",
@@ -175,10 +231,35 @@ class Rlang(MergeRule):
                 "string subset": "str_subset",
                 "starts with": "starts_with",
                 "sum": "sum",
+                "R lang sim": "rlang::sym",
                 "summarise": "summarise",
+				"summarise all": "summarise_all",
+				"summarise if": "summarise_if",
+				"summarise each": "summarise_each",
+				"source": "source",
                 "tail":"tail",
+                "tally":"tally",
+                "tibble":"tibble",
+                "tribble":"tribble",
                 "ungroup": "ungroup",
 				"unique": "unique",
+				"unnest": "unnest",
+				"vars": "vars",
+				"walk": "walk",
+				"pee walk": "pwalk",
+            }),
+        Choice(
+            "runwithfunction", {
+				"debug": "debug",
+            }),
+        Choice(
+            "package", {
+                "dev tools": "devtools",
+                "drake": "drake",
+				"string are": "stringr",
+				"(deep liar | deep)": "dplyr",
+				"lubridate": "lubridate",
+				"roxygen": "roxygen2",
             }),
         Choice(
             "ggfun", {

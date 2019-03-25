@@ -217,8 +217,8 @@ _DEFAULT_SETTINGS = {
 
     # sikuli settings
     "sikuli": {
-        "enabled": False,
-        "version": ""
+        "enabled": True,
+        "version": "1.1.4"
     },
 
     # feature switches

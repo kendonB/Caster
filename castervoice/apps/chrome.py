@@ -161,10 +161,10 @@ class ChromeRule(MergeRule):
             R(Key("cs-space/30") + Text("%(numbers)d:%(click_by_voice_options)s") +
               Key("enter/30") + Text("%(dictation)s") + Key("tab"),
               rdescript="input dictation into numbered text field then press tab"),
-        "<numbers> [<click_by_voice_options>]":
-            R(Key("cs-space/30") + Text("%(numbers)d:%(click_by_voice_options)s") +
-              Key("enter"),
-              rdescript="click link with click by voice options"),
+        # "<numbers> [<click_by_voice_options>]":
+        #    R(Key("cs-space/30") + Text("%(numbers)d:%(click_by_voice_options)s") +
+        #      Key("enter"),
+        #      rdescript="click link with click by voice options"),
         "hide hints":
             R(Key("cs-space/30") + Text(":-") + Key("enter"),
               rdescript="hide click by voice hints (i.e. numbers)"),
@@ -200,7 +200,10 @@ class ChromeRule(MergeRule):
         IntegerRefST("m", 1, 10),
         IntegerRefST("numbers", 0, 1000),
     ]
-    defaults = {"n": 1, "dict": "", "click_by_voice_options": "c"}
+    defaults = {
+	    "n": 1, 
+	    "click_by_voice_options": "c"
+    }
 
 
 #---------------------------------------------------------------------------

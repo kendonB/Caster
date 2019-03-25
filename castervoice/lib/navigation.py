@@ -19,6 +19,8 @@ DIRECTION_STANDARD = {
     "dunce [E]": "down",
     "lease [E]": "left",
     "Ross [E]": "right",
+    "hum": "home",
+    "end": "end",
     "back": "left"
 }
 '''

@@ -31,21 +31,34 @@ class RStudioRule(MergeRule):
         R(Key("c-a"), rdescript="RStudio: Select All"),
     "find":
         R(Key("c-f"), rdescript="RStudio: Find"),
+    "add comment":
+        R(Key("cs-c"), rdescript="RStudio: Comment"),
+    "terminate R":
+        R(Key("a-s, t"), rdescript="RStudio: Comment"),
+	"[file] save as":
+	    R(Key("a-f, a"), rdescript="RStudio: Save as"), 
 
     "[go to] line <n>":
         R(Key("as-g") + Pause("10") + Text("%(n)s") + Key("enter"),
           rdescript="RStudio: Go to Line #"),
-    #"focus console":
-    #    R(Key("c-2"), rdescript="RStudio: Focus Console"),
-    #"focus main":
-    #    R(Key("c-1"), rdescript="RStudio: Focus Main"),
+    "focus console":
+        R(Key("c-2"), rdescript="RStudio: Focus Console"),
+    "focus main":
+        R(Key("c-1"), rdescript="RStudio: Focus Main"),
+    "focus terminal":
+        R(Key("as-t"), rdescript="RStudio: Focus Terminal"),
+    "focus help":
+        R(Key("c-3"), rdescript="RStudio: Focus Help"),
 
-    "next tab":
-        R(Key("c-f12"), rdescript="RStudio: Next Tab"),
-    "first tab":
+	"new terminal":
+        R(Key("as-r"), rdescript="RStudio: New Terminal"),
+    	
+    "next tab [<nrstudio50>]":
+        R(Key("c-f12"), rdescript="RStudio: Next Tab")*Repeat(extra="nrstudio50"),
+    "first tab [<nrstudio50>]":
         R(Key("cs-f11"), rdescript="RStudio: First Tab"),
-    "previous tab":
-        R(Key("c-f11"), rdescript="RStudio: Previous Tab"),
+    "(previous | prior) tab":
+        R(Key("c-f11"), rdescript="RStudio: Previous Tab")*Repeat(extra="nrstudio50"),
     "last tab":
         R(Key("cs-f12"), rdescript="RStudio: Last Tab"),
     "close tab":
@@ -63,11 +76,34 @@ class RStudioRule(MergeRule):
         R(Key("ac-f12"), rdescript="RStudio: Next Plot"),
     "previous plot":
         R(Key("ac-f11"), rdescript="RStudio: Previous Plot"),
+    "open":
+        R(Key("c-o"), rdescript="RStudio: Open"),
+	"build package":
+        R(Key("cs-b"), rdescript="RStudio: Build package"),
+		
+	"next [<nrstudio500>]":
+        Key("c-2") + R(Text("n") + Key("enter"), rdescript="R: Next while debugging")*Repeat(extra="nrstudio500"),
+	
+	"step in":                    
+	    Key("c-2") + R(Text("s") + Key("enter"), rdescript="R: Step in while debugging"), 
+	"continue":                    
+	    Key("c-2") + R(Text("c") + Key("enter"), rdescript="R: Continue while debugging"), 
+	"stop":                    
+	    Key("c-2") + R(Text("Q") + Key("enter"), rdescript="R: Stop debugging"), 
+		
     }
     extras = [
         IntegerRefST("n", 1, 10000),
+		IntegerRefST("nrstudio500", 1, 500),
+		IntegerRefST("nrstudio50", 1, 50),
     ]
-    defaults = {}
+    defaults = {
+	    "n" : 1,
+		"nrstudio500": 1,
+		"nrstudio50": 1,
+	}
+	
+
 
 context = AppContext(executable="rstudio")
 grammar = Grammar("RStudio", context=context)

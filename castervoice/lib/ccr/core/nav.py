@@ -95,7 +95,7 @@ class NavigationNon(MappingRule):
         "undo [<n>]":
             R(Key("c-z"), rdescript="Core: Undo")*Repeat(extra="n"),
         "redo [<n>]":
-            R(Key("c-y"), rdescript="Core: Redo")*Repeat(extra="n"),
+            R(Key("cs-z"), rdescript="Core: Redo")*Repeat(extra="n"),
         "refresh":
             R(Key("c-r"), rdescript="Core: Refresh"),
         "maxiwin":
@@ -229,8 +229,10 @@ class Navigation(MergeRule):
             R(Function(navigation.stoosh_keep_clipboard, nexus=_NEXUS), rspec="stoosh", rdescript="Core: Copy"),
         "cut [<nnavi500>]":
             R(Function(navigation.cut_keep_clipboard, nexus=_NEXUS), rspec="cut", rdescript="Core: Cut"),
-        "spark [<nnavi500>] [(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel)]":
+        "spark [<nnavi500>] [(<capitalization> <spacing> | <capitalization> | <spacing>)]":
             R(Function(navigation.drop_keep_clipboard, nexus=_NEXUS), rspec="spark", rdescript="Core: Paste"),
+        "termie spark [<nnavi500>]":
+            R(Key("s-insert"), rspec="spark", rdescript="Core: Paste")* Repeat(extra="nnavi500"),
 
         "splat [<splatdir>] [<nnavi10>]":
             R(Key("c-%(splatdir)s"), rspec="splat", rdescript="Core: Splat") * Repeat(extra="nnavi10"),
@@ -258,7 +260,7 @@ class Navigation(MergeRule):
             R(Function(textformat.clear_text_format), rdescript="Core: Clear Caster Formatting"),
         "peek [<big>] format":
             R(Function(textformat.peek_text_format), rdescript="Core: Peek Format"),
-        "(<capitalization> <spacing> | <capitalization> | <spacing>) (bow|bowel) <textnv> [brunt]":
+        "(<capitalization> <spacing> | <capitalization> | <spacing>) <textnv> [brunt]":
             R(Function(textformat.master_format_text), rdescript="Core: Text Format"),
         "[<big>] format <textnv>":
             R(Function(textformat.prior_text_format), rdescript="Core: Last Text Format"),
@@ -269,6 +271,24 @@ class Navigation(MergeRule):
             R(Function(text_utils.enclose_selected), rdescript="Core: Enclose text "),
         "dredge":
             R(Key("a-tab"), rdescript="Core: Alt-Tab"),
+			
+		"doon [<nnavi500>]":
+            R(Key("pagedown"))*Repeat(extra="nnavi500"),
+		"sun [<nnavi500>]":
+            R(Key("pageup"))*Repeat(extra="nnavi500"),
+		"rope [<nnavi500>]":
+            R(Key("c-right"))*Repeat(extra="nnavi500"),
+		"laib [<nnavi500>]":
+            R(Key("c-left"))*Repeat(extra="nnavi500"),
+		"nope [<nnavi500>]":
+            R(Key("cs-left"))*Repeat(extra="nnavi500") + Key("backspace"),
+		"kay [<nnavi500>]":
+            R(Key("cs-right"))*Repeat(extra="nnavi500") + Key("backspace"),
+		"hum":
+            R(Key("home")),
+		"end":
+            R(Key("end")),
+
 
     }
 
@@ -320,7 +340,7 @@ class Navigation(MergeRule):
         Choice("mtn_mode", {
             "shin": "s",
             "queue": "cs",
-            "fly": "c",
+            "poopadeedoop": "c",
         }),
         Choice("extreme", {
             "Wally": "way",
