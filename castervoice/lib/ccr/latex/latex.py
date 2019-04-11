@@ -126,6 +126,8 @@ class LaTeX(MergeRule):
         "koom sum":                    R(Key("backslash") + Text("sum_") + Key("lbrace, rbrace, left"), rdescript="LaTeX: Sum command"), 
         "koom ref":                    R(Key("backslash") + Text("ref") + Key("lbrace, rbrace, left"), rdescript="LaTeX: ref command"), 
         "koom equation ref":                    R(Key("backslash") + Text("eqref") + Key("lbrace, rbrace, left"), rdescript="LaTeX: ref command"), 
+		"koom BM":   
+    		R(Key("backslash") + Text("bm") + Key("lbrace, rbrace, left"), rdescript="LaTeX: ref command"), 
 
     }
 

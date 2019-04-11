@@ -82,6 +82,8 @@ class Punctuation(MergeRule):
             R(Key("percent"), rdescript="Core: Percent Sign"),
         'tabby [<npunc>]':
             R(Key("tab"), rdescript="Core: Tab")*Repeat(extra="npunc"),
+        'lay tabby [<npunc>]':
+            R(Key("s-tab"), rdescript="Core: Shift Tab")*Repeat(extra="npunc"),
         "boom":
             R(Text(", "), rdescript="Core: Comma + Space"),
         "ampersand":

@@ -97,6 +97,8 @@ class Rlang(MergeRule):
         #    R(Text("tidyverse"), rdescript="Rlang: tidyverse"),
         "fun <function>":
             R(Text("%(function)s()") + Key("left"), rdescript="Rlang: insert a function"),
+        "fun target with transform":
+            R(Text("target(") + Key("enter") + Text(",") + Key("enter") + Text("transform = ") + Key("up") + Key("left"), rdescript="Rlang: insert a target function"),
         "new fun <text>":
             R(Text("%(text)s()") + Key("left"), rdescript="Rlang: insert a function"),
         "package <package>":
@@ -136,24 +138,31 @@ class Rlang(MergeRule):
 		    R(Key("f1"), rdescript="R: Help for function at cursor"),
 		
 		"run with function <runwithfunction>":  
-		    R(Key("c-c") + Key("c-2") + Key("c-a, backspace") + Text("%(runwithfunction)s") + Key("s-9") +
+		    R(Key("c-c") + Key("c-2/10") + Key("c-a, backspace") + Text("%(runwithfunction)s") + Key("s-9") +
 		        Key("c-v") + Key("enter/100") + Key("c-1"), rdescript="R: Run with function"),
-	
+	    "run with function <runwithfunction> terminal":  
+		    R(Key("c-c") + Key("as-t/50") + Key("end") + Key("backspace:20") + Text("%(runwithfunction)s") + Key("s-9") +
+		        Key("s-insert") + Key("s-0") + Key("enter/100") + Key("c-1"), rdescript="R: Run with function"),
+		"jump sun [<nr500>] <text>":
+    	    Key("s-pgup")*Repeat(extra="nr500") + R(Key("c-f") + Text("%(text)s") + Key("escape/5") + Key("left"), rdescript="RStudio: jump quickly up to text"),
+		"jump doon [<nr500>] <text>":
+    	    Key("s-pgdown")*Repeat(extra="nr500") + R(Key("c-f") + Text("%(text)s") + Key("escape/5") + Key("left"), rdescript="RStudio: jump quickly down to text"),
+		"jump sauce [<nr500>] <text>":
+    	    Key("s-up")*Repeat(extra="nr500") + R(Key("c-f") + Text("%(text)s") + Key("escape/5") + Key("left"), rdescript="RStudio: jump up to text"),
+		"jump dunce [<nr500>] <text>":
+    	    Key("s-down")*Repeat(extra="nr500") + R(Key("c-f") + Text("%(text)s") + Key("escape/5") + Key("left"), rdescript="RStudio: jump down to text"),
     }
 
     extras = [
         Dictation("text"),
         Choice(
             "function", {
-                "anti join": "anti_join",
                 "arrange": "arrange",
                 "as character": "as.character",
-                "as data frame": "as.data.frame",
 				"as date": "as_date",
-                "as double": "as.double",
-                "as factor": "as.factor",
-                "as numeric": "as.numeric",
                 "as tibble": "as_tibble",
+				"as double": "as.double",
+				"as character": "as.character",
                 "bind cols": "bind_cols",
                 "bind plans": "bind_plans",
 				"bind rows": "bind_rows",
@@ -168,6 +177,7 @@ class Rlang(MergeRule):
                 "desk": "desc",
                 "distinct": "distinct",
                 "drake plan": "drake_plan",
+				"drake config": "drake_config",
                 "drop NA": "drop_na",
                 "expand": "expand",
 				"extract": "extract",
@@ -184,10 +194,12 @@ class Rlang(MergeRule):
                 "if else": "if_else",
                 "inner join": "inner_join",
                 "install packages":"install.packages",
+                "install github":"devtools::install_github",
                 "is dot na":"is.na",
                 "lag": "lag",
                 "left join": "left_join",
                 "length": "length",
+                "load": "loadd",
                 "library": "library",
                 "list": "list",
                 "list files": "list.files",
@@ -211,7 +223,11 @@ class Rlang(MergeRule):
                 "nest": "nest",
                 "paste oh": "paste0",
 				"print": "print",
+				"object size": "pryr::object_size",
 				"pull": "pull",
+                "raster": "raster",
+                "read": "readd",
+				"read S F": "read_sf",
                 "read CSV": "read_csv",
                 "rename": "rename",
                 "roxygenize": "roxygenize",
@@ -223,6 +239,18 @@ class Rlang(MergeRule):
                 "set (W D | working directory)": "setwd",
 				"get (W D | working directory)": "getwd",
                 "slice": "slice",
+                "S T as S F": "st_as_sf",
+                "S T as S F C": "st_as_sfc",
+                "S T S F": "st_sf",
+                "S T S F C": "st_sfc",
+                "S T C R S": "st_crs",
+                "S T collection extract": "st_collection_extract",
+                "S T centroid": "st_centroid",
+                "S T union": "st_union",
+                "S T subdivide": "st_subdivide",
+                "S T cast": "st_cast",
+                "S T join": "st_join",
+                "S T B box": "st_bbox",
                 "spread": "spread",
                 "string contains": "str_contains",
                 "string detect": "str_detect",
@@ -238,9 +266,10 @@ class Rlang(MergeRule):
 				"summarise each": "summarise_each",
 				"source": "source",
                 "tail":"tail",
-                "tally":"tally",
+                "target":"target",
                 "tibble":"tibble",
                 "tribble":"tribble",
+                "train":"train",
                 "ungroup": "ungroup",
 				"unique": "unique",
 				"unnest": "unnest",
@@ -251,6 +280,8 @@ class Rlang(MergeRule):
         Choice(
             "runwithfunction", {
 				"debug": "debug",
+				"load": "loadd",
+				"object size": "pryr::object_size",
             }),
         Choice(
             "package", {
@@ -259,6 +290,7 @@ class Rlang(MergeRule):
 				"string are": "stringr",
 				"(deep liar | deep)": "dplyr",
 				"lubridate": "lubridate",
+				"raster": "raster",
 				"roxygen": "roxygen2",
             }),
         Choice(
@@ -292,8 +324,12 @@ class Rlang(MergeRule):
                 "update":"p_update",
             }),
 		IntegerRefST("n", 1, 10000),
+		IntegerRefST("nr500", 1, 500),
     ]
-    defaults = {}
+
+    defaults = {
+	  "nr500": 1,
+	}
 
 
 control.nexus().merger.add_global_rule(Rlang())

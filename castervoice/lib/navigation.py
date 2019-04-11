@@ -21,7 +21,9 @@ DIRECTION_STANDARD = {
     "Ross [E]": "right",
     "hum": "home",
     "end": "end",
-    "back": "left"
+    "back": "left",
+	"doon": "pagedown",
+	"sun": "pageup",
 }
 '''
 Note: distinct token types were removed because

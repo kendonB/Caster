@@ -57,7 +57,7 @@ class RStudioRule(MergeRule):
         R(Key("c-f12"), rdescript="RStudio: Next Tab")*Repeat(extra="nrstudio50"),
     "first tab [<nrstudio50>]":
         R(Key("cs-f11"), rdescript="RStudio: First Tab"),
-    "(previous | prior) tab":
+    "(previous | prior) tab [<nrstudio50>]":
         R(Key("c-f11"), rdescript="RStudio: Previous Tab")*Repeat(extra="nrstudio50"),
     "last tab":
         R(Key("cs-f12"), rdescript="RStudio: Last Tab"),
