@@ -17,7 +17,7 @@ class RStudioRule(MergeRule):
     pronunciation = "are studio"
 
     mapping = {
-    "new file":
+    "new (file | tab)":
         R(Key("cs-n"), rdescript="RStudio: New File"),
     "open file":
         R(Key("c-o"), rdescript="RStudio: Open File"),
