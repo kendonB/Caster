@@ -209,6 +209,7 @@ class Rlang(MergeRule):
                 "map logical": "map_lgl",
                 "map character": "map_chr",
                 "map double": "map_dbl",
+				"(mem | memory) used": "pryr::mem_used",
                 "pee map": "pmap",
                 "pee map logical": "pmap_lgl",
                 "pee map character": "pee map_chr",
@@ -282,6 +283,7 @@ class Rlang(MergeRule):
 				"debug": "debug",
 				"load": "loadd",
 				"object size": "pryr::object_size",
+				"names": "names",
             }),
         Choice(
             "package", {
