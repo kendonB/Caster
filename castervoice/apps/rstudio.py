@@ -7,6 +7,7 @@ from dragonfly import (Dictation, Grammar, IntegerRef, MappingRule, Pause,
 
 from castervoice.lib import control, settings
 from castervoice.lib.actions import Key, Text
+from castervoice.lib.temporary import Store, Retrieve
 from castervoice.lib.context import AppContext
 from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge import gfilter
@@ -76,6 +77,7 @@ class RStudioRule(MergeRule):
         R(Key("ac-f12"), rdescript="RStudio: Next Plot"),
     "previous plot":
         R(Key("ac-f11"), rdescript="RStudio: Previous Plot"),
+
     "open":
         R(Key("c-o"), rdescript="RStudio: Open"),
 	"build package":
