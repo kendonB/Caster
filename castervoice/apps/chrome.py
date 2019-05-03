@@ -156,22 +156,22 @@ class ChromeRule(MergeRule):
         # these require the click by voice Chrome extension
         # these allow you to browse Google Chrome hands-free
         #  (I haven't tried surfer keys yet, but apparently that's another good option)
-        #"<numbers> <dictation>":
-        #    R(Key("cs-space/30") + Text("%(numbers)d:%(click_by_voice_options)s") +
-        #      Key("enter/30") + Text("%(dictation)s"),
-        #      rdescript="input dictation into numbered text field"),
-        #"go <numbers> <dictation>":
-        #    R(Key("cs-space/30") + Text("%(numbers)d:%(click_by_voice_options)s") +
-        #      Key("enter/30") + Text("%(dictation)s") + Key("enter"),
-        #      rdescript="input dictation into numbered text field then press enter"),
-        #"next <numbers> <dictation>":
-        #    R(Key("cs-space/30") + Text("%(numbers)d:%(click_by_voice_options)s") +
-        #      Key("enter/30") + Text("%(dictation)s") + Key("tab"),
-        #      rdescript="input dictation into numbered text field then press tab"),
-        # "<numbers> [<click_by_voice_options>]":
-        #    R(Key("cs-space/30") + Text("%(numbers)d:%(click_by_voice_options)s") +
-        #      Key("enter"),
-        #      rdescript="click link with click by voice options"),
+        "<numbers> <dictation>":
+            R(Key("cs-space/30") + Text("%(numbers)d:%(click_by_voice_options)s") +
+              Key("enter/30") + Text("%(dictation)s"),
+              rdescript="input dictation into numbered text field"),
+        "go <numbers> <dictation>":
+            R(Key("cs-space/30") + Text("%(numbers)d:%(click_by_voice_options)s") +
+              Key("enter/30") + Text("%(dictation)s") + Key("enter"),
+              rdescript="input dictation into numbered text field then press enter"),
+        "next <numbers> <dictation>":
+            R(Key("cs-space/30") + Text("%(numbers)d:%(click_by_voice_options)s") +
+              Key("enter/30") + Text("%(dictation)s") + Key("tab"),
+              rdescript="input dictation into numbered text field then press tab"),
+        "<numbers> [<click_by_voice_options>]":
+            R(Key("cs-space/30") + Text("%(numbers)d:%(click_by_voice_options)s") +
+              Key("enter"),
+              rdescript="click link with click by voice options"),
         "hide hints":
             R(Key("cs-space/30") + Text(":-") + Key("enter"),
               rdescript="hide click by voice hints (i.e. numbers)"),

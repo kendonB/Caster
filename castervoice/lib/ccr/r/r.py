@@ -73,7 +73,7 @@ class Rlang(MergeRule):
         # Rlang specific
         "assign":
             R(Text(" <- "), rdescript="Rlang: Assignment"),
-        "our in":
+        "R in":
             R(Key('space, percent, i, n, percent, space'),
               rdescript="Rlang: In operator"),
         "slurp | chain":
@@ -230,6 +230,7 @@ class Rlang(MergeRule):
                 "read": "readd",
 				"read S F": "read_sf",
                 "read CSV": "read_csv",
+                "read fist": "read_fst",
                 "rename": "rename",
                 "roxygenize": "roxygenize",
                 "safely": "safely",
