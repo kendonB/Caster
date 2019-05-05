@@ -328,10 +328,12 @@ class Rlang(MergeRule):
             }),
 		IntegerRefST("n", 1, 10000),
 		IntegerRefST("nr500", 1, 500),
+        IntegerRefST("nr50", 1, 50),
     ]
 
     defaults = {
 	  "nr500": 1,
+      "nr50": 1,
 	}
 
 

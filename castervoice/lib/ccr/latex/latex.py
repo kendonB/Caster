@@ -8,6 +8,7 @@ from dragonfly import Function, Choice, Repeat, Dictation
 from castervoice.lib import control
 from castervoice.lib.actions import Key, Text
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
+from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.state.short import R
 from castervoice.lib.ccr.standard import SymbolSpecs
 
@@ -250,6 +251,7 @@ class LaTeX(MergeRule):
             "big": True,
         }),
         Dictation("textnv"),		
+        IntegerRefST("n", 1, 10000),
     ]
     defaults = {
         "big": False,

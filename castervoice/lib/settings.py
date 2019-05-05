@@ -203,6 +203,7 @@ _DEFAULT_SETTINGS = {
         "sqldeveloper": True,
         "ssms": True,
         "sublime": True,
+        "texstudio": True,
         "totalcmd": True,
         "typora": True,
         "visualstudio": True,

@@ -4,12 +4,12 @@
 # Licensed under the LGPL, see <http://www.gnu.org/licenses/>
 #
 """
-Command-module for Notepad++
+Command-module for TexStudio++
 
 """
 #---------------------------------------------------------------------------
 
-from dragonfly import (Grammar, Dictation, Repeat)
+from dragonfly import (Grammar, Dictation, Repeat, Pause)
 
 from castervoice.lib import control
 from castervoice.lib import settings
@@ -25,43 +25,34 @@ class NPPRule(MergeRule):
     pronunciation = "notepad plus plus"
 
     mapping = {
-        "stylize <n2>":
-            R(Mouse("right") + Key("down:6/5, right") +
-              (Key("down")*Repeat(extra="n2")) + Key("enter"),
-              rdescript="Notepad++: Stylize"),
-        "remove style":
-            R(Mouse("right") + Key("down:6/5, right/5, down:5/5, enter"),
-              rdescript="Notepad++: Remove Style"),
-        "preview in browser":
-            R(Key("cas-r"), rdescript="Notepad++: Preview In Browser"),
-
-        # requires function list plug-in:
-        "function list":
-            R(Key("cas-l"), rdescript="Notepad++: Function List"),
         "open":
-            R(Key("c-o"), rdescript="Notepad++: Open"),
+            R(Key("c-o"), rdescript="TexStudio++: Open"),
         "[go to] line <n>":
             R(Key("c-g/10") + Text("%(n)s") + Key("enter"),
-              rdescript="Notepad++: Go to Line #"),
+              rdescript="TexStudio++: Go to Line #"),
+        "tex studio press F three <n50>":
+             Key("f3")*Repeat(extra="n50"),
+        "[go to] section <n50>":
+            Key("c-g/10") + Text("1") + Key("enter/10") + Key("c-f") + Text("^$\\\\begin\\{document|^$\\\\section") + Key("left")*Repeat(count=29) + Key("backspace") + Key("right")*Repeat(count=20) + Key("backspace, f3") + Key("f3/100")*Repeat(extra="n50") + Key("s-f3/100") + Key("escape/100"),
     }
     extras = [
         Dictation("text"),
-        IntegerRefST("n", 1, 1000),
-        IntegerRefST("n2", 1, 10),
+        IntegerRefST("n", 1, 10000),
+        IntegerRefST("n50", 1, 50),
     ]
     defaults = {"n": 1}
 
 
 #---------------------------------------------------------------------------
 
-context = AppContext(executable="notepad++")
-grammar = Grammar("Notepad++", context=context)
+context = AppContext(executable="texstudio")
+grammar = Grammar("TexStudio", context=context)
 
-if settings.SETTINGS["apps"]["notepadplusplus"]:
+if settings.SETTINGS["apps"]["texstudio"]:
     if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
         control.nexus().merger.add_global_rule(NPPRule())
     else:
-        rule = NPPRule(name="notepad plus plus")
+        rule = NPPRule(name="tech studio")
         gfilter.run_on(rule)
         grammar.add_rule(rule)
         grammar.load()
