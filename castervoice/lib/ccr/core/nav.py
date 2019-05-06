@@ -6,7 +6,7 @@ Created on Sep 1, 2015
 from dragonfly import Repeat, Function, Dictation, Choice, MappingRule, ContextAction
 
 from castervoice.lib import context, navigation, alphanumeric, textformat, text_utils
-from castervoice.lib import control, utilities
+from castervoice.lib import control, utilities, automation
 from castervoice.lib.actions import Key, Mouse
 from castervoice.lib.context import AppContext
 from castervoice.lib.dfplus.additions import IntegerRefST
@@ -151,6 +151,10 @@ class NavigationNon(MappingRule):
         "move work [space] <n>":
             R(Function(lambda n: utilities.move_current_window_to_desktop(n, True)),
                 rdescript="Core: Move Current Window to Workspace N"),
+        "checkout [this] pull request [locally]":
+            R(Function(automation.github_branch_pull_request),
+                rdescript="Github: Checkout pull request locally"),
+        
     }
 
     extras = [
