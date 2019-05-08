@@ -19,7 +19,7 @@ from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
-
+from castervoice.lib.ccr.standard import SymbolSpecs
 
 class NPPRule(MergeRule):
     pronunciation = "notepad plus plus"

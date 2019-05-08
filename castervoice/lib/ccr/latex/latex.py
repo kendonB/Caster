@@ -53,7 +53,7 @@ class LaTeX(MergeRule):
             R(back_curl("%(command)s", ""),
             rdescript="LaTeX: Insert command requiring an argument"),
         "insert <commandnoarg>":
-            R(Text("\\%(commandnoarg)s "),
+            R(Text("\\%(commandnoarg)s"),
             rdescript="LaTeX: Insert command not requiring an argument"),
         "insert quote":
             R(Text("``\'\'") + Key("left:2"), rdescript="LaTeX: Insert a quote"),
@@ -108,7 +108,8 @@ class LaTeX(MergeRule):
         "square root":                    	R(Text("\\sqrt{")+ Key("rbrace") +Key("left"), rdescript="LaTeX: Square root"),
         
         "big Greek Delta":                  R(Text("\\Delta"), rdescript="LaTeX: Big Delta character"),
-        "sub ex":                    	    R(Text("_{") + Key("rbrace") +Key("left"), rdescript="LaTeX: underscore"),
+        "sub ex":                    	    R(Text("_{") + Key("rbrace") +Key("left"), rdescript="LaTeX: subscript"),
+        "soup ex":                    	    R(Text("^{") + Key("rbrace") +Key("left"), rdescript="LaTeX: superscript"),
         "text citation":                    R(Text("\\textcite{")+  Key("rbrace")+Key("left"), rdescript="LaTeX: In text citation"), 
 	    "ren citation":                     R(Text("\\parencite{")+  Key("rbrace")+Key("left"), rdescript="LaTeX: Parenthesis citation"), 
 	    "new section":                      R(Text("\\section{") + Key("rbrace") + Key("left"), rdescript="LaTeX: New section"),
@@ -164,6 +165,7 @@ class LaTeX(MergeRule):
             "command", {
                 "author": "author",
                 "[add] bib resource": "addbibresource",
+                "cancel": "cancel",
                 "caption": "caption",
                 "chapter": "chapter",
                 "column": "column",
@@ -185,6 +187,7 @@ class LaTeX(MergeRule):
                 "[text] italics": "textit",
                 "[text] slanted": "textsl",
                 "title": "title",
+                "tilde": "tilde",
                 "use theme": "usetheme",
             }),
         Choice(
@@ -197,6 +200,8 @@ class LaTeX(MergeRule):
                 "print bibliography": "printbibliography",
                 "table of contents": "tableofcontents",
                 "text width": "textwidth",
+                "partial": "partial",
+                "prime": "prime",
             }),
         Choice(
             "symbol",
