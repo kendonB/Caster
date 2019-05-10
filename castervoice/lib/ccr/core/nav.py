@@ -222,11 +222,17 @@ class Navigation(MergeRule):
         "jump in lease":
             AsynchronousAction([L(S(["cancel"], context.nav, ["left", ")~]~}~>"]))], 
 			time_in_seconds=0.1, repetitions=50, rdescript="Core: Jump: In left" ),
-        "butt ross":
+        "butt in ross":
             AsynchronousAction([L(S(["cancel"], context.nav, ["right", ")~]~}~>"]))],
             finisher=Key("left"), time_in_seconds=0.1, repetitions=50, rdescript="Core: Jump: Out right"),
-        "butt lease":
+        "butt in lease":
             AsynchronousAction([L(S(["cancel"], context.nav, ["left", "(~[~{~<"]))],
+            finisher=Key("right"), time_in_seconds=0.1, repetitions=50, rdescript="Core: Jump: Out left"),
+        "butt out ross":
+            Key("right") + AsynchronousAction([L(S(["cancel"], context.nav, ["right", "(~[~{~<"]))],
+            finisher=Key("left"), time_in_seconds=0.1, repetitions=50, rdescript="Core: Jump: Out right"),
+        "butt out lease":
+            Key("left") + AsynchronousAction([L(S(["cancel"], context.nav, ["left", ")~]~}~>"]))],
             finisher=Key("right"), time_in_seconds=0.1, repetitions=50, rdescript="Core: Jump: Out left"),
 
         # keyboard shortcuts
