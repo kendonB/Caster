@@ -13,7 +13,7 @@ from dragonfly import (Grammar, Dictation, Repeat)
 
 from castervoice.lib import control
 from castervoice.lib import settings
-from castervoice.lib.actions import Key, Mouse
+from castervoice.lib.actions import Key, Mouse, Text
 from castervoice.lib.context import AppContext
 from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge import gfilter
@@ -40,10 +40,13 @@ class NPPRule(MergeRule):
             R(Key("cas-l"), rdescript="Notepad++: Function List"),
         "open":
             R(Key("c-o"), rdescript="Notepad++: Open"),
+        "[go to] line <n>":
+            R(Key("c-g/10") + Text("%(n)s") + Key("enter"),
+              rdescript="Notepad++: Go to Line #"),
     }
     extras = [
         Dictation("text"),
-        IntegerRefST("n", 1, 100),
+        IntegerRefST("n", 1, 1000),
         IntegerRefST("n2", 1, 10),
     ]
     defaults = {"n": 1}

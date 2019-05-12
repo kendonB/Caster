@@ -8,14 +8,14 @@ import toml
 import _winreg
 import version
 
-
 SETTINGS = {}
-BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "lib", 1)[0].replace("\\", "/")
+BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "lib", 1)[0].replace(
+    "\\", "/")
 _USER_DIR = os.path.expanduser("~").replace("\\", "/") + "/.caster"
 _SETTINGS_PATH = _USER_DIR + "/data/settings.toml"
 
 for directory in ["data", "rules", "filters", "sikuli"]:
-    d = _USER_DIR+"/"+directory
+    d = _USER_DIR + "/" + directory
     if not os.path.exists(d):
         os.makedirs(d)
 
@@ -43,8 +43,10 @@ HMC_SEPARATOR = "[hmc]"
 
 WSR = False
 
+
 def get_filename():
     return _SETTINGS_PATH
+
 
 def _validate_engine_path():
     '''
@@ -166,11 +168,13 @@ _DEFAULT_SETTINGS = {
 
         # PYTHON
         "PYTHONW": "C:/Python27/pythonw",
-        "WXPYTHON_PATH": "C:/Python27/Lib/site-packages/wx-3.0-msw"
+        "WXPYTHON_PATH": "C:/Python27/Lib/site-packages/wx-3.0-msw",
+        "GIT_FOLDER_REMOTE_URL_PATH": _USER_DIR + "/data/local_to_remote_git_match.toml"
     },
 
     # Apps Section
     "apps": {
+        "acrobat": True,
         "atom": True,
         "chrome": True,
         "cmd": True,
@@ -200,6 +204,7 @@ _DEFAULT_SETTINGS = {
         "sqldeveloper": True,
         "ssms": True,
         "sublime": True,
+        "texstudio": True,
         "totalcmd": True,
         "typora": True,
         "visualstudio": True,
@@ -210,8 +215,10 @@ _DEFAULT_SETTINGS = {
 
     # python settings
     "python": {
-        "automatic_settings": True,  # Set to false to manually set "version" and "pip" below.
-        "version": "python",  # Depending Python setup (python, python2, python2.7, py, py -2)
+        "automatic_settings":
+            True,  # Set to false to manually set "version" and "pip" below.
+        "version":
+            "python",  # Depending Python setup (python, python2, python2.7, py, py -2)
         "pip": "pip"  # Depending on PIP setup (pip ,pip2, pip2.7)
     },
 
@@ -234,14 +241,14 @@ _DEFAULT_SETTINGS = {
 
     # miscellaneous section
     "miscellaneous": {
-        "dev_commands": False,
+        "dev_commands": True,
         "keypress_wait": 50,  # milliseconds
         "max_ccr_repetitions": 16,
         "atom_palette_wait": 30,  # hundredths of a second
-        "rdp_mode": False,
+        "rdp_mode": False,  # Switch app context manually for remote desktop
         "integer_remap_opt_in": False,
         "integer_remap_crash_fix": False,
-        "print_rdescripts": False,
+        "print_rdescripts": True,
         "history_playback_delay_secs": 1.0,
         "legion_vertical_columns": 30,
         "use_aenea": False,

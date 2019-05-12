@@ -2,6 +2,7 @@
 
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
+- [Adobe acrobat](#adobe-acrobat)
 - [Atom](#atom)
 - [Google Chrome](#google-chrome)
 - [Command prompt](#command-prompt)
@@ -31,6 +32,21 @@
 - [Visual Studio Code](#visual-studio-code)
 
 <!-- /TOC -->
+# Adobe acrobat
+| Command                            | Command                      | Command                                  |
+|:-----------------------------------|:-----------------------------|:-----------------------------------------|
+| `[go to] page <n>`                 | `set zoom <n>`               | `open file`                              |
+| `duplicate tab`                    | `enable scrolling`           | `(disable scrolling / single page mode)` |
+| `next tab [<n>]`                   | `prior tab [<n>]`            | `home button`                            |
+| `add note [<dict>]`                | `fast [add] note [<dict>]`   | `open blank note`                        |
+| `add blank note`                   | `delete note`                | `go back [<n>]`                          |
+| `save as`                          | `fast save`                  | `down it [<n>]`                          |
+| `up it [<n>]`                      | `tools pane`                 | `menu bar`                               |
+| `model tree`                       | `bookmarks`                  | `[page] thumbnails`                      |
+| `rotate [<n>]`                     | `scroll <speed_one_to_nine>` | `scroll`                                 |
+| `change speed <speed_one_to_nine>` | `reverse [direction]`        | `stop [scrolling]`                       |
+| `highlight`                        | `hand tool`                  | `select tool`                            |
+
 
 # Atom
 
@@ -133,6 +149,7 @@
 | `duplicate window`                     | `extensions`                         | `(menu / three dots)`        |
 | `settings`                             | `downloads`                          | `chrome task manager`        |
 | `clear browsing data`                  | `developer tools`                    | `more tools`                 |
+| `google that`                  | `wikipedia that`                    | ``                 |
 
 ## Click by voice plug-in
 Options:
@@ -364,14 +381,15 @@ Options:
 
 # RStudio
 
-| Command                     | Command      | Command         |
-|:----------------------------|:-------------|:----------------|
-| `[go to] line <n>`          | `focus main` | `previous plot` |
-| `close tab`                 | `last tab`   | `previous tab`  |
-| `comment (line / selected)` | `new file`   | `run document`  |
-| `find`                      | `next plot`  | `run line`      |
-| `first tab`                 | `next tab`   | `save all`      |
-| `focus console`             | `open file`  | `select all`    |
+| Command                     | Command      | Command          |
+|:----------------------------|:-------------|:-----------------|
+| `[go to] line <n>`          | `focus main` | `previous plot`  |
+| `close tab`                 | `last tab`   | `previous tab`   |
+| `comment (line / selected)` | `new file`   | `run document`   |
+| `find`                      | `next plot`  | `run line`       |
+| `first tab`                 | `next tab`   | `save all`       |
+| `focus console`             | `open file`  | `select all`     |
+| `help that`                 | `head that`  | `vee table that` |
 
 # SQL Developer
 
@@ -391,27 +409,29 @@ Options:
 | `close tab [<n>]`         | `prior bookmark` |                   |
 
 # Sublime
-| Command                  | Command                        | Command                           |
-|:-------------------------|:-------------------------------|:----------------------------------|
-| `new file`               | `new window`                   | `open file`                       |
-| `save as`                | `comment line`                 | `comment block`                   |
-| `outdent lines`          | `join lines`                   | `match bracket`                   |
-| `(select / sell) all`    | `(select / sell) scope [<n2>]` | `(select / sell) brackets [<n2>]` |
-| `(select / sell) indent` | `find`                         | `get all`                         |
-| `replace`                | `edit lines`                   | `edit next [<n3>]`                |
-| `edit up [<n3>]`         | `edit down [<n3>]`             | `edit all`                        |
-| `transform upper`        | `transform lower`              | `line <n>`                        |
-| `go to word`             | `go to symbol`                 | `go to [symbol in] project`       |
-| `go to file`             | `command pallette`             | `fold`                            |
-| `unfold`                 | `unfold all`                   | `fold [level] <n2>`               |
-| `full screen`            | `(set / add) bookmark`         | `next bookmark`                   |
-| `previous bookmark`      | `clear bookmarks`              | `build it`                        |
-| `record macro`           | `play [back] macro [<n3>]`     | `(new / create) snippet`          |
-| `close pane`             | `next pane`                    | `previous pane`                   |
-| `pane <n2>`              | `column <one/two/left/right>`  | `focus <one/two/left/right>`      |
-| `move <n2>`              | `open terminal`                | `zoom in/out [<n2>]`              |
-| `toggle side bar`        | ``                             | ``                                |
-
+| Command                        | Command                           | Command                       |
+|:-------------------------------|:----------------------------------|:------------------------------|
+| `new file`                     | `new window`                      | `open file`                   |
+| `open folder`                  | `open recent`                     | `save as`                     |
+| `comment line`                 | `comment block`                   | `outdent lines`               |
+| `join lines`                   | `match bracket`                   | `(select / sell) all`         |
+| `(select / sell) scope [<n2>]` | `(select / sell) brackets [<n2>]` | `(select / sell) indent`      |
+| `find`                         | `get all`                         | `replace`                     |
+| `edit lines`                   | `edit next [<n3>]`                | `edit up [<n3>]`              |
+| `edit down [<n3>]`             | `edit all`                        | `transform upper`             |
+| `transform lower`              | `line <n>`                        | `<action> line <n> [to <nn>]` |
+| `go to file`                   | `go to <dict> [<filetype>]`       | `go to word`                  |
+| `go to symbol`                 | `go to [symbol in] project`       | `go to that`                  |
+| `find that in project`         | `find that`                       | `command pallette`            |
+| `fold`                         | `unfold`                          | `unfold all`                  |
+| `fold [level] <n2>`            | `full screen`                     | `toggle side bar`             |
+| `zoom in [<n2>]`               | `zoom out [<n2>]`                 | `(set / add) bookmark`        |
+| `next bookmark`                | `previous bookmark`               | `clear bookmarks`             |
+| `build it`                     | `record macro`                    | `play [back] macro [<n3>]`    |
+| `(new / create) snippet`       | `close tab`                       | `next tab`                    |
+| `previous tab`                 | `<nth> tab`                       | `column <cols>`               |
+| `focus <panel>`                | `move <panel>`                    | `open terminal`               |
+    
 
 # Typora
 | Command              | Command                        | Command                        |
@@ -452,17 +472,55 @@ Options:
 | `close tab [<n>]`                  | `resume`                     |                                     |
 
 # Visual Studio Code
+## CCR (Continuous Command Recognition)
+| Command                      | Command                                   | Command                                 |
+|:-----------------------------|:------------------------------------------|:----------------------------------------|
+| `scroll up [<n>]`            | `scroll down [<n>]`                       | `scroll page up [<n>]`                  |
+| `scroll page down [<n>]`     | `(Unindent/outdent) [<n>]`                | `Comment line`                          |
+| `Block comment`              | `cursor above [<n>]`                      | `cursor below [<n>]`                    |
+| `remove cursor`              | `tall cursor up`                          | `tall cursor down`                      |
+| `select [in] brackets [<n>]` | `all current selection`                   | `all current word`                      |
+| `select next [<n>]`          | `go to next [<n>]`                        | `select prior [<n>]`                    |
+| `go to prior [<n>]`          | `cursor all`                              | `next cursor [<n>]`                     |
+| `indent [<n>]`               | `hard delete [<n>]`                       | `copy line up [<n>]`                    |
+| `copy line up [<n>]`         | `switch line down [<n>]`                  | `switch line up [<n>]`                  |
+| `match bracket`              | `select between <between_parables> [<n>]` | `select around <around_parables> [<n>]` |
 
-| Command                                       | Command                       | Command                |
-|:----------------------------------------------|:------------------------------|:-----------------------|
-| `(Find / Jump [to]) next <text>`              | `Go forward [<n>]`            | `[toggle] full screen` |
-| `(Find / Jump [to]) previous <text>`          | `Go to ( bottom / last line)` | `beol`                 |
-| `(Open [file] / Go to [tab]) [<text>]`        | `Go to (top / first line)`    | `ee-ol`                |
-| `(go to / jump / jump to) line <n>`           | `Go to definition`            | `indent [<n>]`         |
-| `(search / find in) [all] (files / codebase)` | `Go to required definition`   | `nexta [<n>]`          |
-| `(search / find) [file]`                      | `Save and close`              | `prexta [<n>]`         |
-| `Block comment`                               | `Save file`                   | `resume`               |
-| `Close tab`                                   | `Unindent [<n>]`              | `step into`            |
-| `Comment`                                     | `[open] command palette`      | `step out [of]`        |
-| `Exit preview`                                | `[toggle] Zen mode`           | `step over [<n>]`      |
-| `Go back [<n>]`                               | `[toggle] breakpoint`         |                        |
+## Non-CCR
+| Command                                | Command                               | Command                                  |
+|:---------------------------------------|:--------------------------------------|:-----------------------------------------|
+| `[(go to / jump / jump to)] line <n>`  | `Go back <n>`                         | `Go forward [<n>]`                       |
+| `[toggle] full screen`                 | `toggle orientation`                  | `zoom in [<n>]`                          |
+| `zoom out [<n>]`                       | `sidebar`                             | `explorer`                               |
+| `source control`                       | `keyboard shortcuts`                  | `key mappings`                           |
+| `settings`                             | `snippets`                            | `extensions`                             |
+| `search details`                       | `output panel`                        | `markdown preview`                       |
+| `markdown preview side`                | `Zen mode`                            | `[open] command palette`                 |
+| `(Open [file] / Go to [tab]) [<text>]` | `Save and close`                      | `new file`                               |
+| `new window`                           | `close window`                        | `close workspace`                        |
+| `close editor`                         | `save as`                             | `save all`                               |
+| `next tab [<n>]`                       | `previous tab [<n>]`                  | `close tab [<n>]`                        |
+| `(recent / R) tab [<n>]`               | `reopen tab [<n>]`                    | `Exit preview`                           |
+| `keep preview open`                    | `copy path`                           | `windows explorer here`                  |
+| `show active file in new window`       | `(search / find)`                     | `replace`                                |
+| `find in files`                        | `replace in files`                    | `next find`                              |
+| `(prior / previous) find`              | `select all occurrences`              | `toggle regex`                           |
+| `toggle whole word`                    | `(Find / Jump [to]) previous <text>`  | `show all symbols`                       |
+| `go to symbol`                         | `close editor`                        | `close folder`                           |
+| `split editor`                         | `next pane`                           | `(prior / previous / un) pane`           |
+| `shift group left`                     | `shift group left`                    | `<nth> tab`                              |
+| `Go to definition`                     | `Go to required definition`           | `peak definition`                        |
+| `trigger parameter hints`              | `format that`                         | `(definition to side / side def)`        |
+| `show references`                      | `rename symbol`                       | `(trim white)`                           |
+| `change file language`                 | `debug`                               | `[toggle] breakpoint`                    |
+| `step over [<n>]`                      | `step into`                           | `step out [of]`                          |
+| `resume`                               | `stopper`                             | `continue`                               |
+| `show hover`                           | `[show] problems [panel]`             | `next error`                             |
+| `(prior / previous) error`             | `toggle tab moves focus`              | `[show] terminal`                        |
+| `new terminal`                         | `terminal scroll up`                  | `terminal scroll down`                   |
+| `terminal page up`                     | `terminal page down`                  | `(fold / collapse) region`               |
+| `(unfold / uncollapse) region`         | `(fold / collapse) [all] subregions`  | `(unfold / uncollapse) [all] subregions` |
+| `(fold / collapse) [all] regions`      | `(unfold / uncollapse) [all] regions` | `toggle word wrap`                       |
+| `join line`                            | `toggle blame`                        | `lens commit details`                    |
+| `lens file history`                    | `lens repo status`                    | `toggle git lens`                        |
+| `mark (prev / prior / previous)`       | `mark next`                           | ` `                                      |

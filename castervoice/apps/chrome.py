@@ -15,6 +15,7 @@ from dragonfly import (Grammar, Context, AppContext, Dictation, Key, Text, Repea
 from castervoice.lib import control
 from castervoice.lib import settings
 from castervoice.lib.actions import Key, Text
+from castervoice.lib.temporary import Store, Retrieve
 from castervoice.lib.context import AppContext
 from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge import gfilter
@@ -121,7 +122,13 @@ class ChromeRule(MergeRule):
               rdescript="IRC Chat Channel Identify"),
 
         "google that":
-            R(Key("c-c, c-t, c-v, enter"), rdescript="googles highlighted text"),
+            R(Store(remove_cr=True) + Key("c-t") + Retrieve() + Key("enter"),
+                rdescript="Chrome: google that"),
+
+        "wikipedia that":
+            R(Store(space="+", remove_cr=True) + Key("c-t") + Text("https://en.wikipedia.org/w/index.php?search=") + Retrieve() + Key("enter"),
+                rdescript="Chrome: Wikipedia that"),
+
         "duplicate tab":
             R(Key("a-d,a-c,c-t/15,c-v/15, enter"), rdescript="duplicate the current tab"),
         "duplicate window":
@@ -145,46 +152,10 @@ class ChromeRule(MergeRule):
         "more tools":
             R(Key("a-f/5, l"), rdescript="more tools"),
 
-        # click by voice chrome extension commands
-        # these require the click by voice Chrome extension
-        # these allow you to browse Google Chrome hands-free
-        #  (I haven't tried surfer keys yet, but apparently that's another good option)
-        #"<numbers> <dictation>":
-        #    R(Key("cs-space/30") + Text("%(numbers)d:%(click_by_voice_options)s") +
-        #      Key("enter/30") + Text("%(dictation)s"),
-        #      rdescript="input dictation into numbered text field"),
-        #"go <numbers> <dictation>":
-        #    R(Key("cs-space/30") + Text("%(numbers)d:%(click_by_voice_options)s") +
-        #      Key("enter/30") + Text("%(dictation)s") + Key("enter"),
-        #      rdescript="input dictation into numbered text field then press enter"),
-        #"next <numbers> <dictation>":
-        #    R(Key("cs-space/30") + Text("%(numbers)d:%(click_by_voice_options)s") +
-        #      Key("enter/30") + Text("%(dictation)s") + Key("tab"),
-        #      rdescript="input dictation into numbered text field then press tab"),
-        # "<numbers> [<click_by_voice_options>]":
-        #    R(Key("cs-space/30") + Text("%(numbers)d:%(click_by_voice_options)s") +
-        #      Key("enter"),
-        #      rdescript="click link with click by voice options"),
-        "hide hints":
-            R(Key("cs-space/30") + Text(":-") + Key("enter"),
-              rdescript="hide click by voice hints (i.e. numbers)"),
-        "show hints":
-            R(Key("cs-space/30") + Text(":+") + Key("enter"),
-              rdescript="show click by voice hints (i.e. numbers)"),
+        "save zotero":
+            R(Key("cs-s"), rdescript="Chrome: Save Zotero")
     }
     extras = [
-        Choice(
-            "click_by_voice_options",
-            {
-                "go": "f",
-                "click": "c",
-                "push": "b",  # open as new tab but don't go to it
-                "tab": "t",  # open as new tab and go to it
-                "window": "w",
-                "hover": "h",
-                "link": "k",
-                "copy": "s",
-            }),
         Choice("nth", {
             "first": "1",
             "second": "2",
