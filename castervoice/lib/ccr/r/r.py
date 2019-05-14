@@ -238,6 +238,7 @@ class Rlang(MergeRule):
 				"read S F": "read_sf",
                 "read CSV": "read_csv",
                 "read fist": "read_fst",
+                "read X L [S X]": "read_xlsx",
                 "rename": "rename",
                 "roxygenize": "roxygenize",
                 "safely": "safely",
@@ -281,6 +282,7 @@ class Rlang(MergeRule):
                 "tibble":"tibble",
                 "tribble":"tribble",
                 "train":"train",
+                "table":"table",
                 "ungroup": "ungroup",
 				"unique": "unique",
 				"unnest": "unnest",
@@ -296,6 +298,7 @@ class Rlang(MergeRule):
 				"object size": "pryr::object_size",
 				"names": "names",
 				"map view": "mapview",
+				"view": "View",
             }),
         Choice(
             "package", {
