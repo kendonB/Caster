@@ -51,6 +51,13 @@ class RStudioRule(MergeRule):
     "focus help":
         R(Key("c-3"), rdescript="RStudio: Focus Help"),
 
+    "(zoom | unzoom) console":
+        R(Key("cs-2"), rdescript="RStudio: Zoom Console"),
+    "(zoom | unzoom)  main":
+        R(Key("cs-1"), rdescript="RStudio: Zoom Main"),
+    "(zoom | unzoom)  help":
+        R(Key("cs-3"), rdescript="RStudio: Zoom Help"),
+
 	"new terminal":
         R(Key("as-r"), rdescript="RStudio: New Terminal"),
     	
