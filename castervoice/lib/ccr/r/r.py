@@ -182,6 +182,8 @@ class Rlang(MergeRule):
                 "drop NA": "drop_na",
                 "expand": "expand",
 				"extract": "extract",
+				"factor": "factor",
+				"(F E L M | FLM)": "felm",
 				"filter": "filter",
 				"file in": "file_in",
 				"file out": "file_out",
