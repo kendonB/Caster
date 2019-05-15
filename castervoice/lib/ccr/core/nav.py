@@ -292,7 +292,7 @@ class Navigation(MergeRule):
 		"hum":
             R(Key("home")),
 		"end":
-            R(Key("end"))
+            R(Key("end")),
 
         
         
@@ -427,16 +427,6 @@ class Navigation(MergeRule):
             "lease": "backspace",
             "ross": "delete",
         }),
-        Choice(
-            "left_character", {
-                "prekris": "(",
-                "right prekris": ")",
-                "brax": "[",
-                "right brax": "]",
-                "angle": "<",
-                "right angle": ">",
-                "curly": "{",
-                "right curlry": "}",
         Choice("lease_ross", {
             "lease": "left",
             "ross": "right",
