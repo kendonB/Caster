@@ -211,6 +211,7 @@ class LaTeX(MergeRule):
                 "gamma": "gamma",
                 "delta": "delta",
                 "epsilon": "epsilon",
+                "var epsilon": "varepsilon",
                 "zita": "zeta",
                 "eater": "eta",
                 "theta": "theta",
