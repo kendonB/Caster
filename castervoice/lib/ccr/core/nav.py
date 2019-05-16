@@ -311,12 +311,12 @@ class Navigation(MergeRule):
         # these work in most applications not all (e.g. doesn't work in Microsoft Word),
         # probably something to do with the wait times within paste_string_without_altering_clipboard
         
-        "change [<lease_ross>] <dictation> to <dictation2>":
+        "change <lease_ross> <dictation> to <dictation2>":
             R(Function(navigation.copypaste_replace_phrase_with_phrase,
                        dict(dictation="replaced_phrase", dictation2="replacement_phrase", lease_ross="left_right")),
               rdescript="Core: replace text to the left or right of the cursor"),
         
-        "remove [<lease_ross>] <dictation>":
+        "remove <lease_ross> <dictation>":
             R(Function(navigation.copypaste_remove_phrase_from_text,
                        dict(dictation="phrase", lease_ross="left_right")),
               rdescript="remove chosen phrase to the left or right of the cursor"),
@@ -353,7 +353,7 @@ class Navigation(MergeRule):
         "grab ross <right_character>":
             R(Function(navigation.select_until_phrase, dict(right_character="phrase"), left_right="right"),
             rdescript="select right until chosen character"),
-        "wipe [<lease_ross>] <dictation>":
+        "wipe <lease_ross> <dictation>":
             R(Function(navigation.copypaste_delete_until_phrase,
                        dict(dictation="phrase", lease_ross="left_right")),
               rdescript="delete left until chosen phrase (exclusive)"),

@@ -53,7 +53,7 @@ class LaTeX(MergeRule):
             R(back_curl("%(command)s", ""),
             rdescript="LaTeX: Insert command requiring an argument"),
         "insert <commandnoarg>":
-            R(Text("\\%(commandnoarg)s"),
+            R(Text("\\%(commandnoarg)s "),
             rdescript="LaTeX: Insert command not requiring an argument"),
         "insert quote":
             R(Text("``\'\'") + Key("left:2"), rdescript="LaTeX: Insert a quote"),
