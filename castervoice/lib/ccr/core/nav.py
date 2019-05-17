@@ -51,7 +51,7 @@ class NavigationNon(MergeRule):
             R(Function(navigation.left_down, nexus=_NEXUS)),
         "bench":
             R(Function(navigation.left_up, nexus=_NEXUS)),
-        "press":
+        "lean":
             R(Function(navigation.right_down, nexus=_NEXUS)),
         "hoist":
             R(Function(navigation.right_up, nexus=_NEXUS)),
@@ -143,7 +143,7 @@ class NavigationNon(MergeRule):
             R(Function(lambda n: utilities.move_current_window_to_desktop(n, True))),
         "checkout [this] pull request [locally]":
             R(Function(automation.github_branch_pull_request),
-                rdescript="Github: Checkout pull request locally"),        
+                rdescript="Github: Checkout pull request locally"),
     }
 
     extras = [
@@ -186,7 +186,7 @@ class Navigation(MergeRule):
     pronunciation = CCRMerger.CORE[1]
 
     mapping = {
-    # "periodic" repeats whatever comes next at 1-second intervals until "terminate" 
+    # "periodic" repeats whatever comes next at 1-second intervals until "terminate"
     # or "escape" (or your SymbolSpecs.CANCEL) is spoken or 100 tries occur
         "periodic":
             ContextSeeker(forward=[
@@ -213,7 +213,7 @@ class Navigation(MergeRule):
             AsynchronousAction([L(S(["cancel"], context.nav, ["left", "(~[~{~<"]))],
             time_in_seconds=0.1, repetitions=50),
         "jump in lease":
-            AsynchronousAction([L(S(["cancel"], context.nav, ["left", ")~]~}~>"]))], 
+            AsynchronousAction([L(S(["cancel"], context.nav, ["left", ")~]~}~>"]))],
 			time_in_seconds=0.1, repetitions=50),
         "butt in ross":
             AsynchronousAction([L(S(["cancel"], context.nav, ["right", ")~]~}~>"]))],
@@ -298,8 +298,8 @@ class Navigation(MergeRule):
 		"end":
             R(Key("end")),
 
-        
-        
+
+
         # the following text manipulation commands currently only work on text
             # that is on the same line as the cursor, though this could be expanded.
         # requires the latest version of dragonfly because of her recent modification of the Function action
@@ -310,12 +310,12 @@ class Navigation(MergeRule):
         # the functions should probably be adjusted to avoid inappropriately recognizing substrings
         # these work in most applications not all (e.g. doesn't work in Microsoft Word),
         # probably something to do with the wait times within paste_string_without_altering_clipboard
-        
+
         "change <lease_ross> <dictation> to <dictation2>":
             R(Function(navigation.copypaste_replace_phrase_with_phrase,
                        dict(dictation="replaced_phrase", dictation2="replacement_phrase", lease_ross="left_right")),
               rdescript="Core: replace text to the left or right of the cursor"),
-        
+
         "remove <lease_ross> <dictation>":
             R(Function(navigation.copypaste_remove_phrase_from_text,
                        dict(dictation="phrase", lease_ross="left_right")),
@@ -364,7 +364,7 @@ class Navigation(MergeRule):
               rdescript="delete left until chosen character (exclusive)"),
         "wipe ross <right_character>":
             R(Function(navigation.copypaste_delete_until_phrase,
-                       dict(right_character="phrase"), 
+                       dict(right_character="phrase"),
                        left_right="right"),
               rdescript="delete left until chosen character"),
     }
