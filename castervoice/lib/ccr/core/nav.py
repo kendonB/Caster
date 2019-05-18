@@ -439,13 +439,10 @@ class Navigation(MergeRule):
             "lease": "left",
             "ross": "right",
         }),
-<<<<<<< HEAD
-=======
         Choice("before_after", {
             "before": "before",
             "after": "after",
         }),
->>>>>>> dictation-toolbox/Caster/pull/485
         Choice(
             "left_character", {
                 "[left] prekris": "(",
