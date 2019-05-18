@@ -24,9 +24,10 @@ _NEXUS = control.nexus()
 class NavigationNon(MergeRule):
     mapping = {
         "<direction> <time_in_seconds>":
-            AsynchronousAction([L(S(["cancel"], Key("%(direction)s"), consume=False))],
-                               repetitions=1000,
-                               blocking=False),
+            AsynchronousAction(
+                [L(S(["cancel"], Key("%(direction)s"), consume=False))],
+                repetitions=1000,
+                blocking=False),
         "erase multi clipboard":
             R(Function(navigation.erase_multi_clipboard, nexus=_NEXUS)),
         "find":
@@ -189,16 +190,10 @@ class Navigation(MergeRule):
     # "periodic" repeats whatever comes next at 1-second intervals until "terminate"
     # or "escape" (or your SymbolSpecs.CANCEL) is spoken or 100 tries occur
         "periodic":
-            ContextSeeker(forward=[
-                L(
-                    S(["cancel"], lambda: None),
-                    S(["*"],
-                      lambda fnparams: UntilCancelled(
-                          Mimic(*filter(lambda s: s != "periodic", fnparams)), 1).execute(
-                          ),
-                      use_spoken=True))
-            ]),
-        # VoiceCoder-inspired -- these should be done at the IDE level
+            ContextSeeker(forward=[L(S(["cancel"], lambda: None),
+            S(["*"], lambda fnparams: UntilCancelled(Mimic(*filter(lambda s: s != "periodic", fnparams)), 1).execute(),
+            use_spoken=True))]),
+    # VoiceCoder-inspired -- these should be done at the IDE level
         "fill <target>":
             R(Key("escape, escape, end"), show=False) +
             AsynchronousAction([L(S(["cancel"], Function(context.fill_within_line, nexus=_NEXUS)))],
@@ -228,7 +223,7 @@ class Navigation(MergeRule):
             Key("left") + AsynchronousAction([L(S(["cancel"], context.nav, ["left", ")~]~}~>"]))],
             finisher=Key("right"), time_in_seconds=0.1, repetitions=50),
 
-        # keyboard shortcuts
+    # keyboard shortcuts
         'save':
             R(Key("c-s"), rspec="save"),
         'shock [<nnavi50>]':
@@ -300,6 +295,8 @@ class Navigation(MergeRule):
 
 
 
+
+
         # the following text manipulation commands currently only work on text
             # that is on the same line as the cursor, though this could be expanded.
         # requires the latest version of dragonfly because of her recent modification of the Function action
@@ -309,7 +306,11 @@ class Navigation(MergeRule):
         # the wait times in the functions could also be reduced.
         # the functions should probably be adjusted to avoid inappropriately recognizing substrings
         # these work in most applications not all (e.g. doesn't work in Microsoft Word),
-        # probably something to do with the wait times within paste_string_without_altering_clipboard
+        # Of these commands are not working in a particular application sometimes the problem is that
+        # there is not enough time from when control-c is pressed until the contents of the clipboard are passed into the function
+        # The solution is to add a longer pause after pressing control see in the supporting functions in navigation.py
+        # For some applications this pause ( and other pauses in the functions for that matter ) is not necessary
+        # and may be removed by the user if they wish to speed up the execution of these commands
 
         "change <lease_ross> <dictation> to <dictation2>":
             R(Function(navigation.copypaste_replace_phrase_with_phrase,
@@ -320,7 +321,7 @@ class Navigation(MergeRule):
             R(Function(navigation.copypaste_remove_phrase_from_text,
                        dict(dictation="phrase", lease_ross="left_right")),
               rdescript="remove chosen phrase to the left or right of the cursor"),
-        "remove [lease] <left_character>":
+        "remove lease <left_character>":
             R(Function(navigation.copypaste_remove_phrase_from_text,
                        dict(left_character="phrase"),
                        left_right="left"),
@@ -330,24 +331,24 @@ class Navigation(MergeRule):
                        dict(right_character="phrase"),
                        left_right="right"),
               rdescript="remove chosen character to the right of the cursor"),
-        "go [lease] <left_character>":
+        "go [<lease_ross>] [<before_after>] <dictation>":
+            R(Function(navigation.move_until_phrase,
+                       dict(dictation="phrase", lease_ross="left_right")),
+              rdescript="move to chosen phrase to the left or right of the cursor"),
+        "go [lease] [<before_after>] <left_character>":
             R(Function(navigation.move_until_phrase,
                        dict(left_character="phrase"),
                        left_right="left"),
               rdescript="move to chosen character to the left of the cursor"),
-        "go [<lease_ross>] <dictation>":
-            R(Function(navigation.move_until_phrase,
-                       dict(dictation="phrase", lease_ross="left_right")),
-              rdescript="move to chosen phrase to the left or right of the cursor"),
-        "go ross <right_character>":
+        "go ross [<before_after>] <right_character>":
             R(Function(navigation.move_until_phrase,
                        dict(right_character="phrase"),
                        left_right="right"),
               rdescript="move to chosen character to the right of the cursor"),
-        "grab [<lease_ross>] <dictation> ":
+        "grab <lease_ross> <dictation> ":
             R(Function(navigation.select_until_phrase, dict(dictation="phrase", lease_ross="left_right")),
                  rdescript="select until chosen phrase (inclusive)"),
-        "grab [lease] <left_character>":
+        "grab lease <left_character>":
             R(Function(navigation.select_until_phrase, dict(left_character="phrase"), left_right="left"),
             rdescript="select left until chosen character"),
         "grab ross <right_character>":
@@ -357,7 +358,7 @@ class Navigation(MergeRule):
             R(Function(navigation.copypaste_delete_until_phrase,
                        dict(dictation="phrase", lease_ross="left_right")),
               rdescript="delete left until chosen phrase (exclusive)"),
-        "wipe [lease] <left_character>":
+        "wipe lease <left_character>":
             R(Function(navigation.copypaste_delete_until_phrase,
                        dict(left_character="phrase"),
                        left_right="left"),
@@ -367,6 +368,9 @@ class Navigation(MergeRule):
                        dict(right_character="phrase"),
                        left_right="right"),
               rdescript="delete left until chosen character"),
+
+
+
     }
 
     extras = [
@@ -435,6 +439,13 @@ class Navigation(MergeRule):
             "lease": "left",
             "ross": "right",
         }),
+<<<<<<< HEAD
+=======
+        Choice("before_after", {
+            "before": "before",
+            "after": "after",
+        }),
+>>>>>>> dictation-toolbox/Caster/pull/485
         Choice(
             "left_character", {
                 "[left] prekris": "(",
@@ -452,16 +463,6 @@ class Navigation(MergeRule):
                 "questo": "?",
                 "backtick": "`",
                 "equals": "=",
-            }),
-        Choice(
-            "right_character", {
-                "prekris": ")",
-                "left prekris": "(",
-                "brax": "]",
-                "left brax": "[",
-                "angle": ">",
-                "lefty angle": "<",
-                "curly": "}",
                 "dolly": "$",
                 "slash": "/",
                 "backslash": "\\",
@@ -495,6 +496,7 @@ class Navigation(MergeRule):
                 "plus": "+",
                 "starling": "*",
                 "x-ray": "x",
+
             }),
     ]
 
@@ -512,6 +514,7 @@ class Navigation(MergeRule):
         "big": False,
         "splatdir": "backspace",
         "lease_ross": "left",
+        "before_after": None,
     }
 
 
