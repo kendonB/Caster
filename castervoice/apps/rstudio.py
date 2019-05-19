@@ -39,7 +39,7 @@ class RStudioRule(MergeRule):
 	"[file] save as":
 	    R(Key("a-f, a"), rdescript="RStudio: Save as"), 
 
-    "[go to] line <n>":
+    "go to line <n>":
         R(Key("as-g") + Pause("10") + Text("%(n)s") + Key("enter"),
           rdescript="RStudio: Go to Line #"),
     "focus console":
