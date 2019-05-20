@@ -20,7 +20,6 @@ command_sets = {
     "javascript.javascript": ("Javascript", ),
     "latex.latex": ("LaTeX", ),
     "maori.maori": ("Maori", ),
-    "maori.maori": ("MaoriContinuous", ),
     "markdown.markdown": ("Markdown", ),
     "matlab.matlab": ("Matlab", ),
     "python.python": ("Python", ),

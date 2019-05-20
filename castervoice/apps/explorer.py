@@ -43,6 +43,8 @@ class IERule(MergeRule):
             # once you've selected the relevant heading for sorting using the arrow keys, press enter
         "sort [headings]":
             R(Key("a-d, tab:4"), rdescript="Explorer: Sort headings e.g. name, date, etc."),
+        "zip it":
+            R(Key("s-f10/20, seven/20, down:4/20, enter"), rdescript="Explorer: Zip highlighted folder"),
         
     }
     extras = [

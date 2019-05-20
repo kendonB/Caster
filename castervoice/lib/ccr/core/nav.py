@@ -395,7 +395,8 @@ class Navigation(MergeRule):
             "tie": 2,
             "Gerrish": 3,
             "sing": 4,
-            "laws": 5
+            "laws": 5,
+            "drag": 6
         }),
         Choice(
             "spacing", {

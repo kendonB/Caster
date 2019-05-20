@@ -26,6 +26,9 @@ class FileDialogueRule(MergeRule):
             R(Key("a-d, f6:2"), rdescript="File Dialogue: Navigation pane"),
         "[file] name":
             R(Key("a-d, f6:5"), rdescript="File Dialogue: File name"),
+        "zip it":
+            R(Key("s-f10/20, seven/20, down:4/20, enter"), rdescript="File Dialogue: Zip highlighted folder"),
+        
     }
     extras = [IntegerRefST("n", 1, 10)]
     defaults = {
