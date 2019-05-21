@@ -18,6 +18,8 @@ class Punctuation(MergeRule):
             R(Key("dquote,dquote,left"), rdescript="Core: Quotation Marks"),
         "thin quotes":
             R(Key("apostrophe,apostrophe,left"), rdescript="Core: Thin Quotation Marks"),
+        "bakes":
+            R(Key("backtick, backtick, left"), rdescript="Core: Backtick Pair"),
         "[is] greater than":
             R(Key("rangle"), rdescript="Core: > Comparison"),
         "[is] less than":
