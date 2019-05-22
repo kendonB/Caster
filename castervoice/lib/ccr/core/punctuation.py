@@ -30,6 +30,8 @@ class Punctuation(MergeRule):
             R(Key("langle, equals"), rdescript="Core: <= Comparison"),
         "[is] equal to":
             R(Key("equals,equals"), rdescript="Core: Equality"),
+        "long [is] equal to":
+            R(Key("space,equals,equals,space"), rdescript="Core: Equality"),
         "prekris":
             R(Key("lparen, rparen, left"), rdescript="Core: Parentheses"),
         "brax":
@@ -92,6 +94,8 @@ class Punctuation(MergeRule):
             R(Key("ampersand"), rdescript="Core: Ampersand"),
         "tilde":
             R(Key("tilde"), rdescript="Core: Tilde"),
+		"long tilde":
+            R(Key("space, tilde, space"), rdescript="Core: Long Tilde"),
 		"ren":
             R(Key("lparen"), rdescript="Core: Left Parentheses"),
 		"glow ren":

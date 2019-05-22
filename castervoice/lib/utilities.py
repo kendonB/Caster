@@ -159,6 +159,8 @@ def reboot(wsr=False):
     else:
         popen_parameters.append(settings.SETTINGS["paths"]["REBOOT_PATH"])
         popen_parameters.append(settings.SETTINGS["paths"]["ENGINE_PATH"])
+        if settings.SETTINGS["paths"]["DRAGON_USER_PROFILE_PATH"] != "":
+            popen_parameters.append(settings.SETTINGS["paths"]["DRAGON_USER_PROFILE_PATH"])
 
     print(popen_parameters)
     Popen(popen_parameters)

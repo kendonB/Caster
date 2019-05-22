@@ -5,14 +5,13 @@ Command-module for Legion
 
 import time
 
-from dragonfly import (Grammar, Function, Playback, Choice, MappingRule)
+from dragonfly import (Grammar, Function, Playback, Choice, MappingRule, ShortIntegerRef)
 import win32api
 import win32con
 
 from castervoice.asynch.mouse import grids
 from castervoice.lib import control
 from castervoice.lib import navigation, settings
-from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
@@ -72,7 +71,7 @@ class GridControlRule(MergeRule):
             "psychic": 1,
             "light": 2,
         }),
-        IntegerRefST("n", 0, 1000),
+        ShortIntegerRef("n", 0, 1000),
     ]
     defaults = {
         "action": -1,

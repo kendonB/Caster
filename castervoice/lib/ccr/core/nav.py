@@ -135,6 +135,7 @@ class NavigationNon(MergeRule):
             R(Key("wc-right"))*Repeat(extra="n"),
         "(previous | prior) work [space] [<n>]":
             R(Key("wc-left"))*Repeat(extra="n"),
+            
 
         "go work [space] <n>":
             R(Function(lambda n: utilities.go_to_desktop_number(n))),
@@ -315,6 +316,7 @@ class Navigation(MergeRule):
                 "brax": "[~]",
                 "thin quotes": "'~'",
                 'quotes': '"~"',
+                'bakes': '`~`',
             }),
         Choice("capitalization", {
             "yell": 1,

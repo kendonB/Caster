@@ -3,7 +3,7 @@ Mike Roberts 13/09/18
 '''
 
 from dragonfly import (Dictation, Grammar, IntegerRef, MappingRule, Pause,
-                       Repeat, Mimic)
+                       Repeat, Mimic, ShortIntegerRef)
 
 from castervoice.lib import control, settings
 from castervoice.lib.actions import Key, Text
@@ -39,9 +39,9 @@ class RStudioRule(MergeRule):
 	"[file] save as":
 	    R(Key("a-f, a"), rdescript="RStudio: Save as"), 
 
-    "go to line <n>":
-        R(Key("as-g") + Pause("10") + Text("%(n)s") + Key("enter"),
-          rdescript="RStudio: Go to Line #"),
+    # "[go to] line <nrstudio500>":
+        # R(Key("as-g") + Pause("10") + Text("%(nrstudio500)s") + Key("enter"),
+          # rdescript="RStudio: Go to Line #"),
     "focus console":
         R(Key("c-2"), rdescript="RStudio: Focus Console"),
     "focus main":
@@ -103,7 +103,7 @@ class RStudioRule(MergeRule):
     }
     extras = [
         IntegerRefST("n", 1, 10000),
-		IntegerRefST("nrstudio500", 1, 500),
+		ShortIntegerRef("nrstudio500", 1, 500),
 		IntegerRefST("nrstudio50", 1, 50),
     ]
     defaults = {

@@ -4,7 +4,7 @@ Created on May 23, 2017
 @author: shippy
 '''
 
-from dragonfly import Dictation, MappingRule, Choice, Repeat
+from dragonfly import Dictation, MappingRule, Choice, Repeat, ShortIntegerRef
 
 from castervoice.lib import control
 from castervoice.lib.actions import Key, Text
@@ -73,7 +73,7 @@ class Rlang(MergeRule):
         # Rlang specific
         "assign":
             R(Text(" <- "), rdescript="Rlang: Assignment"),
-        "R in":
+        "in (op | operator)":
             R(Key('space, percent, i, n, percent, space'),
               rdescript="Rlang: In operator"),
         "slurp | chain":
@@ -112,7 +112,10 @@ class Rlang(MergeRule):
 		"temp":
             R(Text("tmp"), rdescript="Rlang: tmp"),
 		
-# should be in rstudio		
+# should be in rstudio but continuous command recognition doesn't seem to be working for apps contexts
+        "[go to] line <nr500>":    
+            R(Key("as-g/10") + Text("%(nr500)s") + Key("enter"),
+              rdescript="R: Go to Line #"),
 		"run it <n>":                    
 	        Key("home")+R(Key("s-down"), rdescript="R: Run command") * Repeat(extra="n") + Key("c-enter") + Key("right"), 
 	    "run it":                    
@@ -262,6 +265,7 @@ class Rlang(MergeRule):
                 "set names": "set_names",
                 "set (W D | working directory)": "setwd",
 				"get (W D | working directory)": "getwd",
+                "R lang sim": "rlang::sym",
                 "slice": "slice",
                 "S T as S F": "st_as_sf",
                 "S T as S F C": "st_as_sfc",
@@ -288,8 +292,8 @@ class Rlang(MergeRule):
                 "string subset": "str_subset",
                 "starts with": "starts_with",
                 "sum": "sum",
-                "R lang sim": "rlang::sym",
                 "summarise": "summarise",
+                "summary": "summary",
 				"summarise all": "summarise_all",
 				"summarise if": "summarise_if",
 				"summarise each": "summarise_each",
@@ -362,8 +366,8 @@ class Rlang(MergeRule):
                 "update":"p_update",
             }),
 		IntegerRefST("n", 1, 10000),
-		IntegerRefST("nr500", 1, 500),
-        IntegerRefST("nr50", 1, 50),
+		ShortIntegerRef("nr500", 1, 500),
+        ShortIntegerRef("nr50", 1, 50),
     ]
 
     defaults = {

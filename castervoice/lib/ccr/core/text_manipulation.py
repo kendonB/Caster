@@ -115,32 +115,32 @@ class TextManipulation(MergeRule):
             cursor_behavior="texstudio"))]),
             rdescript="select chosen character to the right"),
         
-        "grab <lease_ross> [<number_of_lines_to_search>] until <dictation> ":
+        "grab <lease_ross> [<number_of_lines_to_search>] [until] <dictation> ":
             R(ContextAction(default=Function(text_manipulation_functions.select_until_phrase, 
             dict(dictation="phrase", lease_ross="left_right"), 
             cursor_behavior="standard"), actions=[(AppContext("texstudio"),
             Function(text_manipulation_functions.select_until_phrase, dict(dictation="phrase", lease_ross="left_right"), 
             cursor_behavior="texstudio"))]),
                  rdescript="select until chosen phrase (inclusive)"),
-        "grab lease [<number_of_lines_to_search>] until <left_character>":
+        "grab lease [<number_of_lines_to_search>] [until] <left_character>":
             R(ContextAction(default=Function(text_manipulation_functions.select_until_phrase, dict(left_character="phrase"), 
             left_right="left", cursor_behavior="standard"), actions=[(AppContext("texstudio"),
             Function(text_manipulation_functions.select_until_phrase, dict(left_character="phrase"), 
             left_right="left", cursor_behavior="texstudio"))]),
             rdescript="select left until chosen character"),
-        "grab ross [<number_of_lines_to_search>] until  <right_character>":
+        "grab ross [<number_of_lines_to_search>] [until]  <right_character>":
             R(ContextAction(default=Function(text_manipulation_functions.select_until_phrase, dict(right_character="phrase"), 
             left_right="right", cursor_behavior="standard"),
             actions=[(AppContext("texstudio"), Function(text_manipulation_functions.select_until_phrase,
             dict(right_character="phrase"), left_right="right", cursor_behavior="texstudio"))]),
             rdescript="select right until chosen character"),
-        "wipe <lease_ross> [<number_of_lines_to_search>] [<before_after>] <dictation>":
+        "wipe <lease_ross> [<number_of_lines_to_search>] [until] [<before_after>] <dictation>":
             R(ContextAction(default=Function(text_manipulation_functions.copypaste_delete_until_phrase,
                        dict(dictation="phrase", lease_ross="left_right"), cursor_behavior="standard"),
                        actions=[(AppContext("texstudio"), Function(text_manipulation_functions.copypaste_delete_until_phrase,
                        dict(dictation="phrase", lease_ross="left_right"), cursor_behavior="texstudio"))]),
               rdescript="delete left until chosen phrase (exclusive)"),
-        "wipe lease [<number_of_lines_to_search>] [<before_after>] <left_character>":
+        "wipe lease [<number_of_lines_to_search>] [until] [<before_after>] <left_character>":
             R(ContextAction(default=Function(text_manipulation_functions.copypaste_delete_until_phrase,
                        dict(left_character="phrase"),
                        left_right="left", cursor_behavior="standard"),
@@ -168,7 +168,7 @@ class TextManipulation(MergeRule):
         IntegerRefST("n", 1, 100),
         IntegerRefST("m", 1, 100),
         IntegerRefST("wait_time", 1, 1000),
-        IntegerRefST("number_of_lines_to_search", 1, 50),
+        IntegerRefST("number_of_lines_to_search", 1, 500),
         Choice("character_sequence", {
             "comma": ",",
         }),
