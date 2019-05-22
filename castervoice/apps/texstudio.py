@@ -1,8 +1,3 @@
-#
-# This file is a command-module for Dragonfly.
-# (c) Copyright 2008 by Christo Butcher
-# Licensed under the LGPL, see <http://www.gnu.org/licenses/>
-#
 """
 Command-module for TexStudio++
 
@@ -34,6 +29,8 @@ class NPPRule(MergeRule):
              Key("f3")*Repeat(extra="n50"),
         "[go to] section <n50>":
             Key("c-g/10") + Text("1") + Key("enter/10") + Key("c-f") + Text("^$\\\\begin\\{document|^$\\\\section") + Key("left")*Repeat(count=29) + Key("backspace") + Key("right")*Repeat(count=20) + Key("backspace, f3") + Key("f3/100")*Repeat(extra="n50") + Key("s-f3/100") + Key("escape/100"),
+        "(trash | clean) auxiliary files": 
+            R(Key("a-t, a/50, enter"), rdescript="TexStudio: Trash auxiliary files")
     }
     extras = [
         Dictation("text"),
