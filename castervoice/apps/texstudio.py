@@ -4,7 +4,7 @@ Command-module for TexStudio++
 """
 #---------------------------------------------------------------------------
 
-from dragonfly import (Grammar, Dictation, Repeat, Pause)
+from dragonfly import (Grammar, Dictation, Repeat, Pause, ShortIntegerRef)
 
 from castervoice.lib import control
 from castervoice.lib import settings
@@ -34,8 +34,8 @@ class NPPRule(MergeRule):
     }
     extras = [
         Dictation("text"),
-        IntegerRefST("n", 1, 10000),
-        IntegerRefST("n50", 1, 50),
+        ShortIntegerRef("n", 1, 10000),
+        ShortIntegerRef("n50", 1, 50),
     ]
     defaults = {"n": 1}
 

@@ -55,7 +55,7 @@ class LaTeX(MergeRule):
         "insert <commandnoarg>":
             R(Text("\\%(commandnoarg)s "),
             rdescript="LaTeX: Insert command not requiring an argument"),
-        "insert quote":
+        "insert quotea":
             R(Text("``\'\'") + Key("left:2"), rdescript="LaTeX: Insert a quote"),
         #
         "superscript":
@@ -82,7 +82,7 @@ class LaTeX(MergeRule):
         "bold it":                    	    R(Key("c-b"), rdescript="LaTeX: Bold text"),
         "leak":                             R(Key("dollar") + Key("dollar") + Key("left"), rdescript="LaTeX: In line equation"),
         "Frank":                    	    R(Key("cs-f"), rdescript="LaTeX: Fraction"),
-        "new frame":                    	R(Key("ca-f"),	  rdescript="LaTeX: New beamer frame"),
+        "new frame":                    	R(Key("ca-f, backspace, backspace, lbrace, rbrace, enter, left"),	  rdescript="LaTeX: New beamer frame"),
 	    "knitting chunk":                   R(Key("ca-k"), rdescript="LaTeX: New knitr chunk"),
 	    "word count":                       R(Key("a-t, n/25, up, down, tab, enter"), rdescript="LaTeX: Word count"), 
         "lay tech table":                         R(Key("cas-t"), rdescript="LaTeX: table template "),
