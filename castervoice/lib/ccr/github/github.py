@@ -15,9 +15,9 @@ _NEXUS = control.nexus()
 class GithubNon(MappingRule):
     mapping = {
         "checkout [this] pull request [locally]":
-            R(Function(automation.github_branch_pull_request),
-                rdescript="Github: Checkout pull request locally"),
-
+            R(Function(automation.github_fetch_pull_request, new=True)),
+        "update [this] pull request [locally]":
+            R(Function(automation.github_fetch_pull_request, new=False)),
     }
 
 class Github(MergeRule):
