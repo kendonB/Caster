@@ -86,6 +86,34 @@ def get_platform_information():
 
 SYSTEM_INFORMATION = get_platform_information()
 
+def get_platform_information():
+    """Return a dictionary containing platform-specific information."""
+    import sysconfig
+    system_information = {"platform": sysconfig.get_platform()}
+    system_information.update({"python version": sys.version_info})
+    if sys.platform == "win32":
+        system_information.update({"binary path": sys.exec_prefix})
+        system_information.update({
+            "main binary": os.path.join(sys.exec_prefix, "python.exe")
+        })
+        system_information.update({
+            "hidden console binary": os.path.join(sys.exec_prefix, "pythonw.exe")
+        })
+    else:
+        system_information.update({"binary path": os.path.join(sys.exec_prefix, "bin")})
+        system_information.update({
+            "main binary": os.path.join(sys.exec_prefix, "bin", "python")
+        })
+        system_information.update({
+            "hidden console binary": os.path.join(sys.exec_prefix, "bin", "python")
+        })
+    if system_information["platform"] != "win32":
+        raise SystemError("Your platform is not currently supported by Caster.")
+    return system_information
+
+
+SYSTEM_INFORMATION = get_platform_information()
+
 def get_filename():
     return _SETTINGS_PATH
 
@@ -212,7 +240,6 @@ _DEFAULT_SETTINGS = {
         "CONFIGDEBUGTXT_PATH": _USER_DIR + "/data/configdebug.txt",
 
         # PYTHON
-        "WXPYTHON_PATH": "C:/Python27/Lib/site-packages/wx-3.0-msw",
         "TERMINAL_PATH": TERMINAL_PATH_DEFAULT,
         "PYTHONW": SYSTEM_INFORMATION["hidden console binary"],
     },
