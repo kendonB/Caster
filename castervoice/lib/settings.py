@@ -83,9 +83,6 @@ def get_platform_information():
         raise SystemError("Your platform is not currently supported by Caster.")
     return system_information
 
-
-SYSTEM_INFORMATION = get_platform_information()
-
 def get_filename():
     return _SETTINGS_PATH
 
@@ -187,6 +184,7 @@ _DEFAULT_SETTINGS = {
         "RECORDED_MACROS_PATH": _USER_DIR + "/data/recorded_macros.toml",
         "SAVED_CLIPBOARD_PATH": _USER_DIR + "/data/clipboard.toml",
         "SIKULI_SCRIPTS_PATH": _USER_DIR + "/sikuli",
+        "TERMINAL_PATH": TERMINAL_PATH_DEFAULT,
 
         # REMOTE_DEBUGGER_PATH is the folder in which pydevd.py can be found
         "REMOTE_DEBUGGER_PATH": "",
@@ -212,8 +210,6 @@ _DEFAULT_SETTINGS = {
         "CONFIGDEBUGTXT_PATH": _USER_DIR + "/data/configdebug.txt",
 
         # PYTHON
-        "WXPYTHON_PATH": "C:/Python27/Lib/site-packages/wx-3.0-msw",
-        "TERMINAL_PATH": TERMINAL_PATH_DEFAULT,
         "PYTHONW": SYSTEM_INFORMATION["hidden console binary"],
     },
 
