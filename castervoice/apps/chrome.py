@@ -12,8 +12,7 @@ Command-module for Chrome
 from dragonfly import (Grammar, Context, AppContext, Dictation, Key, Text, Repeat,
                        Function, Choice, Mouse, Pause)
 
-from castervoice.lib import control
-from castervoice.lib import settings
+from castervoice.lib import control, settings, github_automation
 from castervoice.lib.actions import Key, Text
 from castervoice.lib.temporary import Store, Retrieve
 from castervoice.lib.context import AppContext
@@ -143,6 +142,11 @@ class ChromeRule(MergeRule):
             R(Key("a-f/5, l")),
         "save zotero":
             R(Key("cs-s"))
+
+        "checkout [this] pull request [locally]":
+            R(Function(github_automation.github_checkoutupdate_pull_request, new=True)),
+        "update [this] pull request [locally]":
+            R(Function(github_automation.github_checkoutupdate_pull_request, new=False)),
     }
     extras = [
         Choice("nth", {
@@ -161,7 +165,7 @@ class ChromeRule(MergeRule):
         IntegerRefST("numbers", 0, 1000),
     ]
     defaults = {
-	    "n": 1, 
+	    "n": 1,
 	    "click_by_voice_options": "c"
     }
 

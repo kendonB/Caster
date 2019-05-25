@@ -11,7 +11,7 @@ import toml
 import time
 
 from castervoice.lib.actions import Key, Text
-from castervoice.lib.context import AppContext, read_selected_without_altering_clipboard
+from castervoice.lib.context import read_selected_without_altering_clipboard
 from castervoice.lib.utilities import load_toml_file
 from castervoice.lib import settings
 from castervoice.lib.ccr.recording.bringme import _rebuild_items
@@ -25,11 +25,10 @@ def rebuild_local_remote_items(config):
         for header, section in config.iteritems() for key, value in section.iteritems()
     }
 
-def github_fetch_pull_request(new):
+def github_checkoutupdate_pull_request(new):
     # Function to fetch a PR
     try:
         import natlink
-        context = AppContext(executable="chrome") | AppContext(executable="iexplore") | AppContext(executable="firefox")
         if context:
             print("Checking out pull request locally.")
             Key("c-l/20").execute()
