@@ -68,7 +68,7 @@ class Punctuation(MergeRule):
             R(Text("^"), rdescript="Core: Carat"),
         "(period | dot) [<npunc>]":
             R(Text("."), rdescript="Core: Dot")*Repeat(extra="npunc"),
-        "atty":
+        "at E":
             R(Text("@"), rdescript="Core: At Sign"),
         "hash tag":
             R(Text("#"), rdescript="Core: Hash Tag"),
