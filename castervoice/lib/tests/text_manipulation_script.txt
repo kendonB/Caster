@@ -1,0 +1,6 @@
+"spam", 'eggs'; Well, there's egg and {bacon}; (egg (sausage) and) [bacon]: egg and spam;
+
+"replace <lease_ross> [<number_of_lines_to_search>] [<occurrence_number>] <dictation> with <dictation2>":
+  "spam", 'eggs'; Well, there's egg and {eggs}; (egg (sausage) and) [bacon]: egg and spam;
+  
+"replace <lease_ross> [<number_of_lines_to_search>] [<occurrence_number>] <dictation> with <dictation2>":

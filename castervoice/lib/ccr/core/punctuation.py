@@ -12,18 +12,13 @@ class Punctuation(MergeRule):
     pronunciation = CCRMerger.CORE[3]
 
     mapping = {
-        "semper":
-            R(Key("semicolon"), rdescript="Core: Semicolon"),
+        "<single_character>": R(Text("%(single_character)s")),
         "quotes":
             R(Key("dquote,dquote,left"), rdescript="Core: Quotation Marks"),
         "thin quotes":
             R(Key("apostrophe,apostrophe,left"), rdescript="Core: Thin Quotation Marks"),
         "bakes":
             R(Key("backtick, backtick, left"), rdescript="Core: Backtick Pair"),
-        "[is] greater than":
-            R(Key("rangle"), rdescript="Core: > Comparison"),
-        "[is] less than":
-            R(Key("langle"), rdescript="Core: < Comparison"),
         "[is] greater [than] [or] equal [to]":
             R(Key("rangle, equals"), rdescript="Core: >= Comparison"),
         "[is] less [than] [or] equal [to]":
@@ -113,7 +108,11 @@ class Punctuation(MergeRule):
         Choice("long", {
               "long": " ",
         }),
-
+        Choice("single_character", {
+                "semper": ";",
+                "[is] greater than": ">",  
+                "[is] less than": "<",
+        }),
     ]
     defaults = {
         "npunc": 1,

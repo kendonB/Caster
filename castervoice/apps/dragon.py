@@ -66,7 +66,6 @@ class DragonRule(MergeRule):
     ]
     defaults = {"n": 1, "mim": ""}
 
-
 #---------------------------------------------------------------------------
 
 grammar = Grammar("Dragon Naturallyspeaking")
