@@ -9,7 +9,7 @@ from castervoice.lib.dfplus.state.short import R
 
 text_punc_dict = {
     "semper":                               ";",
-    "[is] greater than":                    ">",  
+    "[is] greater than":                    ">",
     "[is] less than":                       "<",
     "[is] greater [than] [or] equal [to]": ">=",
     "[is] less [than] [or] equal [to]":    "<=",
@@ -19,18 +19,18 @@ text_punc_dict = {
     "minus":                                "-",
     "pipe (sim | symbol)":                  "|",
     "ace":                                  " ",
-    "clamor":                               "!",     
+    "clamor":                               "!",
     "deckle":                               ":",
-    "starling":                             "*",  
-    "questo":                               "?", 
-    "comma":                                ",",  
-    "carrot":                               "^", 
-    "(period | dot)":                       ".", 
-    "atty | at symbol":                     "@", 
+    "starling":                             "*",
+    "questo":                               "?",
+    "comma":                                ",",
+    "carrot":                               "^",
+    "(period | dot)":                       ".",
+    "(atty | at symbol)":                   "@",
     "hash tag":                             "#",
-    "apostrophe | single quote | chicky":   "'",   
+    "apostrophe | single quote | chicky":   "'",
     "underscore":                           "_",
-    "backslash":                           "\\", 
+    "backslash":                           "\\",
     "slash":                                "/",
     "Dolly":                                "$",
     "modulo":                               "%",
@@ -62,9 +62,9 @@ class Punctuation(MergeRule):
     pronunciation = CCRMerger.CORE[3]
 
     mapping = {
-        "[<long>] <text_punc> [<npunc>]": 
+        "[<long>] <text_punc> [<npunc>]":
             R(Text("%(long)s" + "%(text_punc)s" + "%(long)s"))*Repeat(extra="npunc"),
-        "<double_text_punc>": 
+        "<double_text_punc>":
             R(Text("%(double_text_punc)s") + Key("left")),
         'tabby [<npunc>]':
             R(Key("tab"), rdescript="Core: Tab")*Repeat(extra="npunc"),
