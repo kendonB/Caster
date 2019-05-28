@@ -12,37 +12,15 @@ class Punctuation(MergeRule):
     pronunciation = CCRMerger.CORE[3]
 
     mapping = {
-        "[<long>] <single_character>": R(Text("%(long)s" + "%(single_character)s" + "%(long)s")),
-        "quotes":
-            R(Key("dquote,dquote,left"), rdescript="Core: Quotation Marks"),
-        "thin quotes":
-            R(Key("apostrophe,apostrophe,left"), rdescript="Core: Thin Quotation Marks"),
-        "bakes":
-            R(Key("backtick, backtick, left"), rdescript="Core: Backtick Pair"),
-        "prekris":
-            R(Key("lparen, rparen, left"), rdescript="Core: Parentheses"),
-        "brax":
-            R(Key("lbracket, rbracket, left"), rdescript="Core: Square Brackets"),
-        "curly":
-            R(Key("lbrace, rbrace, left"), rdescript="Core: Curly Braces"),
-        "angle":
-            R(Key("langle, rangle, left"), rdescript="Core: Angle Brackets"),
+        "[<long>] <single_character> [npunc]": 
+            R(Text("%(long)s" + "%(single_character)s" + "%(long)s"))*Repeat(extra="npunc"),
+        "<double_punc>": R(Text("%(double_punc)s") + Key("left")),
         'tabby [<npunc>]':
             R(Key("tab"), rdescript="Core: Tab")*Repeat(extra="npunc"),
         'lay tabby [<npunc>]':
             R(Key("s-tab"), rdescript="Core: Shift Tab")*Repeat(extra="npunc"),
-        "boom":
-            R(Text(", "), rdescript="Core: Comma + Space"),
-		"ren":
-            R(Key("lparen"), rdescript="Core: Left Parentheses"),
-		"glow ren":
-            R(Key("rparen"), rdescript="Core: Right Parentheses"),
-		"bray":
-            R(Key("lbrace"), rdescript="Core: Left Brace"),
-		"glow bray":
-            R(Key("rbrace"), rdescript="Core: Right Brace"),
-		
-
+        "boom [npunc]":
+            R(Text(", "), rdescript="Core: Comma + Space")*Repeat(extra="npunc"),
     }
 
     extras = [
@@ -87,8 +65,17 @@ class Punctuation(MergeRule):
                "(right angle | rang)":                 ">",
                "(left curly | lace)":                  "{",
                "(right curly | race)":                 "}",
-
+               "backtick":                             "`",
         }),
+        Choice("double_punc", {
+               "quotes":                            "\"\"",
+               "thin quotes":                         "''",
+               "bakes":                               "``",
+               "prekris":                             "()",
+               "brax":                                "[]",
+               "curly":                               "{}",
+               "angle":                               "<>",
+        })
     ]
     defaults = {
         "npunc": 1,
