@@ -94,7 +94,7 @@ class TextManipulation(MergeRule):
                 (AppContext(executable="texstudio"), Function(text_manipulation_functions.move_until_phrase,
                        dict(dictation="phrase", lease_ross="left_right"), cursor_behavior="texstudio")),
                 ]), rdescript="Text Manipulation: move to chosen phrase to the left or right of the cursor"),
-        "go <lease_ross> [<before_after>] [<number_of_lines_to_search>] [<occurrence_number>] <character>":
+        "go <lease_ross> [<number_of_lines_to_search>] [<before_after>] [<occurrence_number>] <character>":
             R(ContextAction(default=Function(text_manipulation_functions.move_until_phrase,
                        dict(character="phrase", lease_ross="left_right"),
                        cursor_behavior="standard"), actions=[(AppContext("texstudio"),
@@ -174,6 +174,8 @@ class TextManipulation(MergeRule):
         Choice("lease_ross", {
             "lease": "left",
             "ross": "right",
+            "sauce": "left",
+            "dunce": "right",
         }),
         Choice("before_after", {
             "before": "before",
