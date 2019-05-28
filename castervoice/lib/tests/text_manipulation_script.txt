@@ -24,6 +24,6 @@ brandy and with a fried egg on top and spam.
 "replace lease semper with deckle"
 "go lease before bacon"
 "remove ross deckle"
-"remove ross egg and spam"
+"remove ross egg"
 
 eggs spameggs
