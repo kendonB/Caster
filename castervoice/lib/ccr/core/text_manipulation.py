@@ -9,6 +9,8 @@ from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
 from castervoice.lib.dfplus.state.short import R
+from castervoice.lib.ccr.core.punctuation import text_punc_dict
+from castervoice.lib.alphanumeric import caster_alphabet
 
 # Advertisement
 print("""Check out the new experimental text manipulation commands in castervoice\lib\ccr\core\\text_manipulation.py
@@ -151,64 +153,8 @@ class TextManipulation(MergeRule):
 
 
     }
-    character_dict = {
-                "(left prekris | lay)": "(",
-                "(right prekris | ray)": ")",
-                "(left brax | lack)": "[",
-                "(right brax | rack)": "]",
-                "(left angle | lang)": "<",
-                "(right angle | rang)": ">",
-                "(left curly | lace)": "{",
-                "(right curly | race)": "}",
-                "quotes": '"',
-                "(single quote | thin quote)": "'",
-                "comma": ",",
-                "(dot | period)": ".",
-                "questo": "?",
-                "deckle": ":",
-                "semper": ";",
-                "backtick": "`",
-                "equals": "=",
-                "dolly": "$",
-                "slash": "/",
-                "backslash": "\\",
-                "minus": "-",
-                "plus": "+",
-                "starling": "*",
-                "clamor": "!",
-                "ampersand": "&",
-                "modulo": "%",
-                "atty": "@",
-                "tilde": "~",
-                "pipe (sim | symbol)": "|",
-                
-                "arch"    : "a",
-                "brov"    : "b",
-                "char"    : "c",
-                "delta"   : "d",
-                "echo"    : "e",
-                "foxy"    : "f",
-                "goof"    : "g",
-                "hotel"   : "h",
-                "India"   : "i",
-                "julia"   : "j",
-                "kilo"    : "k",
-                "Lima"    : "l",
-                "Mike"    : "m",
-                "Novakeen": "n",
-                "oscar"   : "o",
-                "prime"   : "p",
-                "Quebec"  : "q",
-                "Romeo"   : "r",
-                "Sierra"  : "s",
-                "tango"   : "t",
-                "uniform" : "u",
-                "victor"  : "v",
-                "whiskey" : "w",
-                "x-ray"   : "x",
-                "yankee"  : "y",
-                "Zulu"    : "z",
-    }
+    text_punc_dict.update(caster_alphabet)
+    character_dict = text_punc_dict
 
     extras = [
         Dictation("dict"),
