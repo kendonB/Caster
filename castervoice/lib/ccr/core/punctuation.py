@@ -12,21 +12,17 @@ class Punctuation(MergeRule):
     pronunciation = CCRMerger.CORE[3]
 
     mapping = {
-        "<single_character>": R(Text("%(single_character)s")),
+        "[<long>] <single_character>": R(Text("%(long)s" + "%(single_character)s" + "%(long)s")),
+        "[is] greater [than] [or] equal [to]":
+            R(Key("rangle, equals"), rdescript="Core: >= Comparison"),
+        "long [is] equal to":
+            R(Key("space,equals,equals,space"), rdescript="Core: Equality"),
         "quotes":
             R(Key("dquote,dquote,left"), rdescript="Core: Quotation Marks"),
         "thin quotes":
             R(Key("apostrophe,apostrophe,left"), rdescript="Core: Thin Quotation Marks"),
         "bakes":
             R(Key("backtick, backtick, left"), rdescript="Core: Backtick Pair"),
-        "[is] greater [than] [or] equal [to]":
-            R(Key("rangle, equals"), rdescript="Core: >= Comparison"),
-        "[is] less [than] [or] equal [to]":
-            R(Key("langle, equals"), rdescript="Core: <= Comparison"),
-        "[is] equal to":
-            R(Key("equals,equals"), rdescript="Core: Equality"),
-        "long [is] equal to":
-            R(Key("space,equals,equals,space"), rdescript="Core: Equality"),
         "prekris":
             R(Key("lparen, rparen, left"), rdescript="Core: Parentheses"),
         "brax":
@@ -109,9 +105,10 @@ class Punctuation(MergeRule):
               "long": " ",
         }),
         Choice("single_character", {
-                "semper": ";",
-                "[is] greater than": ">",  
-                "[is] less than": "<",
+                "semper":                              ";",
+                "[is] greater than":                   ">",  
+                "[is] less than":                      "<",
+                "[is] greater [than] [or] equal [to]": ">=",
         }),
     ]
     defaults = {
@@ -120,4 +117,5 @@ class Punctuation(MergeRule):
     }
 
 
+        
 control.nexus().merger.add_global_rule(Punctuation())
