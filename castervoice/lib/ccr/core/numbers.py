@@ -19,7 +19,7 @@ class Numbers(MergeRule):
 
     extras = [
         IntegerRefST("wn", 0, 10),
-        ShortIntegerRef("wnKK", 0, 1000000),
+        IntegerRefST("wnKK", 0, 1000000),
     ]
     defaults = {}
 
