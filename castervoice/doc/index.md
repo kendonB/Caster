@@ -18,7 +18,7 @@
     - `find` will execute a `ctrl-f` keystroke, bringing up the find and replace prompt,
     - `open file` will execute a `ctrl-o` keystroke,
     - `edit next <n>` - `ctrl-d` n times, selecting the next n instances of the currently selected word.
-  - [Program Languages](readthedocs/CCR_Languages_Quick_Reference.md) - Language specific coding - These modules are activated and deactivated with the `enable/disable <language>` voice command. For example, saying `enable python`. 
+  - [Program Languages](readthedocs/CCR_languages_Quick_Reference.md) - Language specific coding - These modules are activated and deactivated with the `enable/disable <language>` voice command. For example, saying `enable python`. 
     - `for loop` which will insert `for i in range(0, ):`
     - `print to console` - `print()`
     -  `open file` -  `open('filename', 'r') as f:`
@@ -37,11 +37,11 @@
   *  [Dragon NaturallySpeaking](https://www.nuance.com/dragon.html) v13 and higher
   *  [Windows Speech Recognition](https://support.microsoft.com/en-us/help/17208/windows-10-use-speech-recognition)
 
-* Supported Programming [Languages](readthedocs/CCR_Language_Quick_Reference.md) - Enhanced by Caster's [Continues Command Recognition](readthedocs/CCR/) - [Demo](https://www.youtube.com/watch?v=Obdegwr_LFc&index=5&list=PLV6JPhkq1x8LHu02YefhUU9rXiB2PK8tc)
+* Supported Programming [Languages](readthedocs/CCR_language_Quick_Reference.md) - Enhanced by Caster's [Continues Command Recognition](readthedocs/CCR/) - [Demo](https://www.youtube.com/watch?v=Obdegwr_LFc&index=5&list=PLV6JPhkq1x8LHu02YefhUU9rXiB2PK8tc)
 
   *  Python, Java, Bash, C++, C#, Rust, Go, HTML, CSS, JavaScript, SQL, Dart, Latex , Matlab, R, Prolog, VHDL, and Haxe
 
-* Supported [Software](caster/doc/readthedocs/Application_Commands_Quick_Reference.md) 
+* Supported [Software](readthedocs/Application_Commands_Quick_Reference.md) 
 
   * IDEs/Editors: Microsoft Visual C++, Visual Studio, Eclipse, Jetbrains IDEs, Emacs, Sublime, Atom, Visual Studio Code, Notepad++, FlashDevelop, Sql Developer, and SQL Server Management Studio
   * Development Tools: Command Prompt, GitBash, KDiff3
