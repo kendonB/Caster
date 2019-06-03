@@ -13,7 +13,7 @@ docs_dir: castervoice/doc
 repo_url: https://github.com/kendonb/caster
 
 nav:
-    - Home: Index.md
+    - Home: index.md
     - License: LICENSE
     - Contributing: Contributing.md
     - Installation: Installation.md

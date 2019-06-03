@@ -49,7 +49,7 @@
   * Browsers: Firefox, Chrome and Internet Explorer
   * Applications: Foxit Reader, Gitter, Microsoft Word, fman and Total Commander
 
-* [Editing and Navigation](CasterQuickReference0.5.8.pdf)
+* [Editing and Navigation](CasterQuickReference.pdf)
 
   - Four additional [mouse navigation modes](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/Mouse/): curse, douglas, legion, and rainbow - [Demo](https://www.youtube.com/watch?v=UISjQBMmQ-I&feature=youtu.be)
   - Text/line navigation commands, text formatting commands
