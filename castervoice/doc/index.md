@@ -7,7 +7,7 @@
   - [VimGolf and Project Euler](https://www.youtube.com/watch?v=T1bKAqDhH_E)
   - [Dictating maths into scientific notebook](https://www.youtube.com/watch?v=oq8EoPu0cGY&t=3s) and [Dictating math by voice using Caster](https://www.youtube.com/watch?v=z-iHvPmjcas)
 
-- [Instructions for installing](caster/doc/Installation.md)
+- [Instructions for installing](Installation.md)
 - Documentation on Caster [[ReadTheDocs](http://caster.readthedocs.org/en/latest/README/)] [[YouTube](https://www.youtube.com/channel/UC2qZzmCj_5ZKkTa3i9X1LCg)] and Dragonfly [[ReadTheDocs](https://dragonfly2.readthedocs.io/en/latest/)] 
 - Caster Command Reference Guides 
   - [Caster](CasterQuickReference.pdf) - Universal navigation and editing - These commands are active all the time, and provide input commands for letters, numbers and punctuation, as well as the ability to easily manipulate windows and text. 
@@ -18,13 +18,13 @@
     - `find` will execute a `ctrl-f` keystroke, bringing up the find and replace prompt,
     - `open file` will execute a `ctrl-o` keystroke,
     - `edit next <n>` - `ctrl-d` n times, selecting the next n instances of the currently selected word.
-  - [Program Languages](readthedocs/CCR_languages_quick_reference.md) - Language specific coding - These modules are activated and deactivated with the `enable/disable <language>` voice command. For example, saying `enable python`. 
+  - [Program Languages](readthedocs/CCR_Languages_Quick_Reference.md) - Language specific coding - These modules are activated and deactivated with the `enable/disable <language>` voice command. For example, saying `enable python`. 
     - `for loop` which will insert `for i in range(0, ):`
     - `print to console` - `print()`
     -  `open file` -  `open('filename', 'r') as f:`
-- [Contributing / How can I help?](CONTRIBUTING.md)
+- [Contributing / How can I help?](Contributing.md)
 - Need support or just curious? Join our community at [![Join the chat at https://gitter.im/synkarius/caster](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/synkarius/caster?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) or [Discord](https://discord.gg/9eAAsCJ) for voice chat.
-- The [Voice Index](http://caster.readthedocs.org/en/latest/caster/doc/readthedocs/Voice%20Index/) is a curated source of information: Videos, Blogs, Repositories, Presentations, etc related to Dragonfly, voice programming, and accessibility.
+- The [Voice Index](readthedocs/Voice%20Index/) is a curated source of information: Videos, Blogs, Repositories, Presentations, etc related to Dragonfly, voice programming, and accessibility.
 
 # Feature List
 
@@ -37,11 +37,11 @@
   *  [Dragon NaturallySpeaking](https://www.nuance.com/dragon.html) v13 and higher
   *  [Windows Speech Recognition](https://support.microsoft.com/en-us/help/17208/windows-10-use-speech-recognition)
 
-* Supported Programming [Languages](caster/doc/readthedocs/CCR_language_quick_reference.md) - Enhanced by Caster's [Continues Command Recognition](readthedocs/CCR/) - [Demo](https://www.youtube.com/watch?v=Obdegwr_LFc&index=5&list=PLV6JPhkq1x8LHu02YefhUU9rXiB2PK8tc)
+* Supported Programming [Languages](readthedocs/CCR_Language_Quick_Reference.md) - Enhanced by Caster's [Continues Command Recognition](readthedocs/CCR/) - [Demo](https://www.youtube.com/watch?v=Obdegwr_LFc&index=5&list=PLV6JPhkq1x8LHu02YefhUU9rXiB2PK8tc)
 
   *  Python, Java, Bash, C++, C#, Rust, Go, HTML, CSS, JavaScript, SQL, Dart, Latex , Matlab, R, Prolog, VHDL, and Haxe
 
-* Supported [Software](caster/doc/readthedocs/Application_commands_quick_reference.md) 
+* Supported [Software](caster/doc/readthedocs/Application_Commands_Quick_Reference.md) 
 
   * IDEs/Editors: Microsoft Visual C++, Visual Studio, Eclipse, Jetbrains IDEs, Emacs, Sublime, Atom, Visual Studio Code, Notepad++, FlashDevelop, Sql Developer, and SQL Server Management Studio
   * Development Tools: Command Prompt, GitBash, KDiff3
