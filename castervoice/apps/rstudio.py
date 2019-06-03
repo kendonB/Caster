@@ -2,8 +2,8 @@
 Mike Roberts 13/09/18
 '''
 
-from dragonfly import (Dictation, Grammar, IntegerRef, MappingRule, Pause,
-                       Repeat, Mimic, ShortIntegerRef)
+from dragonfly import (Dictation, Grammar, MappingRule, Pause,
+                       Repeat, Mimic)
 
 from castervoice.lib import control, settings
 from castervoice.lib.actions import Key, Text
@@ -37,7 +37,7 @@ class RStudioRule(MergeRule):
     "terminate R":
         R(Key("a-s, t"), rdescript="RStudio: Comment"),
 	"[file] save as":
-	    R(Key("a-f, a"), rdescript="RStudio: Save as"), 
+	    R(Key("a-f, a"), rdescript="RStudio: Save as"),
 
     # "[go to] line <nrstudio500>":
         # R(Key("as-g") + Pause("10") + Text("%(nrstudio500)s") + Key("enter"),
@@ -60,7 +60,7 @@ class RStudioRule(MergeRule):
 
 	"new terminal":
         R(Key("as-r"), rdescript="RStudio: New Terminal"),
-    	
+
     "next tab [<nrstudio50>]":
         R(Key("c-f12"), rdescript="RStudio: Next Tab")*Repeat(extra="nrstudio50"),
     "first tab [<nrstudio50>]":
@@ -89,21 +89,21 @@ class RStudioRule(MergeRule):
         R(Key("c-o"), rdescript="RStudio: Open"),
 	"build package":
         R(Key("cs-b"), rdescript="RStudio: Build package"),
-		
+
 	"next [<nrstudio500>]":
         Key("c-2") + R(Text("n") + Key("enter"), rdescript="R: Next while debugging")*Repeat(extra="nrstudio500"),
-	
-	"step in":                    
-	    Key("c-2") + R(Text("s") + Key("enter"), rdescript="R: Step in while debugging"), 
-	"continue":                    
-	    Key("c-2") + R(Text("c") + Key("enter"), rdescript="R: Continue while debugging"), 
-	"stop":                    
-	    Key("c-2") + R(Text("Q") + Key("enter"), rdescript="R: Stop debugging"), 
-		
+
+	"step in":
+	    Key("c-2") + R(Text("s") + Key("enter"), rdescript="R: Step in while debugging"),
+	"continue":
+	    Key("c-2") + R(Text("c") + Key("enter"), rdescript="R: Continue while debugging"),
+	"stop":
+	    Key("c-2") + R(Text("Q") + Key("enter"), rdescript="R: Stop debugging"),
+
     }
     extras = [
         IntegerRefST("n", 1, 10000),
-		ShortIntegerRef("nrstudio500", 1, 500),
+		IntegerRefST("nrstudio500", 1, 500),
 		IntegerRefST("nrstudio50", 1, 50),
     ]
     defaults = {
@@ -111,7 +111,7 @@ class RStudioRule(MergeRule):
 		"nrstudio500": 1,
 		"nrstudio50": 1,
 	}
-	
+
 
 
 context = AppContext(executable="rstudio")
