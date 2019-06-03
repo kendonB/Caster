@@ -14,7 +14,7 @@
     - `window right` moves the active window to the right-hand side of the screen.
     - `prekris` inserts a pair of brackets `()` and moves the cursor inside them.
     - `shackle` selects the current line.
-  - [Applications](caster/doc/readthedocs/Application_commands_quick_reference.md) - Application specific control - These commands are only activated when a particular program is the active window, and they provide support for text editors, IDEs, web browsers etc. For example, while the Sublime text editor is the active window, saying
+  - [Applications](readthedocs/Application_Commands_Quick_Reference.md) - Application specific control - These commands are only activated when a particular program is the active window, and they provide support for text editors, IDEs, web browsers etc. For example, while the Sublime text editor is the active window, saying
     - `find` will execute a `ctrl-f` keystroke, bringing up the find and replace prompt,
     - `open file` will execute a `ctrl-o` keystroke,
     - `edit next <n>` - `ctrl-d` n times, selecting the next n instances of the currently selected word.

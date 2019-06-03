@@ -15,6 +15,8 @@ repo_url: https://github.com/kendonb/caster
 nav:
     - Home: Index.md
     - License: LICENSE
+    - Contributing: Contributing.md
+    - Installation: Installation.md
     - Documentation: 
         - Aenea: readthedocs/Aenea.md
         - Alias: readthedocs/Alias.md
@@ -31,11 +33,12 @@ nav:
         - 'Taxonomy of a Rule': readthedocs/Taxonomy_of_a_Rule.md
         - 'Voice Index': readthedocs/Voice_Index.md
         - 'Windows Speech Recognition': readthedocs/Windows_Speech_Recognition.md
-    - 'Examples': 
+    - 'Examples':
         - 'How to Speak Code': readthedocs/Examples/How_to_Speak_Code.md
         - 'Rule Construction': readthedocs/Examples/Rule_Construction.md
         - Rules:
             - 'Caster Rules': readthedocs/Examples/rules/Caster_Rules.md
             - 'Dragonfly Rules': readthedocs/Examples/rules/Dragonfly_Rules.md
             - 'Old Sample File': readthedocs/Examples/rules/Old_Sample_File.md
+        - Speaking Examples: readthedocs/Examples/Speaking/Examples.md
     - Undocumented features: readthedocs/meta/Undocumented_Features.md 
