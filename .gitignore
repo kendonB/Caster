@@ -1,0 +1,48 @@
+# Ignore junk
+.idea/
+*.pyc
+*.toml
+*.wav
+*.class
+test.py
+log.txt
+complexity_report*
+*.log
+*.*\#
+*.*~
+
+# Ignore Rope
+.ropeproject/
+
+# Ignoring Visual Studio (Code)
+.vs/
+.vscode/
+
+# Ignore Natlink
+/core/
+
+# Ignore User Rules and Filters
+/caster/user
+
+# Ignore Custom Sikuli Scripts
+/caster/asynch/sikuli/scripts
+
+# Ignore SonarQube
+.sonar
+sonar-project.properties
+
+# Ignore Eclipse/Pydev Files
+.project
+.pydevproject
+.settings
+
+# Ignore User Data
+caster/bin/data
+
+# Ignore dist files
+dist
+castervoice.egg-info
+/.stignore
+
+# Ignore Notepad++ backup files
+**/nppBackup
