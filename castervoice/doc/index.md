@@ -10,7 +10,7 @@
 - [Instructions for installing](caster/doc/Installation.md)
 - Documentation on Caster [[ReadTheDocs](http://caster.readthedocs.org/en/latest/README/)] [[YouTube](https://www.youtube.com/channel/UC2qZzmCj_5ZKkTa3i9X1LCg)] and Dragonfly [[ReadTheDocs](https://dragonfly2.readthedocs.io/en/latest/)] 
 - Caster Command Reference Guides 
-  - [Caster](CasterQuickReference0.5.8.pdf) - Universal navigation and editing - These commands are active all the time, and provide input commands for letters, numbers and punctuation, as well as the ability to easily manipulate windows and text. 
+  - [Caster](CasterQuickReference.pdf) - Universal navigation and editing - These commands are active all the time, and provide input commands for letters, numbers and punctuation, as well as the ability to easily manipulate windows and text. 
     - `window right` moves the active window to the right-hand side of the screen.
     - `prekris` inserts a pair of brackets `()` and moves the cursor inside them.
     - `shackle` selects the current line.
@@ -18,26 +18,26 @@
     - `find` will execute a `ctrl-f` keystroke, bringing up the find and replace prompt,
     - `open file` will execute a `ctrl-o` keystroke,
     - `edit next <n>` - `ctrl-d` n times, selecting the next n instances of the currently selected word.
-  - [Program Languages](caster/doc/readthedocs/CCR_languages_quick_reference.md) - Language specific coding - These modules are activated and deactivated with the `enable/disable <language>` voice command. For example, saying `enable python`. 
+  - [Program Languages](readthedocs/CCR_languages_quick_reference.md) - Language specific coding - These modules are activated and deactivated with the `enable/disable <language>` voice command. For example, saying `enable python`. 
     - `for loop` which will insert `for i in range(0, ):`
     - `print to console` - `print()`
     -  `open file` -  `open('filename', 'r') as f:`
-- [Contributing / How can I help?](https://github.com/synkarius/caster/blob/master/caster/doc/CONTRIBUTING.md)
+- [Contributing / How can I help?](CONTRIBUTING.md)
 - Need support or just curious? Join our community at [![Join the chat at https://gitter.im/synkarius/caster](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/synkarius/caster?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) or [Discord](https://discord.gg/9eAAsCJ) for voice chat.
 - The [Voice Index](http://caster.readthedocs.org/en/latest/caster/doc/readthedocs/Voice%20Index/) is a curated source of information: Videos, Blogs, Repositories, Presentations, etc related to Dragonfly, voice programming, and accessibility.
 
 # Feature List
 
-* [Easy Setup](caster/doc/Installation.md) and Configurable Settings
+* [Easy Setup](Installation.md) and Configurable Settings
 
-* Customize commands(Specs) and their actions via [simplified filter rules](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/CCR/#rule-filters-simplified) and [filter rules](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/examples/rules/Caster%20Rules/#rule-filters)([code](https://github.com/dictation-toolbox/caster/tree/master/caster/user/filters/examples)).
+* Customize commands(Specs) and their actions via [simplified filter rules](readthedocs/CCR/#rule-filters-simplified) and [filter rules](readthedocs/examples/rules/Caster%20Rules/#rule-filters)([code](https://github.com/dictation-toolbox/caster/tree/master/caster/user/filters/examples)).
 
 * Compatible Speech Recognition Engines
 
   *  [Dragon NaturallySpeaking](https://www.nuance.com/dragon.html) v13 and higher
   *  [Windows Speech Recognition](https://support.microsoft.com/en-us/help/17208/windows-10-use-speech-recognition)
 
-* Supported Programming [Languages](caster/doc/readthedocs/CCR_language_quick_reference.md) - Enhanced by Caster's [Continues Command Recognition](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/CCR/) - [Demo](https://www.youtube.com/watch?v=Obdegwr_LFc&index=5&list=PLV6JPhkq1x8LHu02YefhUU9rXiB2PK8tc)
+* Supported Programming [Languages](caster/doc/readthedocs/CCR_language_quick_reference.md) - Enhanced by Caster's [Continues Command Recognition](readthedocs/CCR/) - [Demo](https://www.youtube.com/watch?v=Obdegwr_LFc&index=5&list=PLV6JPhkq1x8LHu02YefhUU9rXiB2PK8tc)
 
   *  Python, Java, Bash, C++, C#, Rust, Go, HTML, CSS, JavaScript, SQL, Dart, Latex , Matlab, R, Prolog, VHDL, and Haxe
 
@@ -51,14 +51,14 @@
 
 * [Editing and Navigation](CasterQuickReference.pdf)
 
-  - Four additional [mouse navigation modes](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/Mouse/): curse, douglas, legion, and rainbow - [Demo](https://www.youtube.com/watch?v=UISjQBMmQ-I&feature=youtu.be)
+  - Four additional [mouse navigation modes](readthedocs/Mouse/): curse, douglas, legion, and rainbow - [Demo](https://www.youtube.com/watch?v=UISjQBMmQ-I&feature=youtu.be)
   - Text/line navigation commands, text formatting commands
   - Alphabet, numbers, punctuation input commands
   - Commands to interact with generic File Dialogues.
 
 * Utilize Powerful Commands
 
-  * "[Alias](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/Alias/)" Commands - on-the-fly commands created by highlighting stuff
+  * "[Alias](readthedocs/Alias/)" Commands - on-the-fly commands created by highlighting stuff
   * "[Record From History](https://www.youtube.com/watch?v=wWDtsrIQ1pc&list=PLV6JPhkq1x8LHu02YefhUU9rXiB2PK8tc)" - turn previously spoken commands into a voice macro 
 
 * Third-party Integrations
@@ -68,5 +68,5 @@
 
 * Caster extends the Dragonfly API for even more powerful commands.
 
-  * The [Context Stack](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/ContextStack/) - Create asynchronous and context seeking commands
-  * Spec reduction via [NodeRule](https://caster.readthedocs.io/en/latest/caster/doc/readthedocs/NodeRule/)
+  * The [Context Stack](readthedocs/ContextStack/) - Create asynchronous and context seeking commands
+  * Spec reduction via [NodeRule](readthedocs/NodeRule/)
