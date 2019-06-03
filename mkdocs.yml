@@ -13,7 +13,7 @@ docs_dir: castervoice/doc
 repo_url: https://github.com/kendonb/caster
 
 theme:
-    name: sphinx
+    name: readthedocs
 
 nav:
     - Home: index.md
