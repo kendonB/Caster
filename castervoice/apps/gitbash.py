@@ -132,10 +132,7 @@ class GitBashRule(MergeRule):
 
 #---------------------------------------------------------------------------
 
-context = AppContext(executable="\\sh.exe") | \
-          AppContext(executable="\\bash.exe") | \
-          AppContext(executable="\\cmd.exe") | \
-          AppContext(executable="\\mintty.exe")
+context = AppContext(executable=["\\sh.exe", "\\bash.exe", "\\cmd.exe", "\\mintty.exe"])
 
 if settings.SETTINGS["apps"]["gitbash"]:
     if settings.SETTINGS["miscellaneous"]["rdp_mode"]:

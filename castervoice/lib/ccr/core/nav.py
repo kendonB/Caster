@@ -266,14 +266,16 @@ class Navigation(MergeRule):
 		"laib [<nnavi500>]":
             R(Key("c-left"))*Repeat(extra="nnavi500"),
 		"nope [<nnavi500>]":
-            R(Key("cs-left"))*Repeat(extra="nnavi500") + Key("backspace"),
-		"kay [<nnavi500>]":
+            R(ContextAction(default=Key("cs-left")*Repeat(extra="nnavi500") + Key("backspace"), actions=[
+                (AppContext(executable=["\\sh.exe", "\\bash.exe", "\\mintty.exe"]), Key("c-w")*Repeat(extra="nnavi500")),
+                (AppContext(executable=["\\cmd.exe"]), Key("c-backspace")*Repeat(extra="nnavi500")),
+                ])),
+		"kay [<nnavi500>]": 
             R(Key("cs-right"))*Repeat(extra="nnavi500") + Key("backspace"),
 		"hum":
             R(Key("home")),
 		"end":
             R(Key("end")),
-
 
 
         "dredge [<nnavi10>]":
