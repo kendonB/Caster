@@ -13,28 +13,29 @@ docs_dir: castervoice/doc
 repo_url: https://github.com/kendonb/caster
 
 nav:
-    - 'Home': ../../ReadMe.md
-    - 'Home': Contributing.md
-    - 'Home': Installation.md
-    - 'Home': readthedocs/Aenea.md
-    - 'Home': readthedocs/Alias.md
-    - 'Home': readthedocs/Application_Commands_Quick_Reference.md
-    - 'Home': readthedocs/Auto_CCR_and_Cmd-Mode.md
-    - 'Home': readthedocs/CCR.md
-    - 'Home': readthedocs/CCR_languages_Quick_Reference.md
-    - 'Home': readthedocs/ContextStack.md
-    - 'Home': readthedocs/Mouse.md
-    - 'Home': readthedocs/NodeRule.md
-    - 'Home': readthedocs/Record_Macros.md
-    - 'Home': readthedocs/Setup.md
-    - 'Home': readthedocs/Sikuli.md
-    - 'Home': readthedocs/Taxonomy_of_a_Rule.md
-    - 'Home': readthedocs/Voice_Index.md
-    - 'Home': readthedocs/Windows_Speech_Recognition.md
-    - 'Home': readthedocs/Examples/How_to_Speak_Code.md
-    - 'Home': readthedocs/Examples/Rule_Construction.md
-    - 'Home': readthedocs/Examples/Speaking/Examples.md
-    - 'Home': readthedocs/Examples/rules/Caster_Rules.md
-    - 'Home': readthedocs/Examples/rules/Dragonfly_Rules.md
-    - 'Home': readthedocs/Examples/rules/Old_Sample_File.md
-    - 'Home': readthedocs/meta/Undocumented_Features.md 
+    - Home: Index.md
+    - License: LICENSE
+    - Documentation: 
+        - Aenea: readthedocs/Aenea.md
+        - Alias: readthedocs/Alias.md
+        - Application Commands Quick Reference: readthedocs/Application_Commands_Quick_Reference.md
+        - Auto CCR and Cmd Mode: readthedocs/Auto_CCR_and_Cmd-Mode.md
+        - CCR: readthedocs/CCR.md
+        - 'Languages Quick_Reference': readthedocs/CCR_languages_Quick_Reference.md
+        - 'Context Stack': readthedocs/ContextStack.md
+        - 'Mouse': readthedocs/Mouse.md
+        - 'Node Rule': readthedocs/NodeRule.md
+        - 'Record Macros': readthedocs/Record_Macros.md
+        - 'Setup': readthedocs/Setup.md
+        - 'Sikuli': readthedocs/Sikuli.md
+        - 'Taxonomy of a Rule': readthedocs/Taxonomy_of_a_Rule.md
+        - 'Voice Index': readthedocs/Voice_Index.md
+        - 'Windows Speech Recognition': readthedocs/Windows_Speech_Recognition.md
+    - 'Examples': 
+        - 'How to Speak Code': readthedocs/Examples/How_to_Speak_Code.md
+        - 'Rule Construction': readthedocs/Examples/Rule_Construction.md
+        - Rules:
+            - 'Caster Rules': readthedocs/Examples/rules/Caster_Rules.md
+            - 'Dragonfly Rules': readthedocs/Examples/rules/Dragonfly_Rules.md
+            - 'Old Sample File': readthedocs/Examples/rules/Old_Sample_File.md
+    - Undocumented features: readthedocs/meta/Undocumented_Features.md 
