@@ -13,7 +13,7 @@ docs_dir: castervoice/doc
 repo_url: https://github.com/kendonb/caster
 
 nav:
-    - 'Home': ReadMe.md
+    - 'Home': ../../ReadMe.md
     - 'Home': Contributing.md
     - 'Home': Installation.md
     - 'Home': readthedocs/Aenea.md
