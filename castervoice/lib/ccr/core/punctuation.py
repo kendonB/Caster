@@ -8,44 +8,42 @@ from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
 
 text_punc_dict = {
-    "semper":                               ";",
-    "[is] greater than":                    ">",
-    "[is] less than":                       "<",
-    "[is] greater [than] [or] equal [to]": ">=",
-    "[is] less [than] [or] equal [to]":    "<=",
-    "[is] equal to":                       "==",
-    "equals":                               "=",
-    "plus":                                 "+",
-    "minus":                                "-",
-    "pipe (sim | symbol)":                  "|",
     "ace":                                  " ",
-    "clamor":                               "!",
-    "deckle":                               ":",
-    "starling":                             "*",
-    "questo":                               "?",
-    "comma":                                ",",
-    "carrot":                               "^",
-    "(period | dot)":                       ".",
-    "(atty | at symbol)":                   "@",
+    "clamor":                               "!",     
+    "chocky":                              "\"",
     "hash tag":                             "#",
-    "apostrophe | single quote | chicky":   "'",
-    "underscore":                           "_",
-    "backslash":                           "\\",
-    "slash":                                "/",
     "Dolly":                                "$",
     "modulo":                               "%",
     "ampersand":                            "&",
-    "tilde":                                "~",
-    "(left prekris | lay)":                 "(",
-    "(right prekris | ray)":                ")",
-    "(left brax | lack)":                   "[",
-    "(right brax | rack)":                  "]",
-    "(left angle | lang)":                  "<",
-    "(right angle | rang)":                 ">",
-    "(left curly | lace)":                  "{",
-    "(right curly | race)":                 "}",
+    "apostrophe | single quote | chicky":   "'",   
+    "left prekris":                         "(",
+    "right prekris":                        ")",
+    "starling":                             "*",  
+    "plus":                                 "+",
+    "comma":                                ",",  
+    "minus":                                "-",
+    "period | dot":                       ".", 
+    "slash":                                "/",
+    "deckle":                               ":",
+    "semper":                               ";",
+    "[is] less than | left angle":          "<",
+    "[is] less [than] [or] equal [to]":    "<=",
+    "equals":                               "=",
+    "[is] equal to":                       "==",
+    "[is] greater than | right angle":      ">",  
+    "[is] greater [than] [or] equal [to]": ">=",
+    "questo":                               "?", 
+    "(atty | at symbol)":                   "@", 
+    "left brax":                            "[",
+    "lean slash":                          "\\",
+    "right brax":                           "]",
+    "carrot":                               "^", 
+    "underscore":                           "_",
     "ticky":                                "`",
-    "chocky":                              "\"",
+    "left curly":                           "{",
+    "pipe (sim | symbol)":                  "|",
+    "right curly":                          "}",
+    "tilde":                                "~",
 }
 
 double_text_punc_dict = {
@@ -62,20 +60,23 @@ class Punctuation(MergeRule):
     pronunciation = CCRMerger.CORE[3]
 
     mapping = {
-        "[<long>] <text_punc> [<npunc>]":
+        "[<long>] <text_punc> [<npunc>]": 
             R(Text("%(long)s" + "%(text_punc)s" + "%(long)s"))*Repeat(extra="npunc"),
-        "<double_text_punc>":
+        "<double_text_punc>": 
             R(Text("%(double_text_punc)s") + Key("left")),
-        'tabby [<npunc>]':
+        "tabby [<npunc>]":
             R(Key("tab"), rdescript="Core: Tab")*Repeat(extra="npunc"),
-        'lay tabby [<npunc>]':
+        "(back | shin) tabby [<npunc>]":
             R(Key("s-tab"), rdescript="Core: Shift Tab")*Repeat(extra="npunc"),
         "boom [<npunc>]":
             R(Text(", "), rdescript="Core: Comma + Space")*Repeat(extra="npunc"),
+        "ace [<npunc100>]":
+            R(Text(" "), rdescript="Core: Space")*Repeat(extra="npunc100"),
     }
 
     extras = [
-        IntegerRefST("npunc", 0, 100),
+        IntegerRefST("npunc", 0, 10),
+        IntegerRefST("npunc100", 0, 100),
         Choice(
             "long", {
                 "long": " ",
@@ -87,6 +88,7 @@ class Punctuation(MergeRule):
     ]
     defaults = {
         "npunc": 1,
+        "npunc100": 1,
         "long": "",
     }
 
