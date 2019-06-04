@@ -5,7 +5,7 @@ Mike Roberts 13/09/18
 from dragonfly import (Dictation, Grammar, MappingRule, Pause,
                        Repeat, Mimic)
 
-from castervoice.lib import control, settings
+from castervoice.lib import control, settings, navigation
 from castervoice.lib.actions import Key, Text
 from castervoice.lib.temporary import Store, Retrieve
 from castervoice.lib.context import AppContext
@@ -21,15 +21,15 @@ class RStudioRule(MergeRule):
     "new (file | tab)":
         R(Key("cs-n"), rdescript="RStudio: New File"),
     "open file":
-        R(Key("c-o"), rdescript="RStudio: Open File"),
+        R(Key("c-o")),
     "open recent project":
-        R(Key("a-f, j"), rdescript="RStudio: Open Recent Project"),
+        R(Key("a-f, j")),
   	"open project":
-        R(Key("a-f, n, enter"), rdescript="RStudio: Open Project"),
+        R(Key("a-f, n, enter")),
     "save all":
-        R(Key("ac-s"), rdescript="RStudio: Save All"),
+        R(Key("ac-s")),
     "select all":
-        R(Key("c-a"), rdescript="RStudio: Select All"),
+        R(Key("c-a")),
     "find":
         R(Key("c-f"), rdescript="RStudio: Find"),
     "add comment":
@@ -43,7 +43,7 @@ class RStudioRule(MergeRule):
         # R(Key("as-g") + Pause("10") + Text("%(nrstudio500)s") + Key("enter"),
           # rdescript="RStudio: Go to Line #"),
     "focus console":
-        R(Key("c-2"), rdescript="RStudio: Focus Console"),
+        R(Key("c-2")),
     "focus main":
         R(Key("c-1"), rdescript="RStudio: Focus Main"),
     "focus terminal":
@@ -68,22 +68,22 @@ class RStudioRule(MergeRule):
     "(previous | prior) tab [<nrstudio50>]":
         R(Key("c-f11"), rdescript="RStudio: Previous Tab")*Repeat(extra="nrstudio50"),
     "last tab":
-        R(Key("cs-f12"), rdescript="RStudio: Last Tab"),
+        R(Key("cs-f12")),
     "close tab":
-        R(Key("c-w"), rdescript="RStudio: Close Tab"),
+        R(Key("c-w")),
 
 
     "run line":
-        R(Key("c-enter"), rdescript="RStudio: Run Line"),
+        R(Key("c-enter")),
     "run document":
-        R(Key("ac-r"), rdescript="RStudio: Run Document"),
+        R(Key("ac-r")),
     "comment (line | selected)":
-        R(Key("cs-c"), rdescript="RStudio: Comment Line"),
+        R(Key("cs-c")),
 
     "next plot":
-        R(Key("ac-f12"), rdescript="RStudio: Next Plot"),
+        R(Key("ac-f12")),
     "previous plot":
-        R(Key("ac-f11"), rdescript="RStudio: Previous Plot"),
+        R(Key("ac-f11")),
 
     "open":
         R(Key("c-o"), rdescript="RStudio: Open"),
