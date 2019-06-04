@@ -18,7 +18,9 @@ maori_phrases = {
     "(a wa teh de | Awatere)":                                       u"Awatere",
     "kaitiakitanga":                                                 u"kaitiakitanga",
     "(manaaki whenua | manaaki fenoo a)":                            u"Manaaki Whenua",
-    "(tamaki makaurau | tah mucky Makoto | Auckland)":               u"Tāmaki Makaurau"
+    "(tamaki makaurau | tah mucky Makoto | Auckland)":               u"Tāmaki Makaurau",
+    "maori | multi-":                                                u"Māori", 
+    "Whakatipu Rawa | fakatipu dawa":                                u"Whakatipu Rawa", 
 }
 
 def maori_words(capitalization, spacing, phrase):
@@ -30,7 +32,7 @@ class Maori(MergeRule):
     pronunciation = "maori" 
 
     mapping = {
-        "insert maori phrase [(<capitalization> <spacing> | <capitalization> | <spacing>)] <phrase>":
+        "kupu [(<capitalization> <spacing> | <capitalization> | <spacing>)] <phrase>":
             R(Function(maori_words, extra={"capitalization", "spacing", "phrase"}) + Text(" "),
               rdescript="Maori: Insert phrase"),
     }

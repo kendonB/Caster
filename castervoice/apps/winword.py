@@ -35,7 +35,15 @@ class MSWordRule(MergeRule):
             R(Text("\\") + Function(symbol_letters, extra={"big", "symbol"}) + Text(" "),
               rdescript="Word: Insert symbols"),
         "eek":
-            R(Key("a-equals"))
+            R(Key("a-equals")),
+        "quick access one":
+            R(Key("a-1")),
+        "quick access two":
+            R(Key("a-2")),
+        "quick access three":
+            R(Key("a-3")),
+        "quick access four":
+            R(Key("a-4")),
     }
     extras = [
             Choice(

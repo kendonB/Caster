@@ -71,6 +71,16 @@ class TextManipulation(MergeRule):
                        cursor_behavior="texstudio"))]),
               rdescript="Text Manipulation: replace character to the left of the cursor"),
 
+        "replace <lease_ross>  [<number_of_lines_to_search>] [<occurrence_number>] numb <number1> with numb <number2>":
+            R(ContextAction(default=Function(text_manipulation_functions.copypaste_replace_phrase_with_phrase,
+                       dict(number1="replaced_phrase", number2="replacement_phrase", lease_ross="left_right"),
+                       cursor_behavior="standard"), actions=[
+                        # Use different cursor method for texstudio
+                        (AppContext(executable="texstudio"), Function(text_manipulation_functions.copypaste_replace_phrase_with_phrase,
+                       dict(character="replaced_phrase", character2="replacement_phrase", lease_ross="left_right"),
+                       cursor_behavior="texstudio"))]),
+              rdescript="Text Manipulation: replace character to the left of the cursor"),
+
         "remove <lease_ross> [<number_of_lines_to_search>] [<occurrence_number>] <dictation>":
             R(ContextAction(default=Function(text_manipulation_functions.copypaste_remove_phrase_from_text,
                        dict(dictation="phrase", lease_ross="left_right"), cursor_behavior="standard"),
@@ -163,6 +173,8 @@ class TextManipulation(MergeRule):
         Dictation("text"),
         IntegerRefST("n", 1, 100),
         IntegerRefST("m", 1, 100),
+        IntegerRefST("number1", 1, 100000),
+        IntegerRefST("number2", 1, 100000),
         IntegerRefST("wait_time", 1, 1000),
         IntegerRefST("number_of_lines_to_search", 1, 50),
 
