@@ -60,6 +60,10 @@ class RStudioRule(MergeRule):
 
 	"new terminal":
         R(Key("as-r"), rdescript="RStudio: New Terminal"),
+	"next terminal":
+        R(Key("as-f11"), rdescript="RStudio: Next Terminal"),
+	"prior terminal":
+        R(Key("as-f12"), rdescript="RStudio: Prior Terminal"),
 
     "next tab [<nrstudio50>]":
         R(Key("c-f12"), rdescript="RStudio: Next Tab")*Repeat(extra="nrstudio50"),

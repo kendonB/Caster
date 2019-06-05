@@ -202,6 +202,7 @@ class LaTeX(MergeRule):
                 "text width": "textwidth",
                 "partial": "partial",
                 "prime": "prime",
+                "no indent": "noindent",
             }),
         Choice(
             "symbol",
