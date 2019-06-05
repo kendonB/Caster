@@ -149,10 +149,10 @@
 | `duplicate window`                     | `extensions`                         | `(menu / three dots)`                     |
 | `settings`                             | `downloads`                          | `chrome task manager`                     |
 | `clear browsing data`                  | `developer tools`                    | `more tools`                              |
-| `google that`                          | `wikipedia that`                     | `checkout [this] pull request [locally]`  |
-| `update [this] pull request [locally]`[^1] | ``                     | ``  |
+| `google that`                          | `wikipedia that`                     | `checkout [this] pull request [locally]`<sup>[1](#myfootnote1)</sup>  |
+| `update [this] pull request [locally]`<sup>[1](#myfootnote1)</sup> | ``                     | ``  |
 
-[^1]: Must be called at the "Conversation" tab of the Github pull request.
+<a name="myfootnote1">1</a>: Must be called at the "Conversation" tab of the Github pull request.
 
 ## Click by voice plug-in
 Options:
