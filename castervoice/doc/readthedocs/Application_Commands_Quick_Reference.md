@@ -150,9 +150,9 @@
 | `settings`                             | `downloads`                          | `chrome task manager`                     |
 | `clear browsing data`                  | `developer tools`                    | `more tools`                              |
 | `google that`                          | `wikipedia that`                     | `checkout [this] pull request [locally]`  |
-| `update [this] pull request [locally]` | ``                     | ``  |
+| `update [this] pull request [locally]`[^1] | ``                     | ``  |
 
-
+[^1]: Must be called at the "Conversation" tab of the Github pull request.
 
 ## Click by voice plug-in
 Options:
