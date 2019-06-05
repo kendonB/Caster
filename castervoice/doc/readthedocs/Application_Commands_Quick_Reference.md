@@ -151,10 +151,10 @@
 | `duplicate window`                     | `extensions`                         | `(menu / three dots)`                     |
 | `settings`                             | `downloads`                          | `chrome task manager`                     |
 | `clear browsing data`                  | `developer tools`                    | `more tools`                              |
-| `google that`                          | `wikipedia that`                     | `checkout [this] pull request [locally]`  |
-| `update [this] pull request [locally]` | ``                     | ``  |
+| `google that`                          | `wikipedia that`                     | `checkout [this] pull request [locally]`<sup>[1](#myfootnote1)</sup>  |
+| `update [this] pull request [locally]`<sup>[1](#myfootnote1)</sup> | ``                     | ``  |
 
-
+<a name="myfootnote1">1</a>: Must be called at the "Conversation" tab of the Github pull request.
 
 ## Click by voice plug-in
 Options:
@@ -440,7 +440,7 @@ Options:
 | `(new / create) snippet`       | `close tab`                       | `next tab`                    |
 | `previous tab`                 | `<nth> tab`                       | `column <cols>`               |
 | `focus <panel>`                | `move <panel>`                    | `open terminal`               |
-    
+
 \* select / copy / cut / paste / delete
 
 # Typora
