@@ -49,12 +49,12 @@ def get_start_end_position(text, phrase, left_right, occurrence_number):
 def select_text_and_return_it(left_right, number_of_lines_to_search):
     # temporarily store previous clipboard item
     temp_for_previous_clipboard_item = pyperclip.paste()
-    Pause("70").execute()
+    Pause("20").execute()
     if left_right == "left":
         Key("s-home, s-up:%d, s-home, c-c" %number_of_lines_to_search).execute()
     if left_right == "right":
         Key("s-end, s-down:%d, s-end, c-c" %number_of_lines_to_search).execute()
-    Pause("20").execute()
+    Pause("5").execute()
     selected_text = pyperclip.paste()
     return (selected_text, temp_for_previous_clipboard_item)
 
@@ -75,7 +75,7 @@ def deal_with_phrase_not_found(selected_text, temp_for_previous_clipboard_item, 
                 Key("left:%d" %len(selected_text)).execute()
     
         # put previous clipboard item back in the clipboard
-        Pause("20").execute()
+        Pause("5").execute()
         pyperclip.copy(temp_for_previous_clipboard_item)
 
 
@@ -112,7 +112,7 @@ def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, le
             offset = len(new_text)
             Key("left:%d" %offset).execute()
     # put previous clipboard item back in the clipboard
-    Pause("20").execute()
+    Pause("5").execute()
     pyperclip.copy(temp_for_previous_clipboard_item)
 
 def remove_phrase_from_text(text, phrase, left_right, occurrence_number):
@@ -150,7 +150,7 @@ def copypaste_remove_phrase_from_text(phrase, left_right, number_of_lines_to_sea
         offset = len(new_text)
         Key("left:%d" %offset).execute()
     # put previous clipboard item back in the clipboard
-    Pause("20").execute()
+    Pause("5").execute()
     pyperclip.copy(temp_for_previous_clipboard_item)
 
 
@@ -214,7 +214,7 @@ def move_until_phrase(left_right, before_after, phrase, number_of_lines_to_searc
         Key("left:%d" %offset).execute()
 
     # put previous clipboard item back in the clipboard (Todo: consider factoring this out)
-    Pause("20").execute()
+    Pause("5").execute()
     pyperclip.copy(temp_for_previous_clipboard_item)
 
 def select_phrase(phrase, left_right, number_of_lines_to_search, cursor_behavior, occurrence_number):
@@ -270,7 +270,7 @@ def select_phrase(phrase, left_right, number_of_lines_to_search, cursor_behavior
 
 
     # put previous clipboard item back in the clipboard
-    Pause("20").execute()
+    Pause("5").execute()
     pyperclip.copy(temp_for_previous_clipboard_item)
 
 
@@ -350,7 +350,7 @@ def select_until_phrase(left_right, phrase, before_after, number_of_lines_to_sea
         
     
     # put previous clipboard item back in the clipboard (consider factoring this out)
-    Pause("20").execute()
+    Pause("5").execute()
     pyperclip.copy(temp_for_previous_clipboard_item)
 
 
@@ -418,6 +418,6 @@ def copypaste_delete_until_phrase(left_right, phrase, number_of_lines_to_search,
             offset = len(new_text)
             Key("left:%d" %offset).execute()
     # put previous clipboard item back in the clipboard
-    Pause("20").execute()
+    Pause("5").execute()
     pyperclip.copy(temp_for_previous_clipboard_item)
 

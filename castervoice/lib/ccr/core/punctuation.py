@@ -36,7 +36,7 @@ text_punc_dict = {
     "questo":                               "?", 
     "(atty | at symbol)":                   "@", 
     "left brax":                            "[",
-    "lean slash":                          "\\",
+    "backslash":                           "\\",
     "right brax":                           "]",
     "carrot":                               "^", 
     "underscore":                           "_",
@@ -50,7 +50,7 @@ text_punc_dict = {
 double_text_punc_dict = {
     "quotes":                            "\"\"",
     "thin quotes":                         "''",
-    "bakes":                               "``",
+    "tickris":                             "``",
     "prekris":                             "()",
     "brax":                                "[]",
     "curly":                               "{}",
@@ -63,6 +63,8 @@ class Punctuation(MergeRule):
     mapping = {
         "[<long>] <text_punc> [<npunc>]": 
             R(Text("%(long)s" + "%(text_punc)s" + "%(long)s"))*Repeat(extra="npunc"),
+        "[<long>] backslash [<npunc>]": 
+            R(Text("%(long)s" + "\\" + "%(long)s"))*Repeat(extra="npunc"),
         "<double_text_punc>": 
             R(Text("%(double_text_punc)s") + Key("left")),
         "tabby [<npunc>]":
