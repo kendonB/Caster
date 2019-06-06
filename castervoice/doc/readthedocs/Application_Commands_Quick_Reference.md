@@ -249,8 +249,12 @@ Options:
 | `[add] bookmark`                       | `show downloads` | `super refresh`                          |
 | `developer tools`                      | `show history`   | `zoom in <n>`                            |
 | `new tab [<n>]`                        | `step into`      | `zoom out <n>`                           |
-| `reopen tab [<n>]`                     | `step out`       | `checkout [this] pull request [locally]` |
-| `update [this] pull request [locally]` | ``                     | ``  |
+| `reopen tab [<n>]`                     | `step out`       | ``                                       |
+
+| Command                                  | Notes                                                                       |
+|:-----------------------------------------|:----------------------------------------------------------------------------|
+| `checkout [this] pull request [locally]` | Must be called from the "Conversation" tab of the Github pull request page. |
+| `update [this] pull request [locally]`   | Must be called from the "Conversation" tab of the Github pull request page. |
 
 # Flash Develop
 
