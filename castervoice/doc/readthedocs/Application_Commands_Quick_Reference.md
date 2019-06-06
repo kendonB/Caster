@@ -156,15 +156,6 @@
 
 <a name="myfootnote1">1</a>: Must be called at the "Conversation" tab of the Github pull request.
 
-## Click by voice plug-in
-Options:
-* go, click, push, tab, window, hover, link, copy
-| Command                                | Command                              | Command                      |
-|:---------------------------------------|:-------------------------------------|:-----------------------------|
-| `<numbers> <dictation>`                | `go <numbers> <dictation>`           | `next <numbers> <dictation>` |
-| `<numbers> [<click_by_voice_options>]` | `hide hints`                         | `show hints`                 |
-
-
 # Command prompt
 
 | Command   | Command | Command          |
