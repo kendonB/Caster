@@ -1,9 +1,9 @@
 import time
 
-from dragonfly import AppContext, Pause
+from dragonfly import AppContext
 
 from castervoice.lib import utilities, settings
-from castervoice.lib.actions import Key 
+from castervoice.lib.actions import Key
 from castervoice.lib.clipboard import Clipboard
 
 # Override dragonfly.AppContext with aenea.ProxyAppContext if the 'use_aenea'
@@ -104,13 +104,12 @@ def read_nmax_tries(n, slp=0.1):
         time.sleep(slp)
 
 
-def read_selected_without_altering_clipboard(same_is_okay=False, pause_time="0"):
+def read_selected_without_altering_clipboard(same_is_okay=False):
     '''Returns a tuple:
     (0, "text from system") - indicates success
     (1, None) - indicates no change
     (2, None) - indicates clipboard error
     '''
-    
     time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/
                1000.)  # time for previous keypress to execute
     cb = Clipboard(from_system=True)
@@ -122,9 +121,8 @@ def read_selected_without_altering_clipboard(same_is_okay=False, pause_time="0")
         Clipboard.set_system_text("")
 
         Key("c-c").execute()
-        Pause(pause_time).execute()
         time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/
-                   1000)  # time for keypress to execute
+                   1000.)  # time for keypress to execute
         temporary = Clipboard.get_system_text()
         cb.copy_to_system()
 
@@ -136,7 +134,7 @@ def read_selected_without_altering_clipboard(same_is_okay=False, pause_time="0")
     return 0, temporary
 
 
-def paste_string_without_altering_clipboard(content, pause_time="1"):
+def paste_string_without_altering_clipboard(content):
     '''
     True - indicates success
     False - indicates clipboard error
@@ -147,7 +145,7 @@ def paste_string_without_altering_clipboard(content, pause_time="1"):
 
     try:
         Clipboard.set_system_text(unicode(content))
-        Pause(pause_time).execute()
+
         Key("c-v").execute()
         time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/
                    1000.)  # time for keypress to execute

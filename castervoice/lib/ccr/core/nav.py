@@ -289,7 +289,7 @@ class Navigation(MergeRule):
         "dredge [<nnavi10>]":
             R(Key("alt:down, tab/20:%(nnavi10)d, alt:up"),
                rdescript="Core: switch to most recent Windows"),
-        
+
         # Ccr Mouse Commands
         "kick":
             R(Function(navigation.left_click, nexus=_NEXUS)),
@@ -301,7 +301,7 @@ class Navigation(MergeRule):
             R(Function(navigation.left_down, nexus=_NEXUS)),
         "bench":
             R(Function(navigation.left_up, nexus=_NEXUS)),
-        
+
     }
 
     extras = [
