@@ -123,6 +123,10 @@ class GitBashRule(MergeRule):
               rdescript="GREP: Search Recursive Filetype"),
         "to file":
             R(Text(" > FILENAME"), rdescript="Bash: To File"),
+            
+        "git merge into mine":
+            R(Text("git branch | grep \"*\" | awk '{ print $2 }' | clip") + Key("enter/100") + Text("git checkout what_i_use") + Key("enter/100") + Text("git merge ") + Key("s-insert"))
+            
     }
     extras = [
         IntegerRefST("n", 1, 10000),
