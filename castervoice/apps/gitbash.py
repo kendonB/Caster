@@ -127,7 +127,9 @@ class GitBashRule(MergeRule):
         "git merge into mine":
             R(Text("git branch | grep \"*\" | awk '{ print $2 }' | clip") + 
               Key("enter/100") + Text("git checkout what_i_use") + 
-              Key("enter/100") + Text("git merge ") + Key("insert"))
+              Key("enter/100") + Text("git merge ") + Key("insert")), 
+        "hub pull request":
+            R(Text("hub pull-request -o -b develop -a kendonB"))
             
     }
     extras = [
