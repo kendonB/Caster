@@ -18,12 +18,12 @@ brandy and with a fried egg on top and spam.
 
 
 
-"spam", 'eggs'; Well, there's egg and {bacon}; (egg (sausage) and) [bacon]: egg and spam;
+
 
 "replace lease second semper with deckle"
 "replace lease semper with deckle"
 "go lease before bacon"
 "remove ross deckle"
 "remove ross egg"
-
+"grab lease until chicky"
 eggs spameggs
