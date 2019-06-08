@@ -9,21 +9,21 @@ from castervoice.lib.dfplus.state.short import R
 
 text_punc_dict = {
     "ace":                                  " ",
-    "clamor":                               "!",     
+    "clamor":                               "!",
     "chocky":                              "\"",
     "hash tag":                             "#",
     "Dolly":                                "$",
     "modulo":                               "%",
     "ampersand":                            "&",
-    "apostrophe | single quote | chicky":   "'",   
+    "apostrophe | single quote | chicky":   "'",
     "left prekris":                         "(",
     "right prekris":                        ")",
-    "starling":                             "*",  
+    "starling":                             "*",
     "plus":                                 "+",
-    "comma":                                ",",  
+    "comma":                                ",",
     "minus":                                "-",
-    "period | dot":                         ".", 
-    "bam":                                 ". ", 
+    "period | dot":                         ".",
+    "bam":                                 ". ",
     "slash":                                "/",
     "deckle":                               ":",
     "semper":                               ";",
@@ -31,16 +31,16 @@ text_punc_dict = {
     "[is] less [than] [or] equal [to]":    "<=",
     "equals":                               "=",
     "[is] equal to":                       "==",
-    "[is] greater than | right angle":      ">",  
+    "[is] greater than | right angle":      ">",
     "[is] greater [than] [or] equal [to]": ">=",
-    "questo":                               "?", 
-    "(atty | at symbol)":                   "@", 
+    "questo":                               "?",
+    "(atty | at symbol)":                   "@",
     "left brax":                            "[",
     "backslash":                           "\\",
     "right brax":                           "]",
-    "carrot":                               "^", 
+    "carrot":                               "^",
     "underscore":                           "_",
-    "ticky":                                "`",
+    "ticky | ((left | right) tickris )":    "`",
     "left curly":                           "{",
     "pipe (sim | symbol)":                  "|",
     "right curly":                          "}",
@@ -61,10 +61,11 @@ class Punctuation(MergeRule):
     pronunciation = CCRMerger.CORE[3]
 
     mapping = {
-        "[<long>] <text_punc> [<npunc>]": 
+        "[<long>] <text_punc> [<npunc>]":
             R(Text("%(long)s" + "%(text_punc)s" + "%(long)s"))*Repeat(extra="npunc"),
-        "[<long>] backslash [<npunc>]": 
-            R(Text("%(long)s" + "\\" + "%(long)s"))*Repeat(extra="npunc"),
+        # For some reason, this one doesn't work through the other function
+        "[<long>] backslash [<npunc>]":
+            R(Text("%(long)s" + "\\" + "%(long)s"), rdescript="Core: Back Slash")*Repeat(extra="npunc"),
         "<double_text_punc>": 
             R(Text("%(double_text_punc)s") + Key("left")),
         "tabby [<npunc>]":
@@ -73,6 +74,8 @@ class Punctuation(MergeRule):
             R(Key("s-tab"), rdescript="Core: Shift Tab")*Repeat(extra="npunc"),
         "boom [<npunc>]":
             R(Text(", "), rdescript="Core: Comma + Space")*Repeat(extra="npunc"),
+        "bam [<npunc>]":
+            R(Text(". "), rdescript="Core: Comma + Space")*Repeat(extra="npunc"),
         "ace [<npunc100>]":
             R(Text(" "), rdescript="Core: Space")*Repeat(extra="npunc100"),
     }
