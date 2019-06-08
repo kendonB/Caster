@@ -154,7 +154,10 @@
 | `google that`                          | `wikipedia that`                     | `checkout [this] pull request [locally]`<sup>[1](#myfootnote1)</sup>  |
 | `update [this] pull request [locally]`<sup>[1](#myfootnote1)</sup> | ``                     | ``  |
 
-<a name="myfootnote1">1</a>: Must be called at the "Conversation" tab of the Github pull request.
+| Command                                  | Notes                                                                       |
+|:-----------------------------------------|:----------------------------------------------------------------------------|
+| `checkout [this] pull request [locally]` | Called from any tab of the Github pull request page. ("Conversation", "Commits", "Checks", "Files changed")|
+| `update [this] pull request [locally]`   | Called from any tab of the Github pull request page. ("Conversation", "Commits", "Checks", "Files changed")|
 
 ## Click by voice plug-in
 Options:
@@ -253,8 +256,8 @@ Options:
 
 | Command                                  | Notes                                                                       |
 |:-----------------------------------------|:----------------------------------------------------------------------------|
-| `checkout [this] pull request [locally]` | Must be called from the "Conversation" tab of the Github pull request page. |
-| `update [this] pull request [locally]`   | Must be called from the "Conversation" tab of the Github pull request page. |
+| `checkout [this] pull request [locally]` | Called from any tab of the Github pull request page. ("Conversation", "Commits", "Checks", "Files changed") |
+| `update [this] pull request [locally]`   | Called from any tab of the Github pull request page. ("Conversation", "Commits", "Checks", "Files changed") |
 
 # Flash Develop
 
