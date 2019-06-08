@@ -125,7 +125,9 @@ class GitBashRule(MergeRule):
             R(Text(" > FILENAME"), rdescript="Bash: To File"),
             
         "git merge into mine":
-            R(Text("git branch | grep \"*\" | awk '{ print $2 }' | clip") + Key("enter/100") + Text("git checkout what_i_use") + Key("enter/100") + Text("git merge ") + Key("insert"))
+            R(Text("git branch | grep \"*\" | awk '{ print $2 }' | clip") + 
+              Key("enter/100") + Text("git checkout what_i_use") + 
+              Key("enter/100") + Text("git merge ") + Key("insert"))
             
     }
     extras = [
