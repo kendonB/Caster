@@ -38,6 +38,8 @@ class NavigationNon(MergeRule):
                 blocking=False),
         "erase multi clipboard":
             R(Function(navigation.erase_multi_clipboard, nexus=_NEXUS)),
+        'save':
+            R(Key("c-s"), rspec="save"),
         "find":
             R(Key("c-f")),
         "find next [<n>]":
@@ -213,8 +215,6 @@ class Navigation(MergeRule):
             finisher=Key("right"), time_in_seconds=0.1, repetitions=50),
 
     # keyboard shortcuts
-        'save':
-            R(Key("c-s"), rspec="save"),
         'shock [<nnavi50>]':
             R(Key("enter"), rspec="shock")* Repeat(extra="nnavi50"),
         "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]":
