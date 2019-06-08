@@ -6,9 +6,10 @@ from castervoice.lib.ccr.core.punctuation import text_punc_dict,  double_text_pu
 from castervoice.lib.alphanumeric import caster_alphabet
 
 
-text_punc_dict.update(caster_alphabet)
-character_dict = text_punc_dict
-character_list = character_dict.values()
+new_text_punc_dict = copy.deepcopy(text_punc_dict)
+new_text_punc_dict.update(caster_alphabet)
+character_dict = new_text_punc_dict
+
 
 contexts = {
     "texstudio": AppContext(executable="texstudio"),

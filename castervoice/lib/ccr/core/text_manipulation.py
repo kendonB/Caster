@@ -1,5 +1,5 @@
 from dragonfly import Function, Key, Text, Mouse, Pause, Dictation, Choice, Grammar , ContextAction
-
+import copy
 
 from castervoice.lib import control, settings, text_manipulation_functions
 
@@ -125,7 +125,7 @@ class TextManipulation(MergeRule):
 
         
     }
-    new_text_punc_dict = text_punc_dict
+    new_text_punc_dict = copy.deepcopy(text_punc_dict)
     new_text_punc_dict.update(caster_alphabet)
     character_dict = new_text_punc_dict
     
