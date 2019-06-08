@@ -1,6 +1,6 @@
 from dragonfly import Key, Pause, AppContext, Window
 import pyperclip
-import re 
+import re
 from castervoice.lib import context
 from castervoice.lib.ccr.core.punctuation import text_punc_dict,  double_text_punc_dict
 from castervoice.lib.alphanumeric import caster_alphabet
@@ -9,7 +9,7 @@ from castervoice.lib.alphanumeric import caster_alphabet
 new_text_punc_dict = copy.deepcopy(text_punc_dict)
 new_text_punc_dict.update(caster_alphabet)
 character_dict = new_text_punc_dict
-
+character_list = character_dict.values()
 
 contexts = {
     "texstudio": AppContext(executable="texstudio"),
@@ -42,10 +42,10 @@ def get_start_end_position(text, phrase, direction, occurrence_number):
         return
     match_iter = re.finditer(pattern, text.lower())
     if phrase in character_list: # consider changing this to if len(phrase) == 1 or something
-        match_index_list = [(m.start(), m.end()) for m in match_iter] 
+        match_index_list = [(m.start(), m.end()) for m in match_iter]
     else:
         match_index_list = [(m.start(1), m.end(1)) for m in match_iter] # first group
-    
+
     if direction == "left":
         try:
             match = match_index_list[-1*occurrence_number] # count from the right
@@ -57,14 +57,14 @@ def get_start_end_position(text, phrase, direction, occurrence_number):
             match = match_index_list[occurrence_number - 1] # count from the left
         except IndexError:
             print("There aren't that many occurrences of '{}'".format(phrase))
-            return 
+            return
     left_index, right_index = match
     return (left_index, right_index)
-    
+
 copy_pause_time_dict = {"standard": "10", "texstudio": "70", "lyx": "60"}
 paste_pause_time_dict = {"standard": "0", "texstudio": "100", "lyx": "20"}
 def text_manipulation_copy(application):
-    """ the wait time can also be modified up or down further by going into context.read_selected_without_altering_clipboard 
+    """ the wait time can also be modified up or down further by going into context.read_selected_without_altering_clipboard
     and changing the sleep time which is apparently slightly different than the pause time.
     the sleep time is set to a positive number, so can be reduced
     here I am using "wait time" to mean the sum of the sleep and pause time right after pressing control c """
@@ -73,14 +73,14 @@ def text_manipulation_copy(application):
     ## Key("c-c").execute()
     ## Pause(copy_pause_time_dict[application]).execute()
     ## selected_text = pyperclip.paste()
-    
+
     err, selected_text = context.read_selected_without_altering_clipboard(pause_time=copy_pause_time_dict[application])
     if err != 0:
         # I'm not discriminating between err = 1 and err = 2
         print("failed to copy text")
         return
     return selected_text
-    ## pyperclip.copy(previous_item_on_the_clipboard) 
+    ## pyperclip.copy(previous_item_on_the_clipboard)
 
 def text_manipulation_paste(text, application):
     context.paste_string_without_altering_clipboard(text, pause_time=copy_pause_time_dict[application])
@@ -89,13 +89,13 @@ def select_text_and_return_it(direction, number_of_lines_to_search, application)
     if direction == "left":
         Key("s-home, s-up:%d, s-home" %number_of_lines_to_search).execute()
     if direction == "right":
-        
+
         Key("s-end, s-down:%d, s-end" %number_of_lines_to_search).execute()
     selected_text = text_manipulation_copy(application)
     if selected_text == None:
         # failed to copy
-        return 
-    
+        return
+
     return selected_text
 
 def deal_with_phrase_not_found(selected_text, application, direction):
@@ -118,60 +118,60 @@ def deal_with_up_down_directions(direction, number_of_lines_to_search):
         number_of_lines_to_search = 3
     if direction == "up":
         direction = "left"
-    if direction == "down":    
+    if direction == "down":
         direction = "right"
     return (number_of_lines_to_search, direction)
-        
+
 def replace_phrase_with_phrase(text, replaced_phrase, replacement_phrase, direction, occurrence_number):
     match_index = get_start_end_position(text, replaced_phrase, direction, occurrence_number)
     if match_index:
         left_index, right_index = match_index
     else:
         return
-    return text[: left_index] + replacement_phrase + text[right_index:] 
-    
+    return text[: left_index] + replacement_phrase + text[right_index:]
+
 
 def copypaste_replace_phrase_with_phrase(replaced_phrase, replacement_phrase, direction, number_of_lines_to_search, occurrence_number):
     if direction == "up" or direction == "down":
-        # "up" and "down" get treated just as the "left" and "right" 
+        # "up" and "down" get treated just as the "left" and "right"
         # except that the default number of lines to search get set to three instead of zero
         number_of_lines_to_search, direction = deal_with_up_down_directions(direction, number_of_lines_to_search)
     application = get_application()
     selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
     if not selected_text:
         print("no text to select")
-        return 
+        return
     replaced_phrase = str(replaced_phrase)
-    replacement_phrase = str(replacement_phrase) 
+    replacement_phrase = str(replacement_phrase)
     new_text = replace_phrase_with_phrase(selected_text, replaced_phrase, replacement_phrase, direction, occurrence_number)
     if not new_text:
         # replaced_phrase not found
         deal_with_phrase_not_found(selected_text, application, direction)
         return
-    
+
     text_manipulation_paste(new_text, application)
-    if number_of_lines_to_search < 20: 
+    if number_of_lines_to_search < 20:
         # only put the cursor back in the right spot if the number of lines to search is fairly small
         if direction == "right":
             offset = len(new_text)
             Key("left:%d" %offset).execute()
-    
+
 def remove_phrase_from_text(text, phrase, direction, occurrence_number):
     match_index = get_start_end_position(text, phrase, direction, occurrence_number)
     if match_index:
         left_index, right_index = match_index
     else:
         return
-        
+
     # if the "phrase" is punctuation, just remove it, but otherwise remove an extra space adjacent to the phrase
     if phrase in character_list:
-        return text[: left_index] + text[right_index:] 
+        return text[: left_index] + text[right_index:]
     else:
         if left_index == 0:
             # the phrase is at the beginning of the line
             return text[right_index:]  # todo: consider removing extra space
         else:
-            return text[: left_index - 1] + text[right_index:] 
+            return text[: left_index - 1] + text[right_index:]
 
 
 def copypaste_remove_phrase_from_text(phrase, direction, number_of_lines_to_search, occurrence_number):
@@ -181,21 +181,21 @@ def copypaste_remove_phrase_from_text(phrase, direction, number_of_lines_to_sear
     selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
     if not selected_text:
         print("no text to select")
-        return 
+        return
     phrase = str(phrase)
     new_text = remove_phrase_from_text(selected_text, phrase, direction, occurrence_number)
     if not new_text:
         # phrase not found
         deal_with_phrase_not_found(selected_text, application, direction)
-        return 
-    
+        return
+
     text_manipulation_paste(new_text, application)
 
     if direction == "right":
         offset = len(new_text)
         Key("left:%d" %offset).execute()
 
-    
+
 def delete_until_phrase(text, phrase, direction, before_after, occurrence_number):
     match_index = get_start_end_position(text, phrase, direction, occurrence_number)
     if match_index:
@@ -226,7 +226,7 @@ def delete_until_phrase(text, phrase, direction, before_after, occurrence_number
 def copypaste_delete_until_phrase(direction, phrase, number_of_lines_to_search, before_after, occurrence_number):
     if direction == "up" or direction == "down":
         number_of_lines_to_search, direction = deal_with_up_down_directions(direction, number_of_lines_to_search)
-    application = get_application()  
+    application = get_application()
     if not before_after:
         # default to delete all the way through the phrase not just up until it
         if direction == "left":
@@ -237,11 +237,11 @@ def copypaste_delete_until_phrase(direction, phrase, number_of_lines_to_search, 
     selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
     if not selected_text:
         print("no text to select")
-        return 
+        return
     phrase = str(phrase)
     new_text = delete_until_phrase(selected_text, phrase, direction, before_after, occurrence_number)
-        
-    if new_text is None: 
+
+    if new_text is None:
         # do NOT use `if not new_text` because that will pick up the case where new_text="" which
         # occurs if the phrase is at the beginning of the line
         # phrase not found
@@ -260,7 +260,7 @@ def copypaste_delete_until_phrase(direction, phrase, number_of_lines_to_search, 
             offset = len(new_text)
             Key("left:%d" %offset).execute()
 
-    
+
 
 def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search, occurrence_number):
     if direction == "up" or direction == "down":
@@ -285,7 +285,7 @@ def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search
         # phrase not found
         deal_with_phrase_not_found(selected_text, application, direction)
         return
-              
+
     if application == "texstudio":
     # Approach 1: Unselect text by pressing left and then right. A little slower but works in Texstudio
         Key("left, right").execute() # unselect text
@@ -304,7 +304,7 @@ def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search
         if direction == "right":
             # cursor is at the left side of the previously selected text
             if before_after == "before":
-                selected_text_to_the_right_of_phrase = selected_text[left_index :]    
+                selected_text_to_the_right_of_phrase = selected_text[left_index :]
             if before_after == "after":
                 selected_text_to_the_right_of_phrase = selected_text[right_index :]
             multiline_offset_correction = selected_text_to_the_right_of_phrase.count("\r\n")
@@ -317,7 +317,7 @@ def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search
         # Approach 2: unselect using arrow keys rather than pasting over the existing text. (a little faster) does not work texstudio
         if right_index < round(len(selected_text))/2:
             # it's faster to approach phrase from the left
-            Key("left").execute() # unselect text and place cursor on the left side of selection 
+            Key("left").execute() # unselect text and place cursor on the left side of selection
             if before_after  == "before":
                 offset_correction = selected_text[: left_index].count("\r\n")
                 offset = left_index - offset_correction
@@ -335,9 +335,9 @@ def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search
                 offset_correction = selected_text[right_index :].count("\r\n")
                 offset = len(selected_text) - right_index - offset_correction
             Key("left:%d" %offset).execute()
-    
-            
-    
+
+
+
 def select_phrase(phrase, direction, number_of_lines_to_search, occurrence_number):
     if direction == "up" or direction == "down":
         number_of_lines_to_search, direction = deal_with_up_down_directions(direction, number_of_lines_to_search)
@@ -345,7 +345,7 @@ def select_phrase(phrase, direction, number_of_lines_to_search, occurrence_numbe
     selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
     if not selected_text:
         print("no text to select")
-        return 
+        return
     phrase = str(phrase)
     match_index = get_start_end_position(selected_text, phrase, direction, occurrence_number)
     if match_index:
@@ -354,8 +354,8 @@ def select_phrase(phrase, direction, number_of_lines_to_search, occurrence_numbe
         # phrase not found
         deal_with_phrase_not_found(selected_text, application, direction)
         return
-    
-        
+
+
     # Approach 1: paste the selected text over itself rather than simply unselecting. A little slower but works Texstudio
     # todo: change this so that it unselects by pressing left and then right rather than pasting over the top
     if application == "texstudio":
@@ -371,7 +371,7 @@ def select_phrase(phrase, direction, number_of_lines_to_search, occurrence_numbe
     else:
         if right_index < round(len(selected_text))/2:
             # it's faster to approach phrase from the left
-            Key("left").execute() # unselect text and place cursor on the left side of selection 
+            Key("left").execute() # unselect text and place cursor on the left side of selection
             multiline_movement_offset_correction = selected_text[: left_index].count("\r\n")
             movement_offset = left_index - multiline_movement_offset_correction
             # move to the left side of the phrase
@@ -391,24 +391,24 @@ def select_phrase(phrase, direction, number_of_lines_to_search, occurrence_numbe
             multiline_selection_offset_correction = selected_text[left_index : right_index].count("\r\n")
             selection_offset = len(phrase) - multiline_selection_offset_correction
             Key("s-right:%d" %selection_offset).execute()
-    
+
 
 
 def select_until_phrase(direction, phrase, before_after, number_of_lines_to_search, occurrence_number):
     if direction == "up" or direction == "down":
         number_of_lines_to_search, direction = deal_with_up_down_directions(direction, number_of_lines_to_search)
-    application = get_application()  
+    application = get_application()
     if not before_after:
     # default to select all the way through the phrase not just up until it
         if direction == "left":
             before_after = "before"
         if direction == "right":
             before_after = "after"
-    
+
     selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
     if not selected_text:
         print("no text to select")
-        return 
+        return
     phrase = str(phrase)
     match_index = get_start_end_position(selected_text, phrase, direction, occurrence_number)
     if match_index:
@@ -417,27 +417,27 @@ def select_until_phrase(direction, phrase, before_after, number_of_lines_to_sear
         # phrase not found
         deal_with_phrase_not_found(selected_text, application, direction)
         return
-    
+
     # Approach 1: paste the selected text over itself rather than simply unselecting. A little slower but works Texstudio
     # todo: change this so that it unselects by pressing left and then right rather than pasting over the top
     if application == "texstudio":
         text_manipulation_paste(selected_text, application) # yes, this is kind of redundant but it gets the proper pause time
         if direction == "left":
-            if before_after == "before": 
-                selected_text_to_the_right_of_phrase = selected_text[left_index :]    
+            if before_after == "before":
+                selected_text_to_the_right_of_phrase = selected_text[left_index :]
                 multiline_offset_correction = selected_text_to_the_right_of_phrase.count("\r\n")
                 offset = len(selected_text) - left_index - multiline_offset_correction
-                
+
             if before_after == "after":
                 selected_text_to_the_right_of_phrase = selected_text[right_index :]
                 multiline_offset_correction = selected_text_to_the_right_of_phrase.count("\r\n")
                 offset = len(selected_text) - right_index - multiline_offset_correction
-            
+
             Key("s-left:%d" %offset).execute()
         if direction == "right":
             multiline_movement_correction = selected_text.count("\r\n")
             movement_offset = len(selected_text) - multiline_movement_correction
-            
+
             if before_after == "before":
                 multiline_selection_correction = selected_text[: left_index].count("\r\n")
                 selection_offset = left_index - multiline_movement_correction
@@ -449,7 +449,7 @@ def select_until_phrase(direction, phrase, before_after, number_of_lines_to_sear
             Key("left:%d" %movement_offset).execute()
             # select text
             Key("s-right:%d" %selection_offset).execute()
-    
+
     # Approach 2: unselect using arrow keys rather than pasting over the existing text. (a little faster) does not work texstudio
     else:
         if direction == "left":
@@ -461,7 +461,7 @@ def select_until_phrase(direction, phrase, before_after, number_of_lines_to_sear
                 multiline_correction = selected_text[right_index :].count("\r\n")
                 offset = len(selected_text) - right_index - multiline_correction
             Key("s-left:%d" %offset).execute()
-        if direction == "right": 
+        if direction == "right":
             Key("left").execute() # unselect text and move to the right side of selection
             if before_after == "before":
                 multiline_correction = selected_text[: left_index].count("\r\n")
@@ -470,6 +470,3 @@ def select_until_phrase(direction, phrase, before_after, number_of_lines_to_sear
                 multiline_correction = selected_text[: right_index].count("\r\n")
                 offset = right_index - multiline_correction
             Key("s-right:%d" %offset).execute()
-
-
-                
