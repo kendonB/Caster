@@ -159,9 +159,10 @@ def reboot(wsr=False):
     else:
         popen_parameters.append(settings.SETTINGS["paths"]["REBOOT_PATH"])
         popen_parameters.append(settings.SETTINGS["paths"]["ENGINE_PATH"])
-        if settings.SETTINGS["paths"]["DRAGON_USER_PROFILE_PATH"] != "":
-            popen_parameters.append(settings.SETTINGS["paths"]["DRAGON_USER_PROFILE_PATH"])
-
+        import natlinkstatus
+        status = natlinkstatus.NatlinkStatus()
+        username = status.getUserName()
+        popen_parameters.append(username)
     print(popen_parameters)
     Popen(popen_parameters)
 
@@ -180,8 +181,9 @@ def default_browser_command():
         reg = ConnectRegistry(None,HKEY_CLASSES_ROOT)
         key = OpenKey(reg, '%s\\shell\\open\\command' % value)
         path, t = QueryValueEx(key, None)
-    except WindowsError as e:
-        #logger.warn(e)
+    except WindowsError:
+        # logger.warn(e)
+        traceback.print_exc()
         return ''
     finally:
         CloseKey(key)
@@ -192,6 +194,7 @@ def default_browser_command():
 def clear_log():
     # Function to clear natlink status window
     try:
+        # pylint: disable=import-error
         import natlink
         windows = Window.get_all_windows()
         matching = [w for w in windows
