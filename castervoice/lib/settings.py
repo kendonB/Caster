@@ -53,10 +53,17 @@ HMC_SEPARATOR = "[hmc]"
 
 WSR = False
 
+# set the paths for autohotkey and git bash
 if os.path.isfile('C:/Program Files/Git/git-bash.exe'):
     TERMINAL_PATH_DEFAULT = "C:/Program Files/Git/git-bash.exe"
 else:
     TERMINAL_PATH_DEFAULT = ""
+
+if os.path.isfile('C:/Program Files/AutoHotkey/AutoHotkey.exe'):
+    AHK_PATH_DEFAULT = "C:/Program Files/AutoHotkey/AutoHotkey.exe"
+else:
+    AHK_PATH_DEFAULT = ""
+
 
 def get_platform_information():
     """Return a dictionary containing platform-specific information."""
@@ -199,6 +206,7 @@ _DEFAULT_SETTINGS = {
         "SIKULI_RUNNER": "",
 
         # EXECUTABLES
+        "AHK_PATH": AHK_PATH_DEFAULT,
         "DOUGLAS_PATH": BASE_PATH + "/asynch/mouse/grids.py",
         "ENGINE_PATH": _validate_engine_path(),
         "HOMUNCULUS_PATH": BASE_PATH + "/asynch/hmc/h_launch.py",
@@ -273,6 +281,12 @@ _DEFAULT_SETTINGS = {
     "sikuli": {
         "enabled": True,
         "version": "1.1.4"
+    },
+
+    # gitbash settings
+    "gitbash": {
+        "loading_time": 5,  # the time to initialise the git bash window in seconds
+        "fetching_time": 3  # the time to fetch a github repository in seconds
     },
 
     # feature switches
