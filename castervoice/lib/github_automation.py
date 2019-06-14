@@ -55,7 +55,7 @@ def github_checkoutupdate_pull_request(new):
                 AHK_PATH = settings.SETTINGS["paths"]["AHK_PATH"]
                 if TERMINAL_PATH != "" and AHK_PATH != "":
                     # find the equivalent ahk script with the same name as this one
-                    ahk_script = __file__.replace(".py", ".ahk")
+                    ahk_script = __file__.replace(".pyc", ".ahk").replace(".py", ".ahk")
                     pattern_match = "MINGW64"  # the string we expect to find in the title of git bash when loaded
                     # open the script which checks that git bash window is open or not
                     p = Popen([AHK_PATH, ahk_script, "exists", pattern_match], stdout=PIPE)

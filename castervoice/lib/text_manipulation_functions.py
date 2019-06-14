@@ -84,7 +84,7 @@ def text_manipulation_copy(application):
     ## pyperclip.copy(previous_item_on_the_clipboard)
 
 def text_manipulation_paste(text, application):
-    context.paste_string_without_altering_clipboard(text, pause_time=copy_pause_time_dict[application])
+    context.paste_string_without_altering_clipboard(text, pause_time=paste_pause_time_dict[application])
 
 def select_text_and_return_it(direction, number_of_lines_to_search, application):
     if direction == "left":
