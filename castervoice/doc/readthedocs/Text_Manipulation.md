@@ -1,6 +1,6 @@
 # Text Manipulation and Navigation
 
-Caster provides powerful text manipulation and navigation features. These functions are brand new, experimental, and subject to change (perhaps based on your feedback!). We encourage contributions; please discuss your ideas [here](https://github.com/dictation-toolbox/Caster/issues/579). These commands are "CCR" so are able to be combined with other CCR commands.
+Caster provides powerful text manipulation and navigation features. These functions are brand new, experimental, and subject to change (perhaps based on your feedback!). We encourage contributions; please discuss your ideas [here](https://github.com/dictation-toolbox/Caster/issues/579). These commands are "CCR" so are able to be combined with other CCR commands. Enable these commands by saying "Enable text manipulation".
 
 ## Common elements
 
@@ -38,6 +38,7 @@ Caster provides powerful text manipulation and navigation features. These functi
 
 ## Possible future features
 Please feel free to try and implement these and submit a pull request!
+
 - Supporting Caster numbers as targets (e.g. _go lease before numb one_).
 - Selecting from one element to another element rather than having to move the cursor first (e.g. _grab sauce twenty from third left prekris to second right prekris_).
 - Replacing with Caster-formatted text (e.g. _replace lease caster with gum caster_).
@@ -61,4 +62,3 @@ Please feel free to try and implement these and submit a pull request!
 - Sometimes these commands don't work properly in certain apps because those apps take a very long time for text to be added into the clipboard after pressing control c. The current solution is to have a dictionary called `copy_pause_time_dict` that lets the user set different pause times (for after pressing control c) for different apps. (`copy_pause_time_dict` and the other dictionaries described here are in `text_manipulation_functions.py` for now). In order to add a custom pause time for an application, the user must first add that application into the dictionary `contexts`.
     - In the future, a better solution might be the following:  if the text that is passed into the function is the same as what was on the clipboard before, then have the command try copying again (with an increased pause time afterwards). The tools for doing something like this alternative solution are already available in caster's `lib/context.py`, see for example the function `read_nmax_tries` and the parameter `same_is_okay` in the function `read_selected_without_altering_clipboard`. One problem with this solution seems to be that sometimes you might want to use the commands on the same text multiple times in a row (e.g. for moving the cursor) in which case what was on the first slot of the clipboard wouldn't change so the command would try to copy again unnecessarily. That problem could possibly be avoided by adjusting the function `read_selected_without_altering_clipboard`. 
     - In addition to the `copy_pause_time_dict`, there is also a dictionary called `paste_pause_time_dict` that adjusts the pause time between putting text onto the clipboard and pressing `Ctrl-V`, since this seems (but not totally sure) to be application dependent.
-

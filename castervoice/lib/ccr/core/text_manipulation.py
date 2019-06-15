@@ -1,7 +1,7 @@
 import copy
 
 from dragonfly import Function, Key, Text, Mouse, Pause, Dictation, Choice, Grammar , ContextAction
-import copy
+
 
 from castervoice.lib import control, settings, text_manipulation_functions
 
