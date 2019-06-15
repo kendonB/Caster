@@ -63,8 +63,11 @@ def get_start_end_position(text, phrase, direction, occurrence_number):
     left_index, right_index = match
     return (left_index, right_index)
 
-copy_pause_time_dict = {"standard": "10", "texstudio": "70", "lyx": "60", "winword": "40"}
-paste_pause_time_dict = {"standard": "0", "texstudio": "100", "lyx": "20", "winword": "40"}
+copy_pause_time_dict = {"standard": "10", "texstudio": "70", "lyx": "60", "winword": "90"}
+paste_pause_time_dict = {"standard": "0", "texstudio": "100", "lyx": "20", "winword": "20"}
+# winword (a.k.a. Microsoft Word) pause times may need some tweaking,
+# people are probably better off just using the native Dragon commands in winword.
+
 def text_manipulation_copy(application):
     """ the wait time can also be modified up or down further by going into context.read_selected_without_altering_clipboard
     and changing the sleep time which is apparently slightly different than the pause time.
