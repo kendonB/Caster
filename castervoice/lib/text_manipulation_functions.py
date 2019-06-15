@@ -14,7 +14,8 @@ character_list = character_dict.values()
 
 contexts = {
     "texstudio": AppContext(executable="texstudio"),
-    "lyx": AppContext(executable="lyx")
+    "lyx": AppContext(executable="lyx"),
+    "winword": AppContext(executable="winword")
 }
 
 def get_application():
@@ -62,8 +63,8 @@ def get_start_end_position(text, phrase, direction, occurrence_number):
     left_index, right_index = match
     return (left_index, right_index)
 
-copy_pause_time_dict = {"standard": "10", "texstudio": "70", "lyx": "60"}
-paste_pause_time_dict = {"standard": "0", "texstudio": "100", "lyx": "20"}
+copy_pause_time_dict = {"standard": "10", "texstudio": "70", "lyx": "60", "winword": "40"}
+paste_pause_time_dict = {"standard": "0", "texstudio": "100", "lyx": "20", "winword": "40"}
 def text_manipulation_copy(application):
     """ the wait time can also be modified up or down further by going into context.read_selected_without_altering_clipboard
     and changing the sleep time which is apparently slightly different than the pause time.
@@ -74,13 +75,7 @@ def text_manipulation_copy(application):
     ## Key("c-c").execute()
     ## Pause(copy_pause_time_dict[application]).execute()
     ## selected_text = pyperclip.paste()
-<<<<<<< HEAD
-
-    err, selected_text = context.read_selected_without_altering_clipboard(pause_time=copy_pause_time_dict[application])
-=======
-
     err, selected_text = context.read_selected_without_altering_clipboard(same_is_okay=True, pause_time=copy_pause_time_dict[application])
->>>>>>> dictation-toolbox/Caster/pull/485
     if err != 0:
         # I'm not discriminating between err = 1 and err = 2
         print("failed to copy text")
@@ -94,12 +89,7 @@ def text_manipulation_paste(text, application):
 def select_text_and_return_it(direction, number_of_lines_to_search, application):
     if direction == "left":
         Key("s-home, s-up:%d, s-home" %number_of_lines_to_search).execute()
-<<<<<<< HEAD
     if direction == "right":
-
-=======
-    if direction == "right":
->>>>>>> dictation-toolbox/Caster/pull/485
         Key("s-end, s-down:%d, s-end" %number_of_lines_to_search).execute()
     selected_text = text_manipulation_copy(application)
     if selected_text == None:
