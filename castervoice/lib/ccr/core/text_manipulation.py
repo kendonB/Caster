@@ -15,13 +15,15 @@ from castervoice.lib.ccr.core.punctuation import text_punc_dict,  double_text_pu
 from castervoice.lib.alphanumeric import caster_alphabet
 
 # Advertisement
-print("""Check out the new experimental text manipulation commands in castervoice\lib\ccr\core\\text_manipulation.py 
-    where you can disable this message. Enable them by saying "enable text manipulation". You may want to reduce the pause or sleep time
-    in the functions text_manipulation_copy and text_manipulation_paste in castervoice\lib\\text_manipulation_functions.py
-    These are WIP, Please give feedback and report bugs""")
-
-
-
+print("""Text Manipulation: Check out the new experimental text 
+    manipulation commands at https://caster.readthedocs.io/en/latest/readthedocs/TextManipulation 
+    You can delete this message in castervoice\lib\ccr\core\\text_manipulation.py. 
+    Enable these commands by saying "enable text manipulation". 
+    You may want to reduce the pause or sleep time in the 
+    functions text_manipulation_copy and text_manipulation_paste 
+    in castervoice\lib\\text_manipulation_functions.py 
+    These are a work in progress; please give feedback and 
+    report bugs on the Caster github page.""")
 
 """ requires a recent version of dragonfly because of recent modification of the Function action
     # I think dragonfly2-0.13.0
@@ -97,7 +99,7 @@ class TextManipulation(MergeRule):
             R(Function(text_manipulation_functions.move_until_phrase,
                        dict(dictation="phrase")), 
                rdescript="Text Manipulation: move to chosen phrase to the left or right of the cursor"),
-        "(go | move) <direction> [<before_after>] [<number_of_lines_to_search>] [<occurrence_number>] <character>":
+        "(go | move) <direction> [<number_of_lines_to_search>] [<before_after>] [<occurrence_number>] <character>":
             R(Function(text_manipulation_functions.move_until_phrase,
                        dict(character="phrase")),
               rdescript="Text Manipulation: move to chosen character to the left of the cursor"),

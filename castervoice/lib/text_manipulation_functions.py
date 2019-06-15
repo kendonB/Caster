@@ -74,8 +74,13 @@ def text_manipulation_copy(application):
     ## Key("c-c").execute()
     ## Pause(copy_pause_time_dict[application]).execute()
     ## selected_text = pyperclip.paste()
+<<<<<<< HEAD
 
     err, selected_text = context.read_selected_without_altering_clipboard(pause_time=copy_pause_time_dict[application])
+=======
+
+    err, selected_text = context.read_selected_without_altering_clipboard(same_is_okay=True, pause_time=copy_pause_time_dict[application])
+>>>>>>> dictation-toolbox/Caster/pull/485
     if err != 0:
         # I'm not discriminating between err = 1 and err = 2
         print("failed to copy text")
@@ -89,13 +94,17 @@ def text_manipulation_paste(text, application):
 def select_text_and_return_it(direction, number_of_lines_to_search, application):
     if direction == "left":
         Key("s-home, s-up:%d, s-home" %number_of_lines_to_search).execute()
+<<<<<<< HEAD
     if direction == "right":
 
+=======
+    if direction == "right":
+>>>>>>> dictation-toolbox/Caster/pull/485
         Key("s-end, s-down:%d, s-end" %number_of_lines_to_search).execute()
     selected_text = text_manipulation_copy(application)
     if selected_text == None:
         # failed to copy
-        return 
+        return
     if selected_text == "":
         print("no text to select")
         return
@@ -173,9 +182,10 @@ def remove_phrase_from_text(text, phrase, direction, occurrence_number):
         if left_index == 0:
             # the phrase is at the beginning of the line
             return text[right_index:]  # todo: consider removing extra space
-        else:
+        elif text[left_index - 1] == " ":
             return text[: left_index - 1] + text[right_index:]
-
+        else:
+            return text[: left_index] + text[right_index:]
 
 def copypaste_remove_phrase_from_text(phrase, direction, number_of_lines_to_search, occurrence_number):
     if direction == "up" or direction == "down":
