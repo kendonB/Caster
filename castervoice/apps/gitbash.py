@@ -52,7 +52,7 @@ class GitBashRule(MergeRule):
               rdescript="GIT: Reference Commit"),
         "(git|get) checkout":
             R(Text("git checkout "), rdescript="GIT: Check Out"),
-        "(git|get) checkout what I use":
+        "(git|get) checkout mine":
             R(Text("git checkout what_i_use"), rdescript="GIT: Check Out Mine"),
         "(git|get) branch":
             R(Text("git branch "), rdescript="GIT: Branch"),
