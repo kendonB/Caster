@@ -151,6 +151,7 @@
 | `duplicate window`                     | `extensions`                         | `(menu / three dots)`                     |
 | `settings`                             | `downloads`                          | `chrome task manager`                     |
 | `clear browsing data`                  | `developer tools`                    | `more tools`                              |
+<<<<<<< HEAD
 | `google that`                          | `wikipedia that`                     | `checkout [this] pull request [locally]`<sup>[1](#myfootnote1)</sup>  |
 | `update [this] pull request [locally]`<sup>[1](#myfootnote1)</sup> | ``                     | ``  |
 
@@ -167,6 +168,14 @@ Options:
 | `<numbers> <dictation>`                | `go <numbers> <dictation>`           | `next <numbers> <dictation>` |
 | `<numbers> [<click_by_voice_options>]` | `hide hints`                         | `show hints`                 |
 
+=======
+| `google that`                          | `wikipedia that`                     | ``                                        |
+
+| Command                                  | Notes                                                                                                                                                                        |
+|:-----------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `checkout [this] pull request [locally]` | Called from any tab of the Github pull request page: ("Conversation", "Commits", "Checks", "Files changed"). Adjust pause times in the `gitbash` section of `settings.toml`. |
+| `update [this] pull request [locally]`   | Called from any tab of the Github pull request page: ("Conversation", "Commits", "Checks", "Files changed"). Adjust pause times in the `gitbash` section of `settings.toml`. |
+>>>>>>> pure_develop
 
 # Command prompt
 
@@ -254,10 +263,10 @@ Options:
 | `new tab [<n>]`                        | `step into`      | `zoom out <n>`                           |
 | `reopen tab [<n>]`                     | `step out`       | ``                                       |
 
-| Command                                  | Notes                                                                       |
-|:-----------------------------------------|:----------------------------------------------------------------------------|
-| `checkout [this] pull request [locally]` | Called from any tab of the Github pull request page. ("Conversation", "Commits", "Checks", "Files changed") |
-| `update [this] pull request [locally]`   | Called from any tab of the Github pull request page. ("Conversation", "Commits", "Checks", "Files changed") |
+| Command                                  | Notes                                                                                                                                                                        |
+|:-----------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `checkout [this] pull request [locally]` | Called from any tab of the Github pull request page: ("Conversation", "Commits", "Checks", "Files changed"). Adjust pause times in the `gitbash` section of `settings.toml`. |
+| `update [this] pull request [locally]`   | Called from any tab of the Github pull request page: ("Conversation", "Commits", "Checks", "Files changed"). Adjust pause times in the `gitbash` section of `settings.toml`. |
 
 # Flash Develop
 
