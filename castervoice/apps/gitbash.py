@@ -129,8 +129,9 @@ class GitBashRule(MergeRule):
               Key("enter/100") + Text("git checkout what_i_use") + 
               Key("enter/100") + Text("git merge ") + Key("insert")), 
         "hub pull request":
-            R(Text("hub pull-request -o -b develop -a kendonB"))
-            
+            R(Text("hub pull-request -o -b develop -a kendonB")),
+        "update [my] develop [branch]":
+            R(Text("git checkout pure_develop && git pull upstream develop")),
     }
     extras = [
         IntegerRefST("n", 1, 10000),
