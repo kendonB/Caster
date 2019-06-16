@@ -53,7 +53,7 @@ def get_direction_choice(name):
 
 def initialize_clipboard(nexus):
     if len(nexus.clip) == 0:
-        nexus.clip = utilities.load_toml_file(
+        nexus.clip = utilities.load_json_file(
             settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
 
 
@@ -104,7 +104,7 @@ def _text_to_clipboard(keystroke, nnavi500, nexus):
                 # time for keypress to execute
                 time.sleep(settings.SETTINGS["miscellaneous"]["keypress_wait"]/1000.)
                 nexus.clip[key] = unicode(Clipboard.get_system_text())
-                utilities.save_toml_file(
+                utilities.save_json_file(
                     nexus.clip, settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
             except Exception:
                 failure = True
@@ -159,7 +159,7 @@ def duple_keep_clipboard(nnavi50):
 
 def erase_multi_clipboard(nexus):
     nexus.clip = {}
-    utilities.save_toml_file(nexus.clip,
+    utilities.save_json_file(nexus.clip,
                              settings.SETTINGS["paths"]["SAVED_CLIPBOARD_PATH"])
 
 
