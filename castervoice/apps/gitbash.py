@@ -136,10 +136,10 @@ class GitBashRule(MergeRule):
               Key("enter/100") + Text("git merge ") + Key("insert")), 
         "hub pull request":
             R(Text("hub pull-request -o -b develop -a kendonB")),
-       "git push [back to] pull request":
+        "git push [back to] pull request":
             R(Text("git branch | grep \"*\" | awk '{ print $2 }' | clip") + 
               Key("enter/100") + Text("git push <pr_url> ") + Key("insert") + 
-              Text(":<pr_branch_name>") + Key("home") + Key("right:9")),            
+              Text(":<pr_branch_name>") + Key("home") + Key("right:17")),
         "update [my] develop [branch]":
             R(Text("git checkout pure_develop && git pull upstream develop")),
     }
