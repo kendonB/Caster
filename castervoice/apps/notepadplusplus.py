@@ -40,7 +40,7 @@ class NPPRule(MergeRule):
             R(Key("cas-l"), rdescript="Notepad++: Function List"),
         "open":
             R(Key("c-o"), rdescript="Notepad++: Open"),
-        "[go to] line <n>":
+        "go [to] line <n>":
             R(Key("c-g/10") + Text("%(n)s") + Key("enter"),
               rdescript="Notepad++: Go to Line #"),
     }
