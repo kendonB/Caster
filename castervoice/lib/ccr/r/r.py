@@ -318,6 +318,7 @@ class Rlang(MergeRule):
 				"debug": "debug",
 				"class": "class",
 				"load": "loadd",
+                "in row": "nrow",
 				"object size": "pryr::object_size",
 				"names": "names",
 				"map view": "mapview",
