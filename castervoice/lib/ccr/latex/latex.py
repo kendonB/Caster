@@ -55,7 +55,7 @@ class LaTeX(MergeRule):
         "insert <commandnoarg>":
             R(Text("\\%(commandnoarg)s "),
             rdescript="LaTeX: Insert command not requiring an argument"),
-        "insert quotea":
+        "insert quotes":
             R(Text("``\'\'") + Key("left:2"), rdescript="LaTeX: Insert a quote"),
         #
         "superscript":

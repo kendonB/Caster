@@ -5,7 +5,7 @@ import copy
 from castervoice.lib import context
 from castervoice.lib.ccr.core.punctuation import text_punc_dict,  double_text_punc_dict
 from castervoice.lib.alphanumeric import caster_alphabet
-
+import timeit
 
 new_text_punc_dict = copy.deepcopy(text_punc_dict)
 new_text_punc_dict.update(caster_alphabet)
@@ -63,8 +63,8 @@ def get_start_end_position(text, phrase, direction, occurrence_number):
     left_index, right_index = match
     return (left_index, right_index)
     
-copy_pause_time_dict = {"standard": "10", "texstudio": "70", "lyx": "60", "winword": "90"}
-paste_pause_time_dict = {"standard": "0", "texstudio": "100", "lyx": "20", "winword": "20"} 
+copy_pause_time_dict = {"standard": "10", "texstudio": "15", "lyx": "60", "winword": "90"}
+paste_pause_time_dict = {"standard": "0", "texstudio": "25", "lyx": "20", "winword": "20"} 
 # winword (a.k.a. Microsoft Word) pause times may need some tweaking, 
 # people are probably better off just using the native Dragon commands in winword.
 
@@ -92,9 +92,14 @@ def text_manipulation_paste(text, application):
 
 def select_text_and_return_it(direction, number_of_lines_to_search, application):
     if direction == "left":
-        Key("s-home, s-up:%d, s-home" %number_of_lines_to_search).execute()
+        if number_of_lines_to_search > 0:
+            Key("s-up:%d" %number_of_lines_to_search).execute()
+        Key("s-home").execute()
     if direction == "right":    
-        Key("s-end, s-down:%d, s-end" %number_of_lines_to_search).execute()
+        if number_of_lines_to_search > 0:
+            Key("s-down:%d" %number_of_lines_to_search).execute()
+        Key("s-end").execute()
+        
     selected_text = text_manipulation_copy(application)
     if selected_text == None:
         # failed to copy
@@ -268,6 +273,7 @@ def copypaste_delete_until_phrase(direction, phrase, number_of_lines_to_search, 
     
 
 def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search, occurrence_number):
+    start = timeit.timeit()
     if direction == "up" or direction == "down":
         number_of_lines_to_search, direction = deal_with_up_down_directions(direction, number_of_lines_to_search)
     application = get_application()
@@ -277,12 +283,23 @@ def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search
             before_after = "after"
         if direction == "right":
             before_after = "before"
-
+    end = timeit.timeit()
+    print("deal_with_up_down_directions")
+    print(end - start)
+    
+    start = timeit.timeit()
     selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
+    end = timeit.timeit()
+    print("select_text_and_return_it")
+    print(end - start)
     if not selected_text:
         return
     phrase = str(phrase)
+    start = timeit.timeit()
     match_index = get_start_end_position(selected_text, phrase, direction, occurrence_number)
+    end = timeit.timeit()
+    print("get_start_end_position")
+    print(end - start)
     if match_index:
         left_index, right_index = match_index
     else:
@@ -303,7 +320,11 @@ def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search
                 selected_text_to_the_left_of_phrase = selected_text[:right_index]
                 multiline_offset_correction = selected_text_to_the_left_of_phrase.count("\r\n")
                 offset = right_index - multiline_offset_correction
+            start = timeit.timeit()
             Key("right:%d" %offset).execute()
+            end = timeit.timeit()
+            print("keyright")
+            print(end - start)
 
         if direction == "right":
             # cursor is at the left side of the previously selected text

@@ -60,6 +60,8 @@ class ChromeRule(BrowserSharedCommands):
             R(Key("a-f/20, l, e/15, enter")),
         "more tools":
             R(Key("a-f/5, l")),
+        "save [to] zotero":
+            R(Key("cs-s"))
     }
     mapping = BrowserSharedCommands.merge_dictionaries(_mapping, BrowserSharedCommands.chromeAndFirefoxMapping)
     extras = browser.EXTRAS
