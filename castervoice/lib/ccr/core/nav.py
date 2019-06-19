@@ -361,9 +361,9 @@ class Navigation(MergeRule):
             "(shift | shin)": "s",
             "alt": "a",
             "(control shift | que)": "cs",
-            "control alt": "ca",
-            "(shift alt | alt shift)": "sa",
-            "(control alt shift | control shift alt)": "csa", # control must go first
+            "control alt | cult": "ca",
+            "(shift alt | alt shift | salt)": "sa",
+            "(control alt shift | control shift alt | cass)": "csa", # control must go first
         }),
         Choice("capitalization", {
             "yell": 1,
