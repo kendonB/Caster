@@ -336,7 +336,7 @@ class Navigation(MergeRule):
     button_dictionary_10 = {}
     button_dictionary_10.update(caster_alphabet)
     button_dictionary_10.update(text_punc_dict)
-    button_dictionary_1 = {"home": "(home | lease wally | latch)", "(end | ross wally | ratch)": "end", "insert": "insert", "zero": "0",
+    button_dictionary_1 = {"(hum | lease wally | latch)": "home", "(end | ross wally | ratch)": "end", "insert": "insert", "zero": "0",
     "one": "1", "two": "2", "three": "3", "four": "4", "five": "5", "six":"6", "seven": "7", "eight": "8", "nine": "9"}
 
     extras = [
@@ -358,7 +358,7 @@ class Navigation(MergeRule):
         Choice("button_dictionary_500", button_dictionary_500), 
         Choice("modifier", {
             "(control | fly)": "c",
-            "(shift | shin)": "s",
+            "(shift | shine)": "s",
             "alt": "a",
             "(control shift | que)": "cs",
             "control alt | cult": "ca",
