@@ -17,9 +17,13 @@ from castervoice.lib.dfplus.state.actions2 import UntilCancelled
 from castervoice.lib.dfplus.state.short import L, S, R
 from dragonfly.actions.action_mimic import Mimic
 from castervoice.lib.ccr.standard import SymbolSpecs
+<<<<<<< HEAD
 from castervoice.lib.ccr.core.punctuation import text_punc_dict,  double_text_punc_dict
 from castervoice.lib.alphanumeric import caster_alphabet
 
+=======
+from castervoice.lib.ccr.core.punctuation import text_punc_dict, double_text_punc_dict
+>>>>>>> dictation-toolbox/Caster/pull/584
 
 _NEXUS = control.nexus()
 
@@ -328,6 +332,7 @@ class Navigation(MergeRule):
         
         
     }
+
     # I tried to limit which things get repeated how many times in hopes that it will help prevent the bad grammar error
     # this could definitely be changed. perhaps some of these should be made non-CCR
     button_dictionary_500 = {"(tab | tabby)": "tab", "backspace": "backspace", "delete": "del", "(escape | cancel)": "escape", "(enter | shock)": "enter",
@@ -338,6 +343,8 @@ class Navigation(MergeRule):
     button_dictionary_10.update(text_punc_dict)
     button_dictionary_1 = {"(hum | lease wally | latch)": "home", "(end | ross wally | ratch)": "end", "insert": "insert", "zero": "0",
     "one": "1", "two": "2", "three": "3", "four": "4", "five": "5", "six":"6", "seven": "7", "eight": "8", "nine": "9"}
+    tell_commands_dict = {"dock": ";", "doc": ";", "sink": "", "com": ",", "deck": ":"}
+    tell_commands_dict.update(text_punc_dict)
 
     extras = [
         
@@ -384,11 +391,7 @@ class Navigation(MergeRule):
                 "dissent": 6,
                 "descent": 6
             }),
-        Choice("semi", {
-            "dock": ";",
-            "doc": ";",
-            "sink": ""
-        }),
+        Choice("semi", tell_commands_dict),
         Choice("word_limit", {
             "single": 1,
             "double": 2,
