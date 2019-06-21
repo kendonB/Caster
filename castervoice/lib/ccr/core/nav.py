@@ -358,7 +358,7 @@ class Navigation(MergeRule):
         Choice("button_dictionary_500", button_dictionary_500), 
         Choice("modifier", {
             "(control | fly)": "c",
-            "(shift | shine)": "s",
+            "(shift | shin)": "s",
             "alt": "a",
             "(control shift | que)": "cs",
             "control alt | cult": "ca",

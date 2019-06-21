@@ -113,7 +113,7 @@ class Rlang(MergeRule):
             R(Text("tmp"), rdescript="Rlang: tmp"),
 		
 # should be in rstudio but continuous command recognition doesn't seem to be working for apps contexts
-        "[go to] line <nr500>":    
+        "[go] [to] line <nr500>":    
             R(Key("as-g/10") + Text("%(nr500)s") + Key("enter"),
               rdescript="R: Go to Line #"),
 		"run it <n>":                    
@@ -245,6 +245,8 @@ class Rlang(MergeRule):
                 "in col": "ncol",
                 "paste oh": "paste0",
 				"print": "print",
+                "predict": "predict",
+                "predict F E L M": "predict.felm",
 				"object size": "pryr::object_size",
 				"pull": "pull",
                 "raster": "raster",
