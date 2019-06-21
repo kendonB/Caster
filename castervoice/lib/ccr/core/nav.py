@@ -70,7 +70,7 @@ class NavigationNon(MergeRule):
             R(Key("shift:down") + Mouse("right") + Key("shift:up")),
         "curse <direction> [<direction2>] [<nnavi500>] [<dokick>]":
             R(Function(navigation.curse)),
-        "scree <direction> [<nnavi500>]":
+        "(wheel | scree) <direction> [<nnavi500>]":
             R(Function(navigation.wheel_scroll)),
         "colic":
             R(Key("control:down") + Mouse("left") + Key("control:up")),
