@@ -1,4 +1,4 @@
-from dragonfly import Function, ShortIntegerRef
+from dragonfly import Function, ShortIntegerRef, Text
 
 from castervoice.lib import control, alphanumeric
 from castervoice.lib.dfplus.additions import IntegerRefST
@@ -15,6 +15,10 @@ class Numbers(MergeRule):
             R(Function(alphanumeric.numbers2, extra="wnKK"),
               rspec="Number",
               rdescript="Core: Number"),
+        "bum <wnKK>":
+            R(Text(", ") + Function(alphanumeric.numbers2, extra="wnKK"),
+              rspec="Number",
+              rdescript="Core: Number with comma"),
     }
 
     extras = [

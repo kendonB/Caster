@@ -32,7 +32,7 @@ text_punc_dict = {
     "right " + inv_dtpb["()"]:                            ")",
     "starling":                                           "*",
     "plus":                                               "+",
-    "comma":                                              ",",
+    "commy":                                              ",",
     "minus":                                              "-",
     "period | dot":                                       ".",
     "slash":                                              "/",

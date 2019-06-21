@@ -1,10 +1,10 @@
 '''
-Created on May 23, 2017
+Created on May 23, 2017filelist
 
 @author: shippy
 '''
 
-from dragonfly import Dictation, MappingRule, Choice, Repeat, ShortIntegerRef
+from dragonfly import Dictation, MappingRule, Choice, Repeat, Function, Repetition
 
 from castervoice.lib import control
 from castervoice.lib.actions import Key, Text
@@ -13,7 +13,21 @@ from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
 from castervoice.lib.dfplus.additions import IntegerRefST
 
-
+package_dict = {
+    "dev tools": "devtools",
+    "drake": "drake",
+	"string are": "stringr",
+	"(dee plier | deep)": "dplyr",
+	"lubridate": "lubridate",
+	"raster": "raster",
+	"roxygen": "roxygen2",
+    "tidy verse": "tidyverse",
+    "S F": "sf",
+    "stars": "stars",
+    "raster": "raster",
+    "fist": "fst",
+}
+            
 class Rlang(MergeRule):
     auto = [".R", ".r"]
     pronunciation = "are"
@@ -46,8 +60,12 @@ class Rlang(MergeRule):
         SymbolSpecs.SYSOUT:
             R(Text("print()") + Key("left"), rdescript="Rlang: Print"),
         #
-        SymbolSpecs.IMPORT:
-            R(Text("library()") + Key("left"), rdescript="Rlang: Import"),
+        SymbolSpecs.IMPORT + " <lib_seq>":
+            R(Text("pacman::p_load()") + Key("left, enter") + Function(lambda lib_seq: Text(",\n".join(lib_seq)).execute())),
+        "these packages <lib_seq>":
+            R(Function(lambda lib_seq: Text(",\n".join(lib_seq)).execute())),
+        "by commies <n_seq>":
+            R(Function(lambda n_seq: Text(", ".join(map(str, n_seq))).execute())),        
         #
         # SymbolSpecs.FUNCTION:
         #     R(Text("function()") + Key("left"), rdescript="Rlang: Function"),
@@ -155,9 +173,16 @@ class Rlang(MergeRule):
 		"jump dunce [<nr500>] <text>":
     	    Key("s-down")*Repeat(extra="nr500") + R(Key("c-f") + Text("%(text)s") + Key("escape/5") + Key("left"), rdescript="RStudio: jump down to text"),
     }
-
     extras = [
         Dictation("text"),
+        Repetition(
+            Choice("package", package_dict),
+            min = 1, max = 8, name = "lib_seq"
+        ),
+        Repetition(
+            IntegerRefST("n", 1, 10000),
+            min = 1, max = 10, name = "n_seq"
+        ),
         Choice(
             "function", {
                 "arrange": "arrange",
@@ -328,16 +353,7 @@ class Rlang(MergeRule):
 				"view": "View",
 				"unique": "unique",
             }),
-        Choice(
-            "package", {
-                "dev tools": "devtools",
-                "drake": "drake",
-				"string are": "stringr",
-				"(deep liar | deep)": "dplyr",
-				"lubridate": "lubridate",
-				"raster": "raster",
-				"roxygen": "roxygen2",
-            }),
+        Choice("package", package_dict),
         Choice(
             "ggfun", {
                 "aesthetics": "aes",
@@ -369,8 +385,8 @@ class Rlang(MergeRule):
                 "update":"p_update",
             }),
 		IntegerRefST("n", 1, 10000),
-		ShortIntegerRef("nr500", 1, 500),
-        ShortIntegerRef("nr50", 1, 50),
+		IntegerRefST("nr500", 1, 500),
+        IntegerRefST("nr50", 1, 50),
     ]
 
     defaults = {

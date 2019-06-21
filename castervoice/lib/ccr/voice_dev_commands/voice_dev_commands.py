@@ -95,7 +95,7 @@ class VoiceDevCommands(MergeRule):
         "dev repeat":
             R(Text(" * Repeat(extra='n'),"), rdescript="DragonflyDev: Snippet for Repeat"),
         "dev choice":
-            R(Text('Choice("", {') + Pause("10") + Key("enter, up, right:4"),
+            R(Text('Choice("", {})') + Pause("10") + Key("left:2, enter, up, end, left:4"),
               rdescript="DragonflyDev: Snippet for the Choice Extra"),
         "dev mouse [<mouse_button>]":
             R(Function(type_mouse), rdescript="DragonflyDev: Snippet for Mouse Click Command"),
