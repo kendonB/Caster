@@ -26,6 +26,8 @@ package_dict = {
     "stars": "stars",
     "raster": "raster",
     "fist": "fst",
+    "cow plot": "cowplot",
+    "direct labels": "directlabels",
 }
             
 class Rlang(MergeRule):
@@ -185,6 +187,7 @@ class Rlang(MergeRule):
         ),
         Choice(
             "function", {
+                "aesthetics | AES": "aes",
                 "arrange": "arrange",
                 "as character": "as.character",
 				"as date": "as_date",
@@ -202,7 +205,8 @@ class Rlang(MergeRule):
                 "cross": "cross",
                 "crossing": "crossing",
                 "class": "class",
-				"debug": "debug",
+				"come some": "cumsum",
+                "debug": "debug",
                 "desk": "desc",
                 "distinct": "distinct",
                 "drake plan": "drake_plan",
@@ -227,8 +231,8 @@ class Rlang(MergeRule):
                 "gee om point": "geom_point",
                 "gee om line": "geom_line",
                 "gee om (hist | histogram)": "geom_histogram",
+				"gee om S F": "geom_sf",                
                 "G G plot": "ggplot",
-				"gee om S F": "geom_sf",
                 "group by": "group_by",
                 "G G plot": "ggplot",
                 "head": "head",
@@ -339,6 +343,10 @@ class Rlang(MergeRule):
 				"vars": "vars",
 				"walk": "walk",
 				"pee walk": "pwalk",
+                "ex (label | lab)":"xlab",
+                "ex (limit | lim)": "xlim",
+                "why (label | lab)":"ylab",
+                "why (limit | lim)": "ylim",
             }),
         Choice(
             "runwithfunction", {
