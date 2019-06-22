@@ -17,13 +17,9 @@ from castervoice.lib.dfplus.state.actions2 import UntilCancelled
 from castervoice.lib.dfplus.state.short import L, S, R
 from dragonfly.actions.action_mimic import Mimic
 from castervoice.lib.ccr.standard import SymbolSpecs
-<<<<<<< HEAD
-from castervoice.lib.ccr.core.punctuation import text_punc_dict,  double_text_punc_dict
-from castervoice.lib.alphanumeric import caster_alphabet
 
-=======
+from castervoice.lib.alphanumeric import caster_alphabet
 from castervoice.lib.ccr.core.punctuation import text_punc_dict, double_text_punc_dict
->>>>>>> dictation-toolbox/Caster/pull/584
 
 _NEXUS = control.nexus()
 
