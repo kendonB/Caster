@@ -17,6 +17,7 @@ from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
 from castervoice.lib.context import AppContext
+from castervoice.lib.ccr.standard import SymbolSpecs
 
 _NEXUS = control.nexus()
 
@@ -85,9 +86,9 @@ class GridControlRule(MergeRule):
         "refresh":
             R(Function(navigation.mouse_alternates, mode="legion", nexus=_NEXUS),
               rdescript="Legion: Refresh"),
-        "exit | escape | cancel":
+        SymbolSpecs.CANCEL:
             R(Function(kill, nexus=_NEXUS), rdescript="Legion: Exit Legion"),
-        "<n1> (select | light) <n2>":
+        "<n1> (select | light | grab) <n2>":
             R(Function(drag_highlight, nexus=_NEXUS), rdescript="Legion: Highlight Between Two Words"),
     }
     extras = [

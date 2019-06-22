@@ -12,7 +12,7 @@ from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
 from castervoice.lib.context import AppContext
-
+from castervoice.lib.ccr.standard import SymbolSpecs
 import win32api, win32con, time
 
 _NEXUS = control.nexus()
@@ -75,15 +75,15 @@ class GridControlRule(MergeRule):
     mapping = {
         "<x> [by] <y> [<action>]":
             R(Function(send_input, nexus=_NEXUS), rdescript="Douglas Grid: Action"),
-        "<x1> [by] <y1> select <x2> [by] <y2>":
+        "<x1> [by] <y1> (select | grab) <x2> [by] <y2>":
             R(Function(send_input_select, nexus=_NEXUS), rdescript="Douglas Grid: Select (long version)"),
-        "<x1> [by] <y1> select <x2>":
+        "<x1> [by] <y1> (select | grab) <x2>":
             R(Function(send_input_select_short, nexus=_NEXUS), rdescript="Douglas Grid: Select (short version)"),
         "squat":
             R(Function(store_first_point), rdescript="Douglas Grid: Store first point"),
         "bench":
             R(Function(select_text, nexus=_NEXUS), rdescript="Douglas Grid: Select (point version)"),
-        "exit | escape | cancel":
+        SymbolSpecs.CANCEL:
             R(Function(kill, nexus=_NEXUS), rdescript="Douglas Grid: Exit"),
     }
     extras = [
