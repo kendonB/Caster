@@ -144,6 +144,10 @@ class GitBashRule(MergeRule):
             R(Text("git branch | grep \"*\" | awk '{ print $2 }' | clip") + 
               Key("enter/100") + Text("git push https://github.com/alexboche/caster-1.git ") + Key("insert") + 
               Text(":<pr_branch_name>")),
+        "git push [back to] pull request em rob":
+            R(Text("git branch | grep \"*\" | awk '{ print $2 }' | clip") + 
+              Key("enter/100") + Text("git push https://github.com/mrob95/caster.git ") + Key("insert") + 
+              Text(":<pr_branch_name>")),
         "update [my] develop [branch]":
             R(Text("git checkout pure_develop && git pull upstream develop")),
     }
