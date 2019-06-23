@@ -45,7 +45,7 @@ class LaTeX(MergeRule):
             R(back_curl("usepackage[style=authoryear]", "biblatex"),
               rdescript="LaTeX: Import biblatex package"),
         #
-        "symbol [<big>] <symbol>":
+        "insert [<big>] <symbol>":
             R(Text("\\") + Function(symbol_letters, extra={"big", "symbol"}) + Text(" "),
               rdescript="LaTeX: Insert symbols"),
         #
@@ -193,6 +193,8 @@ class LaTeX(MergeRule):
             }),
         Choice(
             "commandnoarg", {
+                "(approx | approximately) equal": "approxeq",
+                "(approx | approximately)": "approx",
                 "line break": "linebreak",
                 "[list] item": "item",
                 "make title": "maketitle",
