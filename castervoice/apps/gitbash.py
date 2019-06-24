@@ -20,12 +20,26 @@ from castervoice.lib.context import AppContext, paste_string_without_altering_cl
 from castervoice.lib.actions import (Key, Text)
 from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
 
+import os
+
 CONFIG = utilities.load_toml_file(settings.SETTINGS["paths"]["BRINGME_PATH"])
 if not CONFIG:
     CONFIG = utilities.load_toml_file(settings.SETTINGS["paths"]["BRINGME_DEFAULTS_PATH"])
 if not CONFIG:
     # logger.warn("Could not load bringme defaults")
     print("Could not load bringme defaults")
+
+def _rebuild_folders():
+    # logger.debug('Bring me rebuilding extras')
+    return {
+        key: (os.path.expandvars(value), 'folder') for key, value in CONFIG['folder'].iteritems()
+    }
+
+def navigate_to(desired_item):
+    item, item_type = desired_item
+    if item_type == 'folder':
+        Text("cd " + item.replace("\\", "/")).execute()
+        Key("enter").execute()
 
 def _apply(n):
     if n != 0:
@@ -157,30 +171,22 @@ class GitBashRule(MergeRule):
             R(Text("git checkout pure_develop && git pull upstream develop")),
 
         # Folder path commands (not git specific)
-        "[folder] path <folder_path>":
-            R(Text("%(folder_path)s"), rdescript="GIT: type in folder path"),
-        "(CD | go to | navigate to | [shell] bring me) <folder_path>":
-            R(Text("cd %(folder_path)s") + Key("enter"), rdescript="GIT: go to folder"),
+#        "[folder] path <folder_path>":
+#            R(Text("%(folder_path)s"), rdescript="GIT: type in folder path"),
+        "(CD | go to | navigate to | [shell] bring me) <desired_item>":
+            R(Function(navigate_to) + Key("enter"), rdescript="GIT: go to folder"),
 
     }
     extras = [
         IntegerRefST("n", 1, 10000),
-        Choice("folder_path", CONFIG["folder"]),
+        Choice("desired_item", _rebuild_folders()),
     ]
     defaults = {"n": 0}
 
 
 # ---------------------------------------------------------------------------
 
-<<<<<<< HEAD
-context = AppContext(executable=["\\sh.exe", "\\bash.exe", "\\cmd.exe", "\\mintty.exe"])
-=======
-context = AppContext(executable="\\sh.exe") | \
-          AppContext(executable="\\bash.exe") | \
-          AppContext(executable="\\cmd.exe") | \
-          AppContext(executable="\\powershell.exe") | \
-          AppContext(executable="\\mintty.exe")
->>>>>>> dictation-toolbox/Caster/pull/476
+context = AppContext(executable=["\\sh.exe", "\\bash.exe", "\\cmd.exe", "\\powershell.exe", "\\mintty.exe"])
 
 if settings.SETTINGS["apps"]["gitbash"]:
     if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
