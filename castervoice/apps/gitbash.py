@@ -39,14 +39,11 @@ def navigate_to(desired_item):
         Text("cd " + item.replace("\\", "/")).execute()
         Key("enter").execute()
 
-<<<<<<< HEAD
-=======
 def type_path(desired_item):
     item, item_type = desired_item
     if item_type == 'folder':
         Text(item.replace("\\", "/")).execute()
 
->>>>>>> dictation-toolbox/Caster/pull/476
 def _apply(n):
     if n != 0:
         Text("stash@{" + str(int(n)) + "}").execute()
