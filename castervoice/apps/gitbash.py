@@ -9,18 +9,23 @@ Command-module for git
 """
 # ---------------------------------------------------------------------------
 
-from dragonfly import (Grammar, Mimic, Function)
+from dragonfly import (Grammar, Mimic, Function, Choice)
 
-from castervoice.lib import control
-from castervoice.lib import settings
+from castervoice.lib import control, settings, utilities
 from castervoice.lib.dfplus.additions import IntegerRefST
 from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
-from castervoice.lib.context import AppContext
+from castervoice.lib.context import AppContext, paste_string_without_altering_clipboard
 from castervoice.lib.actions import (Key, Text)
 from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
 
+CONFIG = utilities.load_toml_file(settings.SETTINGS["paths"]["BRINGME_PATH"])
+if not CONFIG:
+    CONFIG = utilities.load_toml_file(settings.SETTINGS["paths"]["BRINGME_DEFAULTS_PATH"])
+if not CONFIG:
+    # logger.warn("Could not load bringme defaults")
+    print("Could not load bringme defaults")
 
 def _apply(n):
     if n != 0:
@@ -129,37 +134,53 @@ class GitBashRule(MergeRule):
               rdescript="GREP: Search Recursive Filetype"),
         "to file":
             R(Text(" > FILENAME"), rdescript="Bash: To File"),
-            
+
         "git merge into mine":
-            R(Text("git branch | grep \"*\" | awk '{ print $2 }' | clip") + 
-              Key("enter/100") + Text("git checkout what_i_use") + 
-              Key("enter/100") + Text("git merge ") + Key("insert")), 
+            R(Text("git branch | grep \"*\" | awk '{ print $2 }' | clip") +
+              Key("enter/100") + Text("git checkout what_i_use") +
+              Key("enter/100") + Text("git merge ") + Key("insert")),
         "hub pull request":
             R(Text("hub pull-request -o -b develop -a kendonB")),
         "git push [back to] pull request":
-            R(Text("git branch | grep \"*\" | awk '{ print $2 }' | clip") + 
-              Key("enter/100") + Text("git push <pr_url> ") + Key("insert") + 
+            R(Text("git branch | grep \"*\" | awk '{ print $2 }' | clip") +
+              Key("enter/100") + Text("git push <pr_url> ") + Key("insert") +
               Text(":<pr_branch_name>") + Key("home") + Key("right:17")),
         "git push [back to] pull request alex":
-            R(Text("git branch | grep \"*\" | awk '{ print $2 }' | clip") + 
-              Key("enter/100") + Text("git push https://github.com/alexboche/caster-1.git ") + Key("insert") + 
+            R(Text("git branch | grep \"*\" | awk '{ print $2 }' | clip") +
+              Key("enter/100") + Text("git push https://github.com/alexboche/caster-1.git ") + Key("insert") +
               Text(":<pr_branch_name>")),
         "git push [back to] pull request em rob":
-            R(Text("git branch | grep \"*\" | awk '{ print $2 }' | clip") + 
-              Key("enter/100") + Text("git push https://github.com/mrob95/caster.git ") + Key("insert") + 
+            R(Text("git branch | grep \"*\" | awk '{ print $2 }' | clip") +
+              Key("enter/100") + Text("git push https://github.com/mrob95/caster.git ") + Key("insert") +
               Text(":<pr_branch_name>")),
         "update [my] develop [branch]":
             R(Text("git checkout pure_develop && git pull upstream develop")),
+
+        # Folder path commands (not git specific)
+        "[folder] path <folder_path>":
+            R(Text("%(folder_path)s"), rdescript="GIT: type in folder path"),
+        "(CD | go to | navigate to | [shell] bring me) <folder_path>":
+            R(Text("cd %(folder_path)s") + Key("enter"), rdescript="GIT: go to folder"),
+
     }
     extras = [
         IntegerRefST("n", 1, 10000),
+        Choice("folder_path", CONFIG["folder"]),
     ]
     defaults = {"n": 0}
 
 
 # ---------------------------------------------------------------------------
 
+<<<<<<< HEAD
 context = AppContext(executable=["\\sh.exe", "\\bash.exe", "\\cmd.exe", "\\mintty.exe"])
+=======
+context = AppContext(executable="\\sh.exe") | \
+          AppContext(executable="\\bash.exe") | \
+          AppContext(executable="\\cmd.exe") | \
+          AppContext(executable="\\powershell.exe") | \
+          AppContext(executable="\\mintty.exe")
+>>>>>>> dictation-toolbox/Caster/pull/476
 
 if settings.SETTINGS["apps"]["gitbash"]:
     if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
