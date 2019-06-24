@@ -26,11 +26,9 @@ CONFIG = utilities.load_toml_file(settings.SETTINGS["paths"]["BRINGME_PATH"])
 if not CONFIG:
     CONFIG = utilities.load_toml_file(settings.SETTINGS["paths"]["BRINGME_DEFAULTS_PATH"])
 if not CONFIG:
-    # logger.warn("Could not load bringme defaults")
     print("Could not load bringme defaults")
 
 def _rebuild_folders():
-    # logger.debug('Bring me rebuilding extras')
     return {
         key: (os.path.expandvars(value), 'folder') for key, value in CONFIG['folder'].iteritems()
     }
@@ -41,6 +39,14 @@ def navigate_to(desired_item):
         Text("cd " + item.replace("\\", "/")).execute()
         Key("enter").execute()
 
+<<<<<<< HEAD
+=======
+def type_path(desired_item):
+    item, item_type = desired_item
+    if item_type == 'folder':
+        Text(item.replace("\\", "/")).execute()
+
+>>>>>>> dictation-toolbox/Caster/pull/476
 def _apply(n):
     if n != 0:
         Text("stash@{" + str(int(n)) + "}").execute()
@@ -171,10 +177,10 @@ class GitBashRule(MergeRule):
             R(Text("git checkout pure_develop && git pull upstream develop")),
 
         # Folder path commands (not git specific)
-#        "[folder] path <folder_path>":
-#            R(Text("%(folder_path)s"), rdescript="GIT: type in folder path"),
+        "[folder] path <desired_item>":
+            R(Function(type_path), rdescript="GIT: type in folder path"),
         "(CD | go to | navigate to | [shell] bring me) <desired_item>":
-            R(Function(navigate_to) + Key("enter"), rdescript="GIT: go to folder"),
+            R(Function(navigate_to), rdescript="GIT: go to folder"),
 
     }
     extras = [
