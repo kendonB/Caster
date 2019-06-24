@@ -355,7 +355,7 @@
 | `[move] line down`                     | `kill back`                          | `extract constant`           |
 | `extract param`                        | `kill`                               | `override method `           |
 | `auto indent`                          |
-| GIT Commands (embedded terminal)
+| GIT Commands (embedded terminal) 
 | `(get push / push)`                    | `fetch`                              | `search recursive filetype`  |
 | `(undo changes / reset hard)`          | `gooey blame`                        | `stash`                      |
 | `CD`                                   | `initialize repository`              | `stash apply [<n>]`          |
@@ -476,7 +476,7 @@
 | `(new / create) snippet`       | `close tab`                       | `next tab`                    |
 | `previous tab`                 | `<nth> tab`                       | `column <cols>`               |
 | `focus <panel>`                | `move <panel>`                    | `open terminal`               |
-
+    
 \* select / copy / cut / paste / delete
 
 # Typora

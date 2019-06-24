@@ -303,7 +303,7 @@ class Navigation(MergeRule):
             R(Function(navigation.left_down, nexus=_NEXUS)),
         "bench":
             R(Function(navigation.left_up, nexus=_NEXUS)),
-        
+
         # keystroke commands
         "<direction> [<nnavi500>]": R(Key("%(direction)s") * Repeat(extra='nnavi500'),
             rdescript="arrow keys"),
@@ -315,9 +315,9 @@ class Navigation(MergeRule):
         "frick [<nnavi500>]": R(Key("s-right:%(nnavi500)s")),
         "blitch [<nnavi500>]": R(Key("cs-left:%(nnavi500)s")),
         "flitch [<nnavi500>]": R(Key("cs-right:%(nnavi500)s")),
-        
+
         "<modifier> <button_dictionary_500> [<nnavi500>]":
-              R(Key("%(modifier)s-%(button_dictionary_500)s") * Repeat(extra='nnavi500'), 
+              R(Key("%(modifier)s-%(button_dictionary_500)s") * Repeat(extra='nnavi500'),
               rdescript="press modifier keys plus buttons from button_dictionary_500"),
         "<modifier> <button_dictionary_10> [<nnavi10>]":
               R(Key("%(modifier)s-%(button_dictionary_10)s") * Repeat(extra='nnavi10'),
@@ -325,9 +325,11 @@ class Navigation(MergeRule):
         "<modifier> <button_dictionary_1>":
               R(Key("%(modifier)s-%(button_dictionary_1)s"),
               rdescript="press modifiers plus buttons from button_dictionary_1, non-repeatable"),
-        
-        
+
+
     }
+    tell_commands_dict = {"dock": ";", "doc": ";", "sink": "", "com": ",", "deck": ":"}
+    tell_commands_dict.update(text_punc_dict)
 
     # I tried to limit which things get repeated how many times in hopes that it will help prevent the bad grammar error
     # this could definitely be changed. perhaps some of these should be made non-CCR
@@ -343,7 +345,7 @@ class Navigation(MergeRule):
     tell_commands_dict.update(text_punc_dict)
 
     extras = [
-        
+
         IntegerRefST("nnavi10", 1, 11),
         IntegerRefST("nnavi50", 1, 50),
         IntegerRefST("nnavi500", 1, 500),
@@ -355,10 +357,10 @@ class Navigation(MergeRule):
             "lease": "left",
             "ross": "right",
         }),
-        
+
         Choice("button_dictionary_1", button_dictionary_1),
-        Choice("button_dictionary_10", button_dictionary_10), 
-        Choice("button_dictionary_500", button_dictionary_500), 
+        Choice("button_dictionary_10", button_dictionary_10),
+        Choice("button_dictionary_500", button_dictionary_500),
         Choice("modifier", {
             "(control | fly)": "c",
             "(shift | shin)": "s",

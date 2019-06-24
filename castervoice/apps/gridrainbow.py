@@ -13,7 +13,6 @@ from castervoice.lib.dfplus.merge import gfilter
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
 from castervoice.lib.context import AppContext
-from castervoice.lib.ccr.standard import SymbolSpecs
 
 import win32api, win32con, time
 
@@ -78,15 +77,15 @@ class GridControlRule(MergeRule):
     mapping = {
         "[<pre>] <color> <n> [<action>]":
             R(Function(send_input, nexus=_NEXUS), rdescript="Rainbow Grid: Action"),
-        "[<pre1>] <color1> <n1> (select | grab) [<pre2>] <color2> <n2>":
+        "[<pre1>] <color1> <n1> select [<pre2>] <color2> <n2>":
             R(Function(send_input_select, nexus=_NEXUS), rdescript="Rainbow Grid: Select (long version)"),
-        "[<pre1>] <color1> <n1> (select | grab) <n2>":
+        "[<pre1>] <color1> <n1> select <n2>":
             R(Function(send_input_select_short, nexus=_NEXUS), rdescript="Rainbow Grid: Select (short version)"),
         "squat":
             R(Function(store_first_point), rdescript="Rainbow Grid: Store first point"),
         "bench":
             R(Function(select_text, nexus=_NEXUS), rdescript="Rainbow Grid: Select (point version)"),
-        SymbolSpecs.CANCEL:
+        "exit | escape | cancel":
             R(Function(kill, nexus=_NEXUS), rdescript="Rainbow Grid: Exit"),
     }
     extras = [
