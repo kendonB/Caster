@@ -3,15 +3,7 @@ Created on May 23, 2017filelist
 
 @author: shippy
 '''
-
-from dragonfly import Dictation, MappingRule, Choice, Repeat, Function, Repetition
-
-from castervoice.lib import control
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.ccr.standard import SymbolSpecs
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-from castervoice.lib.dfplus.additions import IntegerRefST
+from castervoice.lib.imports import *
 
 package_dict = {
     "dev tools": "devtools",
@@ -29,141 +21,135 @@ package_dict = {
     "cow plot": "cowplot",
     "direct labels": "directlabels",
 }
-            
+
 class Rlang(MergeRule):
     auto = [".R", ".r"]
     pronunciation = "are"
 
     mapping = {
         SymbolSpecs.IF:
-            R(Text("if ()") + Key("left"), rdescript="Rlang: If"),
+            R(Text("if ()") + Key("left")),
         SymbolSpecs.ELSE:
-            R(Text("else ") + Key("enter"), rdescript="Rlang: Else"),
+            R(Text("else ") + Key("enter")),
         #
         # (no switch in Rlang)
         SymbolSpecs.BREAK:
-            R(Text("break"), rdescript="Rlang: Break"),
+            R(Text("break")),
         #
         SymbolSpecs.FOR_EACH_LOOP:
-            R(Text("for ( in ):") + Key("left:6"), rdescript="Rlang: For Each Loop"),
+            R(Text("for ( in ):") + Key("left:6")),
         SymbolSpecs.FOR_LOOP:
-            R(Text("for (i in 1:)") + Key("left"), rdescript="Rlang: For i Loop"),
+            R(Text("for (i in 1:)") + Key("left")),
         SymbolSpecs.WHILE_LOOP:
-            R(Text("while ()") + Key("left"), rdescript="Rlang: While"),
+            R(Text("while ()") + Key("left")),
         # (no do-while in Rlang)
         #
         SymbolSpecs.AND:
-            R(Text(" & "), rdescript="Rlang: And"),
+            R(Text(" & ")),
         SymbolSpecs.OR:
-            R(Text(" | "), rdescript="Rlang: Or"),
+            R(Text(" | ")),
         SymbolSpecs.NOT:
-            R(Text("!"), rdescript="Rlang: Not"),
+            R(Text("!")),
         #
         SymbolSpecs.SYSOUT:
-            R(Text("print()") + Key("left"), rdescript="Rlang: Print"),
+            R(Text("print()") + Key("left")),
         #
         SymbolSpecs.IMPORT + " <lib_seq>":
             R(Text("pacman::p_load()") + Key("left, enter") + Function(lambda lib_seq: Text(",\n".join(lib_seq)).execute())),
         "these packages <lib_seq>":
             R(Function(lambda lib_seq: Text(",\n".join(lib_seq)).execute())),
-        "by commies <n_seq>":
-            R(Function(lambda n_seq: Text(", ".join(map(str, n_seq))).execute())),        
         #
         # SymbolSpecs.FUNCTION:
         #     R(Text("function()") + Key("left"), rdescript="Rlang: Function"),
-		SymbolSpecs.FUNCTION:               
-		    R(Text("function()") + Key("leftbrace, rightbrace, left, enter, c-left, c-left, c-left, right"), rdescript="R: Function"),
+		SymbolSpecs.FUNCTION:
+		    R(Text("function()") + Key("leftbrace, rightbrace, left, enter, c-left, c-left, c-left, right")),
 
         # SymbolSpecs.CLASS:          R(Text("setClass()") + Key("left"), rdescript="Rlang: Class"),
-        #
         SymbolSpecs.COMMENT:
-            R(Text("#"), rdescript="Rlang: Add Comment"),
+            R(Text("#")),
         #
         SymbolSpecs.NULL:
-            R(Text("NULL"), rdescript="Rlang: Null"),
+            R(Text("NULL")),
         #
         SymbolSpecs.RETURN:
-            R(Text("return()") + Key("left"), rdescript="Rlang: Return"),
+            R(Text("return()") + Key("left")),
         #
         SymbolSpecs.TRUE:
-            R(Text("TRUE"), rdescript="Rlang: True"),
+            R(Text("TRUE")),
         SymbolSpecs.FALSE:
-            R(Text("FALSE"), rdescript="Rlang: False"),
+            R(Text("FALSE")),
 
         # Rlang specific
         "assign":
-            R(Text(" <- "), rdescript="Rlang: Assignment"),
+            R(Text(" <- ")),
         "in (op | operator)":
-            R(Key('space, percent, i, n, percent, space'),
-              rdescript="Rlang: In operator"),
+            R(Key('space, percent, i, n, percent, space')),
         "slurp | chain":
-            R(Key('space, percent, rangle, percent, space'), rdescript="Rlang: Pipe"),
+            R(Key('space, percent, rangle, percent, space')),
         "tell (slurp | chain)":
-            R(Key('end, space, percent, rangle, percent, enter'),
-              rdescript="Rlang: Pipe at end"),
+            R(Key('end, space, percent, rangle, percent, enter')),
         "tell add":
-            R(Key('end, space, plus, enter'), rdescript="Rlang: plus at end"),
+            R(Key('end, space, plus, enter')),
         "NA":
-            R(Text("NA"), rdescript="Rlang: Not Available"),
+            R(Text("NA")),
         "shell iffae | LFA":
-            R(Text("elseif ()") + Key("left"), rdescript="Rlang: Else If"),
+            R(Text("elseif ()") + Key("left")),
         "dot (our|are)":
-            R(Text(".R"), rdescript="Rlang: .py"),
+            R(Text(".R")),
         "see as vee":
-            R(Text("csv"), rdescript="Rlang: csv"),
+            R(Text("csv")),
 
 
         #"tidy verse":
         #    R(Text("tidyverse"), rdescript="Rlang: tidyverse"),
         "fun <function>":
-            R(Text("%(function)s()") + Key("left"), rdescript="Rlang: insert a function"),
+            R(Text("%(function)s()") + Key("left")),
         "fun target with transform":
-            R(Text("target(") + Key("enter") + Text(",") + Key("enter") + Text("transform = ") + Key("up") + Key("left"), rdescript="Rlang: insert a target function"),
+            R(Text("target(") + Key("enter") + Text(",") + Key("enter") + Text("transform = ") + Key("up") + Key("left")),
         "new fun <text>":
-            R(Text("%(text)s()") + Key("left"), rdescript="Rlang: insert a function"),
+            R(Text("%(text)s()") + Key("left")),
         "package <package>":
-            R(Text("%(package)s::"), rdescript="Rlang: insert a package"),
+            R(Text("%(package)s::")),
         "graph <ggfun>":
-            R(Text("%(ggfun)s()") + Key("left"),
-              rdescript="Rlang: insert a ggplot function"),
+            R(Text("%(ggfun)s()") + Key("left")),
         "pack <pacfun>":
-            R(Text("%(pacfun)s()") + Key("left"), rdescript="Rlang: insert a pacman function"),
-		
+            R(Text("%(pacfun)s()") + Key("left")),
+
 		"temp":
             R(Text("tmp"), rdescript="Rlang: tmp"),
-		
+
 # should be in rstudio but continuous command recognition doesn't seem to be working for apps contexts
-        "[go] [to] line <nr500>":    
+        "[go] [to] line <nr500>":
             R(Key("as-g/10") + Text("%(nr500)s") + Key("enter"),
               rdescript="R: Go to Line #"),
-		"run it <n>":                    
-	        Key("home")+R(Key("s-down"), rdescript="R: Run command") * Repeat(extra="n") + Key("c-enter") + Key("right"), 
-	    "run it":                    
-	        Key("c-enter"),		
-        "run it terminal":                    
+		"run it <n>":
+	        Key("home")+R(Key("s-down"), rdescript="R: Run command") * Repeat(extra="n") + Key("c-enter") + Key("right"),
+	    "run it":
+	        Key("c-enter"),
+        "run it terminal":
 	        Key("ca-enter"),
 	    "run stay":
-	        Key("a-enter"), 
+	        Key("a-enter"),
 	    "run this":
 	        Key("c-right, cs-left, c-enter"),
-        "run script":                    
+        "run script":
 	        Key("cs-s"),
-        "run above":                    
+        "run above":
 	        Key("ca-b"),
-        "run below":                    
+        "run below":
 	        Key("ca-e"),
-			
+
 		"focus console":
             R(Key("c-2"), rdescript="RStudio: Focus Console"),
         "focus main":
             R(Key("c-1"), rdescript="RStudio: Focus Main"),
-        "help this":                        
+        "help this":
 		    R(Key("f1"), rdescript="R: Help for function at cursor"),
-		
-		"run with function <runwithfunction>":  
+
+		"run with function <runwithfunction>":
 		    R(Key("c-c") + Key("c-2/10") + Key("c-a, backspace") + Text("%(runwithfunction)s") + Key("s-9") +
 		        Key("c-v") + Key("enter/100") + Key("c-1"), rdescript="R: Run with function"),
-	    "run with function <runwithfunction> terminal":  
+	    "run with function <runwithfunction> terminal":
 		    R(Key("c-c") + Key("as-t/50") + Key("end") + Key("backspace:20") + Text("%(runwithfunction)s") + Key("s-9") +
 		        Key("s-insert") + Key("s-0") + Key("enter/100") + Key("c-1"), rdescript="R: Run with function"),
 		"jump sun [<nr500>] <text>":
@@ -181,10 +167,6 @@ class Rlang(MergeRule):
             Choice("package", package_dict),
             min = 1, max = 8, name = "lib_seq"
         ),
-        Repetition(
-            IntegerRefST("n", 1, 10000),
-            min = 1, max = 10, name = "n_seq"
-        ),
         Choice(
             "function", {
                 "aesthetics | AES": "aes",
@@ -197,7 +179,7 @@ class Rlang(MergeRule):
                 "bind cols": "bind_cols",
                 "bind plans": "bind_plans",
 				"bind rows": "bind_rows",
-				"browser": "browser", 
+				"browser": "browser",
                 "case when": "case_when",
                 "combine": "combine",
                 "complete": "complete",
@@ -231,7 +213,7 @@ class Rlang(MergeRule):
                 "gee om point": "geom_point",
                 "gee om line": "geom_line",
                 "gee om (hist | histogram)": "geom_histogram",
-				"gee om S F": "geom_sf",                
+				"gee om S F": "geom_sf",
                 "G G plot": "ggplot",
                 "group by": "group_by",
                 "G G plot": "ggplot",
