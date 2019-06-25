@@ -44,6 +44,8 @@ class LaTeX(MergeRule):
             R(Text("\\%(commandnoarg)s ")),
         "insert quotes":
             R(Text("``\'\'") + Key("left:2")),
+        "insert integral":
+            R(Text("\\int_{}^{}") + Key("left:4")),
         #
         "superscript":
             R(Text("^") + Key("lbrace, rbrace, left")),
@@ -197,7 +199,7 @@ class LaTeX(MergeRule):
             "symbol",
             {
                 "alpha": "alpha",
-                "beater": "beta",
+                "beater | beta": "beta",
                 "gamma": "gamma",
                 "delta": "delta",
                 "epsilon": "epsilon",
