@@ -1,23 +1,7 @@
-"""
-Command-module for Legion
-
-"""
-
-import time
-
-from dragonfly import (Grammar, Function, Playback, Choice, MappingRule)
-import win32api
-import win32con
+from castervoice.lib.imports import *
 
 from castervoice.asynch.mouse import grids
-from castervoice.lib import control
-from castervoice.lib import navigation, settings
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.merge import gfilter
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-from castervoice.lib.context import AppContext
-from castervoice.lib.ccr.standard import SymbolSpecs
+import win32api, win32con
 
 _NEXUS = control.nexus()
 
@@ -78,18 +62,17 @@ def drag_highlight(n1, n2, nexus):
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0)
 
 
-class GridControlRule(MergeRule):
+class LegionGridRule(MergeRule):
 
     mapping = {
         "<n> [<action>]":
-            R(Function(send_input, nexus=_NEXUS), rdescript="Legion: Action"),
+            R(Function(send_input, nexus=_NEXUS)),
         "refresh":
-            R(Function(navigation.mouse_alternates, mode="legion", nexus=_NEXUS),
-              rdescript="Legion: Refresh"),
+            R(Function(navigation.mouse_alternates, mode="legion", nexus=_NEXUS)),
         SymbolSpecs.CANCEL:
-            R(Function(kill, nexus=_NEXUS), rdescript="Legion: Exit Legion"),
+            R(Function(kill, nexus=_NEXUS)),
         "<n1> (select | light | grab) <n2>":
-            R(Function(drag_highlight, nexus=_NEXUS), rdescript="Legion: Highlight Between Two Words"),
+            R(Function(drag_highlight, nexus=_NEXUS)),
     }
     extras = [
         Choice("action", {
@@ -106,13 +89,5 @@ class GridControlRule(MergeRule):
     }
 
 
-#---------------------------------------------------------------------------
-
 context = AppContext(title="legiongrid")
-grammar = Grammar("legiongrid", context=context)
-
-if settings.SETTINGS["apps"]["legion"]:
-    rule = GridControlRule(name="legion")
-    gfilter.run_on(rule)
-    grammar.add_rule(rule)
-    grammar.load()
+control.non_ccr_app_rule(LegionGridRule(), context=context)

@@ -1,18 +1,4 @@
-'''
-Mike Roberts 13/09/18
-'''
-
-from dragonfly import (Dictation, Grammar, MappingRule, Pause,
-                       Repeat, Mimic)
-
-from castervoice.lib import control, settings, navigation
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.temporary import Store, Retrieve
-from castervoice.lib.context import AppContext
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.merge import gfilter
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
+from castervoice.lib.imports import *
 
 class RStudioRule(MergeRule):
     pronunciation = "are studio"
@@ -119,12 +105,4 @@ class RStudioRule(MergeRule):
 
 
 context = AppContext(executable="rstudio")
-grammar = Grammar("RStudio", context=context)
-if settings.SETTINGS["apps"]["rstudio"]:
-    if settings.SETTINGS["miscellaneous"]["rdp_mode"]:
-        control.nexus().merger.add_global_rule(RStudioRule())
-    else:
-        rule = RStudioRule()
-        gfilter.run_on(rule)
-        grammar.add_rule(RStudioRule(name="rstudio"))
-        grammar.load()
+control.non_ccr_app_rule(RStudioRule(), context=context)
