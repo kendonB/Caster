@@ -5,9 +5,9 @@ class FileDialogueRule(MergeRule):
     pronunciation = "file dialogue"
 
     mapping = {
-        "up [<n>]"           : R(Key("a-up"))*Repeat(extra="n"),
-        "back [<n>]"         : R(Key("a-left"))*Repeat(extra="n"),
-        "forward [<n>]"      : R(Key("a-right"))*Repeat(extra="n"),
+        "get up [<n>]"           : R(Key("a-up"))*Repeat(extra="n"),
+        "get back [<n>]"         : R(Key("a-left"))*Repeat(extra="n"),
+        "get forward [<n>]"      : R(Key("a-right"))*Repeat(extra="n"),
         "(files | file list)": R(Key("a-d, f6:3")),
         "navigation [pane]"  : R(Key("a-d, f6:2")),
         "[file] name"        : R(Key("a-d, f6:5")),
