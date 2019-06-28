@@ -3,14 +3,7 @@ Created on Sep 1, 2015
 
 @author: synkarius
 '''
-from dragonfly import Dictation, MappingRule, Choice, Pause
-
-from castervoice.lib import control
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.ccr.standard import SymbolSpecs
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-
+from castervoice.lib.imports import *
 
 class PythonNon(MappingRule):
     mapping = {
@@ -120,10 +113,10 @@ class Python(MergeRule):
             # going into the command pallet (cs-p) and typing in "insert snippet"
             # then press enter and then you have choices of snippets show up in the drop-down list.
             # you can also make your own snippets.
-        "try [<exception>]":
+        "try <exception>":
             R(Text("try : ") + Pause("10") + Key("enter/2")
             + Text("except %(exception)s:") + Pause("10") + Key("enter/2")),
-        "try [<exception>] as":
+        "try <exception> as":
             R(Text("try :") + Pause("10") + Key("enter/2") + Text("except %(exception)s as :")
             + Pause("10") + Key("enter/2")),
 
@@ -131,8 +124,8 @@ class Python(MergeRule):
         "subclass": R(Text("class ():") + Key("left:3")),
         "dunder": R(Text("____()") + Key("left:4")),
         "init": R(Text("__init__()") + Key("left")),
-        "meth [<binary_meth>]": R(Text("__%(binary_meth)s__(self, other):")),
-        "meth [<unary_meth>]": R(Text("__%(unary_meth)s__(self):")),
+        "meth <binary_meth>": R(Text("__%(binary_meth)s__(self, other):")),
+        "meth <unary_meth>": R(Text("__%(unary_meth)s__(self):")),
     }
 
     extras = [

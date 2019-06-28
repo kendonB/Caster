@@ -1,0 +1,95 @@
+All beneath `castervoice`:
+```
+- rules
+    - core
+        - nav.py
+        - app_control.py # use this to split out stuff from nav.py and app grammars that are common. 
+                         # e.g. "save", "open"
+        - alphabet.py
+        - numbers.py
+        - punctuation.py
+        - text_manipulation.py
+    - browser
+        - browser.py # contains shared commands (e.g. Ctrl-L) is the same in chrome and firefox
+        - chrome.py
+        - firefox.py
+    - editor
+        - editor.py # contains most common shared commands (e.g. Ctrl-G + number + Enter is 
+                    # usually go to line)
+        - atom.py
+        - eclipse.py
+        - emacs.py
+        - flashdevelop.py
+        - jetbrains.py
+        - kdiff3.py
+        - lyx.py
+        - msvc.py
+        - notepadplusplus.py
+        - rstudio.py
+        - sqldeveloper.py
+        - ssms.py
+        - sublime.py
+        - typora.py
+        - visualstudio.py
+        - vscode.py
+    - windows
+        - explorer.py
+        - file_dialogue.py
+    - terminal
+        - terminal.py
+        - cmd.py
+        - gitbash.py
+    - mouse
+        - griddouglas.py
+        - gridlegion.py
+        - gridrainbow.py
+    - speech_engine
+        - dragon.py
+        - wsr.py
+    - other
+        - adobe_acrobat.py
+        - excel.py
+        - fman.py
+        - foxitreader.py
+        - githubdesktop.py
+        - gitter.py
+        - totalcmd.py
+        - winword.py
+        - sikuli.py # needs to be pulled out from the current file
+- commands
+    - literally identical to rules
+- doc
+    - as is
+- functions # for functions that support actual actions
+    - core
+        - actions.py
+        - alphanumeric.py
+        - clipboard.py
+        - context.py
+        - control.py
+        - gdi.py
+        - github_automation.py
+        - github_automation.ahk
+        - navigation.py
+        - settings.py
+        - temporary.py
+        - terminal.py
+        - text_manipulation.py
+        - text_utils.py
+        - textformat.py
+        - utilities.py
+        - version.py
+    - homunculus # from asynch
+    - mouse # from asynch
+        - existing files + lib/dll/tirg-dll.dll # possibly get the source code in here too
+    - sikuli # from asynch
+    - other
+        - settingswindow.py  # from asynch
+- infrastructure # for actual caster infrastructure
+    - ctrl # from lib
+    - dfplus
+- bin
+    - as is but probably should have lib/dll?
+- tests
+    - dev # from lib/dev
+```

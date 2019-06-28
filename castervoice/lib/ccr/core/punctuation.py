@@ -7,46 +7,6 @@ from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
 from castervoice.lib.dfplus.merge.mergerule import MergeRule
 from castervoice.lib.dfplus.state.short import R
 
-text_punc_dict = {
-    "ace":                                  " ",
-    "clamor":                               "!",     
-    "chocky":                              "\"",
-    "hash tag":                             "#",
-    "Dolly":                                "$",
-    "modulo":                               "%",
-    "ampersand":                            "&",
-    "apostrophe | single quote | chicky":   "'",   
-    "left prekris":                         "(",
-    "right prekris":                        ")",
-    "starling":                             "*",  
-    "plus":                                 "+",
-    "comma":                                ",",  
-    "minus":                                "-",
-    "period | dot":                         ".", 
-    "bam":                                 ". ", 
-    "slash":                                "/",
-    "deckle":                               ":",
-    "semper":                               ";",
-    "[is] less than | left angle":          "<",
-    "[is] less [than] [or] equal [to]":    "<=",
-    "equals":                               "=",
-    "[is] equal to":                       "==",
-    "[is] greater than | right angle":      ">",  
-    "[is] greater [than] [or] equal [to]": ">=",
-    "questo":                               "?", 
-    "(atty | at symbol)":                   "@", 
-    "left brax":                            "[",
-    "backslash":                           "\\",
-    "right brax":                           "]",
-    "carrot":                               "^", 
-    "underscore":                           "_",
-    "ticky":                                "`",
-    "left curly":                           "{",
-    "pipe (sim | symbol)":                  "|",
-    "right curly":                          "}",
-    "tilde":                                "~",
-}
-
 double_text_punc_dict = {
     "quotes":                            "\"\"",
     "thin quotes":                         "''",
@@ -57,24 +17,68 @@ double_text_punc_dict = {
     "angle":                               "<>",
 }
 
+inv_dtpb = {v: k for k, v in double_text_punc_dict.iteritems()}
+
+text_punc_dict = {
+    "ace":                                                " ",
+    "clamor":                                             "!",
+    "chocky":                                            "\"",
+    "hash tag":                                           "#",
+    "Dolly":                                              "$",
+    "modulo":                                             "%",
+    "ampersand":                                          "&",
+    "apostrophe | single quote | chicky":                 "'",
+    "left " + inv_dtpb["()"]:                             "(",
+    "right " + inv_dtpb["()"]:                            ")",
+    "starling":                                           "*",
+    "plus":                                               "+",
+    "commy":                                              ",",
+    "minus":                                              "-",
+    "period | dot":                                       ".",
+    "slash":                                              "/",
+    "deckle":                                             ":",
+    "semper":                                             ";",
+    "[is] less than | left " + inv_dtpb["<>"]:            "<",
+    "[is] less [than] [or] equal [to]":                  "<=",
+    "equals":                                             "=",
+    "[is] equal to":                                     "==",
+    "[is] greater than | right " + inv_dtpb["<>"]:        ">",
+    "[is] greater [than] [or] equal [to]":               ">=",
+    "questo":                                             "?",
+    "(atty | at symbol)":                                 "@",
+    "left " + inv_dtpb["[]"]:                             "[",
+    "backslash":                                         "\\",
+    "right " + inv_dtpb["[]"]:                            "]",
+    "carrot":                                             "^",
+    "underscore":                                         "_",
+    "ticky | ((left | right) " +  inv_dtpb["``"] + " )":  "`",
+    "left " + inv_dtpb["{}"]:                             "{",
+    "pipe (sim | symbol)":                                "|",
+    "right " + inv_dtpb["{}"]:                            "}",
+    "tilde":                                              "~",
+}
+
 class Punctuation(MergeRule):
     pronunciation = CCRMerger.CORE[3]
 
     mapping = {
-        "[<long>] <text_punc> [<npunc>]": 
+        "[<long>] <text_punc> [<npunc>]":
             R(Text("%(long)s" + "%(text_punc)s" + "%(long)s"))*Repeat(extra="npunc"),
-        "[<long>] backslash [<npunc>]": 
-            R(Text("%(long)s" + "\\" + "%(long)s"))*Repeat(extra="npunc"),
-        "<double_text_punc>": 
-            R(Text("%(double_text_punc)s") + Key("left")),
+        # For some reason, this one doesn't work through the other function
+        "[<long>] backslash [<npunc>]":
+            R(Text("%(long)s" + "\\" + "%(long)s")),
+        "<double_text_punc> [<npunc>]":
+            R(Text("%(double_text_punc)s") + Key("left"))*Repeat(extra="npunc"),
         "tabby [<npunc>]":
-            R(Key("tab"), rdescript="Core: Tab")*Repeat(extra="npunc"),
+            R(Key("tab")),
         "(back | shin) tabby [<npunc>]":
-            R(Key("s-tab"), rdescript="Core: Shift Tab")*Repeat(extra="npunc"),
+            R(Key("s-tab")),
         "boom [<npunc>]":
-            R(Text(", "), rdescript="Core: Comma + Space")*Repeat(extra="npunc"),
+            R(Text(", ")),
+        "bam [<npunc>]":
+            R(Text(". ")),
         "ace [<npunc100>]":
-            R(Text(" "), rdescript="Core: Space")*Repeat(extra="npunc100"),
+            R(Text(" ")),
     }
 
     extras = [

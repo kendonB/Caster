@@ -1,20 +1,16 @@
-from dragonfly import Function, ShortIntegerRef
-
-from castervoice.lib import control, alphanumeric
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.merge.ccrmerger import CCRMerger
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
+from castervoice.lib.imports import *
 
 class Numbers(MergeRule):
     pronunciation = CCRMerger.CORE[2]
     mapping = {
         "word number <wn>":
-            R(Function(alphanumeric.word_number, extra="wn"), rdescript="Core: Number as Word"),
+            R(Function(alphanumeric.word_number, extra="wn")),
         "numb <wnKK>":
             R(Function(alphanumeric.numbers2, extra="wnKK"),
-              rspec="Number",
-              rdescript="Core: Number"),
+              rspec="Number"),
+        "bum <wnKK>":
+            R(Text(", ") + Function(alphanumeric.numbers2, extra="wnKK"),
+              rspec="Number"),
     }
 
     extras = [

@@ -3,15 +3,7 @@ Created on Sep 4, 2018
 
 @author: Mike Roberts
 '''
-from dragonfly import Function, Choice, Repeat, Dictation
-
-from castervoice.lib import control
-from castervoice.lib.actions import Key, Text
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.state.short import R
-from castervoice.lib.ccr.standard import SymbolSpecs
-
+from castervoice.lib.imports import *
 
 # Return \first{second}, if second is empty then end inside the brackets for user input
 def back_curl(first, second):
@@ -33,42 +25,38 @@ class LaTeX(MergeRule):
 
     mapping = {
         SymbolSpecs.COMMENT:
-            R(Text("%"), rdescript="LaTeX: Add Comment"),
+            R(Text("%")),
         "begin <element>":
             R(back_curl("begin", "%(element)s") + Key("enter:2") + back_curl(
-                "end", "%(element)s") + Key("up"),
-              rdescript="LaTeX: Define beginning and end of an element"),
+                "end", "%(element)s") + Key("up")),
         #
         "[use] package [<packages>]":
-            R(back_curl("usepackage", "%(packages)s"), rdescript="LaTeX: Import packages"),
+            R(back_curl("usepackage", "%(packages)s")),
         "[use] package bib latex":
-            R(back_curl("usepackage[style=authoryear]", "biblatex"),
-              rdescript="LaTeX: Import biblatex package"),
+            R(back_curl("usepackage[style=authoryear]", "biblatex")),
         #
-        "symbol [<big>] <symbol>":
-            R(Text("\\") + Function(symbol_letters, extra={"big", "symbol"}) + Text(" "),
-              rdescript="LaTeX: Insert symbols"),
+        "insert [<big>] <symbol>":
+            R(Text("\\") + Function(symbol_letters, extra={"big", "symbol"}) + Text(" ")),
         #
         "insert <command>":
-            R(back_curl("%(command)s", ""),
-            rdescript="LaTeX: Insert command requiring an argument"),
+            R(back_curl("%(command)s", "")),
         "insert <commandnoarg>":
-            R(Text("\\%(commandnoarg)s "),
-            rdescript="LaTeX: Insert command not requiring an argument"),
-        "insert quotea":
-            R(Text("``\'\'") + Key("left:2"), rdescript="LaTeX: Insert a quote"),
+            R(Text("\\%(commandnoarg)s ")),
+        "insert quotes":
+            R(Text("``\'\'") + Key("left:2")),
+        "insert integral":
+            R(Text("\\int_{}^{}") + Key("left:4")),
         #
         "superscript":
-            R(Text("^") + Key("lbrace, rbrace, left"), rdescript="LaTeX: Superscript"),
+            R(Text("^") + Key("lbrace, rbrace, left")),
         "subscript":
-            R(Text("_") + Key("lbrace, rbrace, left"), rdescript="LaTeX: Subscript"),
+            R(Text("_") + Key("lbrace, rbrace, left")),
         "math fraction":
             R(Text("\\") + Text("frac") +
-                Key("lbrace, rbrace, lbrace, rbrace, space, left:4"),
-                rdescript="LaTeX: Fraction"),
+                Key("lbrace, rbrace, lbrace, rbrace, space, left:4")),
         # TexStudio specific
 		SymbolSpecs.COMMENT:                R(Key("c-t"), rdescript="R: Add Comment"),
-        
+
         "tech":                             R(Key("as-f6"), rdescript="LaTeX: Compile LaTeX quickly"),
 	    "full tech":                        R(Key("as-f7"), rdescript="LaTeX: Compile LaTeX full"),
         "are tech":                         R(Key("as-f4"), rdescript="LaTeX: Compile knitr quickly"),
@@ -81,19 +69,20 @@ class LaTeX(MergeRule):
 	    "emphasize it":                    	R(Key("cs-e"), rdescript="LaTeX: Emphasize text"),
         "bold it":                    	    R(Key("c-b"), rdescript="LaTeX: Bold text"),
         "leak":                             R(Key("dollar") + Key("dollar") + Key("left"), rdescript="LaTeX: In line equation"),
-        "Frank":                    	    R(Key("cs-f"), rdescript="LaTeX: Fraction"),
+        "dee Frank":                    	R(Key("cs-f"), rdescript="LaTeX: Display Fraction"),
+        "Frank":                    	    R(Key("as-f"), rdescript="LaTeX: Fraction"),
         "new frame":                    	R(Key("ca-f, backspace, backspace, lbrace, rbrace, enter, left"),	  rdescript="LaTeX: New beamer frame"),
 	    "knitting chunk":                   R(Key("ca-k"), rdescript="LaTeX: New knitr chunk"),
-	    "word count":                       R(Key("a-t, n/25, up, down, tab, enter"), rdescript="LaTeX: Word count"), 
+	    "word count":                       R(Key("a-t, n/25, up, down, tab, enter"), rdescript="LaTeX: Word count"),
         "lay tech table":                         R(Key("cas-t"), rdescript="LaTeX: table template "),
 
-	 
-        "new file":                         R(Key("c-n"), rdescript="TexStudio: New file"),     
+
+        "new file":                         R(Key("c-n"), rdescript="TexStudio: New file"),
     	"save as":                          R(Key("ca-s"), rdescript="TexStudio: Save as"),
 	 	"open recent":                      R(Key("a-f, r"), rdescript="TexStudio: Open recent"),
 		"wizard quick start":               R(Key("a-w, s"), rdescript="TexStudio: Quick start"),
         # latex specific
-        
+
         "lay tech infinity":                R(Text("\\infty"), rdescript="LaTeX: Infinity"),
         "lay tech shake":                   R(Text("\\\\") + Key("enter"), rdescript="LaTeX: New line"),
         "lay tech ellipses":                R(Text("\\ldots") , rdescript="LaTeX: Ellipses"),
@@ -106,12 +95,12 @@ class LaTeX(MergeRule):
         "Greek Delta":                    	R(Text("\\delta"), rdescript="LaTeX: Small Delta character"),
         "Greek row":                    	R(Text("\\rho"), rdescript="LaTeX: Small rho character"),
         "square root":                    	R(Text("\\sqrt{")+ Key("rbrace") +Key("left"), rdescript="LaTeX: Square root"),
-        
+
         "big Greek Delta":                  R(Text("\\Delta"), rdescript="LaTeX: Big Delta character"),
         "sub ex":                    	    R(Text("_{") + Key("rbrace") +Key("left"), rdescript="LaTeX: subscript"),
         "soup ex":                    	    R(Text("^{") + Key("rbrace") +Key("left"), rdescript="LaTeX: superscript"),
-        "text citation":                    R(Text("\\textcite{")+  Key("rbrace")+Key("left"), rdescript="LaTeX: In text citation"), 
-	    "ren citation":                     R(Text("\\parencite{")+  Key("rbrace")+Key("left"), rdescript="LaTeX: Parenthesis citation"), 
+        "text citation":                    R(Text("\\textcite{")+  Key("rbrace")+Key("left"), rdescript="LaTeX: In text citation"),
+	    "ren citation":                     R(Text("\\parencite{")+  Key("rbrace")+Key("left"), rdescript="LaTeX: Parenthesis citation"),
 	    "new section":                      R(Text("\\section{") + Key("rbrace") + Key("left"), rdescript="LaTeX: New section"),
         "new sub section":                  R(Text("\\subsection{") + Key("rbrace") + Key("left"), rdescript="LaTeX: New section"),
         "lay tech degrees":                 R(Text("$^{\\circ}$"), rdescript="LaTeX: New section"),
@@ -119,17 +108,17 @@ class LaTeX(MergeRule):
         "lay tech prekris":                 R(Text("\\left(\\right)") + Key("left") * Repeat(7), rdescript="LaTeX: Parenthesis"),
         "lay tech brax":                    R(Text("\\lef") + Key("t/25") + Key("lbracket/25") + Key("escape") + Text("\\right]") + Key("left") * Repeat(7), rdescript="LaTeX: Brackets"),
         "math bold":                        R(Text("\\bm{") + Key("rbrace") + Key("left"), rdescript="LaTeX: Bold math"),
-		
+
         "quad space":                       R(Text("\\quad"), rdescript=""),
         "double quad space":                R(Text("\\qquad"), rdescript=""),
         "koom em box":                           R(Text("\\mbox{") + Key("rbrace") + Key("left"), rdescript=""),
-        
-        "koom <textnv>":                    R(Key("backslash") + Text("%(textnv)s") + Key("lbrace, rbrace, left"), rdescript="LaTeX: LaTeX command"), 
-        "koom sum":                    R(Key("backslash") + Text("sum_") + Key("lbrace, rbrace, left"), rdescript="LaTeX: Sum command"), 
-        "koom ref":                    R(Key("backslash") + Text("ref") + Key("lbrace, rbrace, left"), rdescript="LaTeX: ref command"), 
-        "koom (equation|eck) ref":                    R(Key("backslash") + Text("eqref") + Key("lbrace, rbrace, left"), rdescript="LaTeX: ref command"), 
-		"koom BM":   
-    		R(Key("backslash") + Text("bm") + Key("lbrace, rbrace, left"), rdescript="LaTeX: ref command"), 
+
+        "koom <textnv>":                    R(Key("backslash") + Text("%(textnv)s") + Key("lbrace, rbrace, left"), rdescript="LaTeX: LaTeX command"),
+        "koom sum":                    R(Key("backslash") + Text("sum_") + Key("lbrace, rbrace, left"), rdescript="LaTeX: Sum command"),
+        "koom ref":                    R(Key("backslash") + Text("ref") + Key("lbrace, rbrace, left"), rdescript="LaTeX: ref command"),
+        "koom (equation|eck) ref":                    R(Key("backslash") + Text("eqref") + Key("lbrace, rbrace, left"), rdescript="LaTeX: ref command"),
+		"koom BM":
+    		R(Key("backslash") + Text("bm") + Key("lbrace, rbrace, left"), rdescript="LaTeX: ref command"),
 
     }
 
@@ -192,6 +181,8 @@ class LaTeX(MergeRule):
             }),
         Choice(
             "commandnoarg", {
+                "(approx | approximately) equal": "approxeq",
+                "(approx | approximately)": "approx",
                 "line break": "linebreak",
                 "[list] item": "item",
                 "make title": "maketitle",
@@ -208,7 +199,7 @@ class LaTeX(MergeRule):
             "symbol",
             {
                 "alpha": "alpha",
-                "beater": "beta",
+                "beater | beta": "beta",
                 "gamma": "gamma",
                 "delta": "delta",
                 "epsilon": "epsilon",
@@ -257,7 +248,7 @@ class LaTeX(MergeRule):
         Choice("big", {
             "big": True,
         }),
-        Dictation("textnv"),		
+        Dictation("textnv"),
         IntegerRefST("n", 1, 10000),
     ]
     defaults = {

@@ -22,7 +22,7 @@ class NPPRule(MergeRule):
     mapping = {
         "open":
             R(Key("c-o"), rdescript="TexStudio++: Open"),
-        "[go to] line <n>":
+        "go [to] line <n>":
             R(Key("c-g/10") + Text("%(n)s") + Key("enter"),
               rdescript="TexStudio++: Go to Line #"),
         "tex studio press F three <n50>":

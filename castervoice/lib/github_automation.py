@@ -42,6 +42,7 @@ def github_checkoutupdate_pull_request(new):
             repo_url = split_string[0]
             pr_name = split_string[1].split("/")[0]
             CONFIG = load_toml_file(settings.SETTINGS["paths"]["GIT_REPO_LOCAL_REMOTE_PATH"])
+            
             if not CONFIG:
                 # logger.warn("Could not load bringme defaults")
                 raise Exception("Could not load " + settings.SETTINGS["paths"]["GIT_REPO_LOCAL_REMOTE_PATH"])
@@ -54,13 +55,13 @@ def github_checkoutupdate_pull_request(new):
                 TERMINAL_PATH = settings.SETTINGS["paths"]["TERMINAL_PATH"]
                 AHK_PATH = settings.SETTINGS["paths"]["AHK_PATH"]
                 ahk_installed = os.path.isfile(AHK_PATH)
-                print "AHK_PATH = " + AHK_PATH
+                print("AHK_PATH = " + AHK_PATH)
                 if TERMINAL_PATH != "":
                     load_terminal = True  # set default value
                     # ready fetch command string to be appended to
                     fetch_command = ""
                     # find the equivalent ahk script with the same name as this one
-                    ahk_script = __file__.replace(".py", ".ahk")
+                    ahk_script = __file__.replace(".pyc", ".ahk").replace(".py", ".ahk")
                     pattern_match = "MINGW64"  # the string we expect to find in the title of git bash when loaded
                     # if autohotkey is installed
                     if ahk_installed:
@@ -76,14 +77,14 @@ def github_checkoutupdate_pull_request(new):
                             # set the first portion of the fetch command
                             fetch_command += directory_command + " && "
                             load_terminal = False
-                            print "Msg:" + ahk_script + " has activated window: " + pattern_match
+                            print("Msg:" + ahk_script + " has activated window: " + pattern_match)
                         # if an existing git bash window is not already open
                         elif stdout == pattern_match + " does not exist":
-                            print "Msg:" + ahk_script + " has found no window: " + pattern_match
-                            print "Load new instance of: " + pattern_match
+                            print("Msg:" + ahk_script + " has found no window: " + pattern_match)
+                            print("Load new instance of: " + pattern_match)
                         else:
-                            print "Error:" + ahk_script + " neither returned 'activated' nor 'does not exist'"
-                            print "Fallback: load new instance of :" + pattern_match
+                            print("Error:" + ahk_script + " neither returned 'activated' nor 'does not exist'")
+                            print("Fallback: load new instance of :" + pattern_match)
                     if load_terminal:
                         # open up a new git bash terminal
                         terminal = Popen(TERMINAL_PATH, cwd=local_directory)
@@ -100,6 +101,9 @@ def github_checkoutupdate_pull_request(new):
                                 raise Exception("Error: git terminal took too long to load for script:" + ahk_script)
                         else:  # otherwise await the default number of seconds for the terminal to load
                             time.sleep(settings.SETTINGS["gitbash"]["loading_time"])
+                    else:
+                        # Remove any text that's there in the existing terminal
+                        Key("end/10, c-u/10").execute()
                     # adds to the fetch command string that which will fetch from the particular repository in question
                     fetch_command += "git fetch " + repo_url + ".git pull/" + pr_name + "/head"
                     # if fetching from a new pull request

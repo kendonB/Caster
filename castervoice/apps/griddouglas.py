@@ -1,19 +1,7 @@
-"""
-Command-module for DouglasGrid
-
-"""
-from dragonfly import (Grammar, Function, Playback, Choice, MappingRule, Mouse)
+from castervoice.lib.imports import *
 
 from castervoice.asynch.mouse import grids
-from castervoice.lib import control
-from castervoice.lib import settings
-from castervoice.lib.dfplus.additions import IntegerRefST
-from castervoice.lib.dfplus.merge import gfilter
-from castervoice.lib.dfplus.merge.mergerule import MergeRule
-from castervoice.lib.dfplus.state.short import R
-from castervoice.lib.context import AppContext
-
-import win32api, win32con, time
+import win32api, win32con
 
 _NEXUS = control.nexus()
 
@@ -24,7 +12,7 @@ def send_input(x, y, action, nexus):
     s = nexus.comm.get_com("grids")
     s.move_mouse(int(x), int(y))
     int_a = int(action)
-    if (int_a == 0) | (int_a == 1):
+    if (int_a == 0) | (int_a == 1) | (int_a == -1):
         s.kill()
         grids.wait_for_death(settings.DOUGLAS_TITLE)
     if int_a == 0:
@@ -58,38 +46,32 @@ x2 = None
 y1 = None
 y2 = None
 
-def store_point(point):
-    global x1, y1, x2, y2
-    int_p = int(point)
-    if int_p == 1:
-        x1, y1 = win32api.GetCursorPos()
-    elif int_p == 2:
-        x2, y2 = win32api.GetCursorPos()
-    else:
-        raise Exception("Illegal point specified")
+def store_first_point():
+    global x1, y1
+    x1, y1 = win32api.GetCursorPos()
 
 def select_text(nexus):
     global x1, y1, x2, y2
+    x2, y2 = win32api.GetCursorPos()
     s = nexus.comm.get_com("grids")
     s.kill()
     grids.wait_for_death(settings.DOUGLAS_TITLE)
     drag_from_to(x1,y1,x2,y2)
 
-class GridControlRule(MergeRule):
-
+class DouglasGridRule(MergeRule):
     mapping = {
         "<x> [by] <y> [<action>]":
-            R(Function(send_input, nexus=_NEXUS), rdescript="Douglas Grid: Action"),
+            R(Function(send_input, nexus=_NEXUS)),
         "<x1> [by] <y1> select <x2> [by] <y2>":
-            R(Function(send_input_select, nexus=_NEXUS), rdescript="Douglas Grid: Select (long version)"),
+            R(Function(send_input_select, nexus=_NEXUS)),
         "<x1> [by] <y1> select <x2>":
-            R(Function(send_input_select_short, nexus=_NEXUS), rdescript="Douglas Grid: Select (short version)"),
-        "point <point>":
-            R(Function(store_point), rdescript="Douglas Grid: Stor point"),
-        "select":
-            R(Function(select_text, nexus=_NEXUS), rdescript="Douglas Grid: Select (point version)"),
+            R(Function(send_input_select_short, nexus=_NEXUS)),
+        "squat":
+            R(Function(store_first_point)),
+        "bench":
+            R(Function(select_text, nexus=_NEXUS)),
         "exit | escape | cancel":
-            R(Function(kill, nexus=_NEXUS), rdescript="Douglas Grid: Exit"),
+            R(Function(kill, nexus=_NEXUS)),
     }
     extras = [
         IntegerRefST("x", 0, 300),
@@ -112,13 +94,5 @@ class GridControlRule(MergeRule):
         "action": -1,
     }
 
-#---------------------------------------------------------------------------
-
 context = AppContext(title="douglasgrid")
-grammar = Grammar("douglasgrid", context=context)
-
-if settings.SETTINGS["apps"]["douglas"]:
-    rule = GridControlRule(name="Douglas")
-    gfilter.run_on(rule)
-    grammar.add_rule(rule)
-    grammar.load()
+control.non_ccr_app_rule(DouglasGridRule(), context=context)
