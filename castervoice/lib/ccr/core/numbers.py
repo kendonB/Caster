@@ -20,4 +20,4 @@ class Numbers(MergeRule):
     defaults = {}
 
 
-control.nexus().merger.add_global_rule(Numbers())
+control.global_rule(Numbers())
