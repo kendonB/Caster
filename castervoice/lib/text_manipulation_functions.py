@@ -21,8 +21,7 @@ def make_list_of_permutations_up_to_length(base_list, max_length):
         list_of_permutations_of_fixed_length = ["".join(permutation) for permutation in itertools.product(base_list, repeat=i)]
         result.extend(list_of_permutations_of_fixed_length)
     return result
-character_list = make_list_of_permutations_up_to_length(character_list, 2)
-
+character_list = make_list_of_permutations_up_to_length(character_list, 3)
 
 contexts = {
     "texstudio": AppContext(executable="texstudio"),
@@ -41,6 +40,8 @@ def get_application():
 
 def get_start_end_position(text, phrase, direction, occurrence_number):
 # def get_start_end_position(text, phrase, direction):
+    print(text)
+    print(phrase)
     if phrase in character_list:
         pattern = re.escape(phrase)
     else:
