@@ -1,7 +1,7 @@
 #
 # __author__ = "lexxish"
 #
-from dragonfly import Key, Mouse, Repeat, Pause, Function
+from dragonfly import Key, Mouse, Repeat, Pause, Function, ContextAction
 
 from castervoice.apps.browser import browser
 from castervoice.lib import github_automation
@@ -32,7 +32,9 @@ class BrowserSharedCommands(MergeRule):
         browser.CLOSE_WINDOW:
             R(Key("cs-w")),
         browser.NEXT_TAB_N_TIMES:
-            R(Key("c-tab")) * Repeat(extra="n"),
+            R(Key("c-pagedown")) * Repeat(extra="n"),
+        browser.PREVIOUS_TAB_N_TIMES:
+            R(Key("c-pageup")) * Repeat(extra="n"),
         browser.OPEN_NEW_TAB_BASED_ON_CURSOR:
             R(Mouse("middle") + Pause("20") + Key("c-tab")),
         browser.GO_BACK_N_TIMES:
