@@ -23,10 +23,9 @@ class FileDialogueRule(MergeRule):
     }
 
 
-dialogue_names = [
-    "open",
-    "save",
-    "select",
-]
-context = AppContext(title=dialogue_names)
-control.non_ccr_app_rule(FileDialogueRule(), context=context)
+dialogue_context = AppContext(title=[
+        "open",
+        "save",
+        "select",
+    ])
+control.non_ccr_app_rule(FileDialogueRule(), context=dialogue_context)
