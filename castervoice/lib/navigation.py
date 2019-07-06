@@ -188,9 +188,9 @@ right_up     = lambda nexus: mouse_click(nexus, "right:up")
 def wheel_scroll(direction, nnavi500):
     for i in xrange(1, abs(nnavi500) + 1):
         if direction == "up":
-            Mouse("stepup")
+            Mouse("wheelup").execute()
         else:
-            Mouse("stepdown")
+            Mouse("wheeldown").execute()
         time.sleep(0.1)
 
 
