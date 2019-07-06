@@ -4,7 +4,6 @@ master_text_nav shouldn't take strings as arguments - it should take ints, so it
 '''
 
 import time
-from ctypes import windll
 from subprocess import Popen
 
 
@@ -187,11 +186,11 @@ right_up     = lambda nexus: mouse_click(nexus, "right:up")
 
 
 def wheel_scroll(direction, nnavi500):
-    amount = 120
-    if direction != "up":
-        amount = amount* -1
     for i in xrange(1, abs(nnavi500) + 1):
-        windll.user32.mouse_event(0x00000800, 0, 0, amount, 0)
+        if direction == "up":
+            Mouse("stepup")
+        else:
+            Mouse("stepdown")
         time.sleep(0.1)
 
 
