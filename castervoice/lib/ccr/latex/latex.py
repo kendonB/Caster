@@ -41,7 +41,7 @@ class LaTeX(MergeRule):
         "insert <command>":
             R(back_curl("%(command)s", "")),
         "insert <commandnoarg>":
-            R(Text("\\%(commandnoarg)s ")),
+            R(Text("\\%(commandnoarg)s")),
         "insert quotes":
             R(Text("``\'\'") + Key("left:2")),
         "insert integral":
