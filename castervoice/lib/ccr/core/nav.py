@@ -305,7 +305,7 @@ class Navigation(MergeRule):
     
     modifier_choice_object = Choice("modifier", {
             "(control | fly)": "c-", #TODO: make DRY
-            "(shift | shin)": "s-",
+            "(shift | shine)": "s-",
             "alt": "a-",
             "(control shift | que)": "cs-",
             "control alt": "ca-",
@@ -370,7 +370,7 @@ class Navigation(MergeRule):
         navigation.TARGET_CHOICE,
         navigation.get_direction_choice("mtn_dir"),
         Choice("mtn_mode", {
-            "shin": "s",
+            "shine": "s",
             "queue": "cs",
             "fly": "c",
         }),
