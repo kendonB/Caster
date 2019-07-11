@@ -262,6 +262,8 @@ class Navigation(MergeRule):
         
         "hum": R(Key("home")),
         "end": R(Key("end")),
+        "son [<nnavi500>]": R(Key("c-pageup:%(nnavi500)s")),
+        "doon [<nnavi500>]": R(Key("c-pageup:%(nnavi500)s")),
         
         # keystroke commands
         "<direction> [<nnavi500>]": R(Key("%(direction)s") * Repeat(extra='nnavi500'),
