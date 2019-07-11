@@ -20,7 +20,7 @@ for key, value in double_text_punc_dict.items():
     else:
         raise Exception("Need to deal with nonstandard pair length in double_text_punc_dict.")
 
-class NavigationNon(MergeRule):
+class NavigationNon(MergeRule): 
     mapping = {
         "<direction> <time_in_seconds>":
             AsynchronousAction(
@@ -29,8 +29,6 @@ class NavigationNon(MergeRule):
                 blocking=False),
         "erase multi clipboard":
             R(Function(navigation.erase_multi_clipboard, nexus=_NEXUS)),
-        'save':
-            R(Key("c-s"), rspec="save"),
         "find":
             R(Key("c-f")),
         "find next [<n>]":
@@ -59,7 +57,7 @@ class NavigationNon(MergeRule):
             R(Key("shift:down") + Mouse("right") + Key("shift:up")),
         "curse <direction> [<direction2>] [<nnavi500>] [<dokick>]":
             R(Function(navigation.curse)),
-        "(wheel | scree) <direction> [<nnavi500>]":
+        "scree <direction> [<nnavi500>]":
             R(Function(navigation.wheel_scroll)),
         "colic":
             R(Key("control:down") + Mouse("left") + Key("control:up")),
@@ -120,7 +118,6 @@ class NavigationNon(MergeRule):
         "(previous | prior) work [space] [<n>]":
             R(Key("wc-left"))*Repeat(extra="n"),
 
-
         "go work [space] <n>":
             R(Function(lambda n: utilities.go_to_desktop_number(n))),
         "send work [space] <n>":
@@ -179,33 +176,23 @@ class Navigation(MergeRule):
         "fill <target>":
             R(Key("escape, escape, end"), show=False) +
             AsynchronousAction([L(S(["cancel"], Function(context.fill_within_line, nexus=_NEXUS)))],
-            time_in_seconds=0.2, repetitions=50),
-        "jump in ross":
+            time_in_seconds=0.2, repetitions=50 ),
+        "jump in":
             AsynchronousAction([L(S(["cancel"], context.nav, ["right", "(~[~{~<"]))],
             time_in_seconds=0.1, repetitions=50),
-        "jump out ross":
+        "jump out":
             AsynchronousAction([L(S(["cancel"], context.nav, ["right", ")~]~}~>"]))],
             time_in_seconds=0.1, repetitions=50),
-        "jump out lease":
+        "jump back":
             AsynchronousAction([L(S(["cancel"], context.nav, ["left", "(~[~{~<"]))],
             time_in_seconds=0.1, repetitions=50),
-        "jump in lease":
-            AsynchronousAction([L(S(["cancel"], context.nav, ["left", ")~]~}~>"]))],
-			time_in_seconds=0.1, repetitions=50),
-        "butt in ross":
-            AsynchronousAction([L(S(["cancel"], context.nav, ["right", ")~]~}~>"]))],
-            finisher=Key("left"), time_in_seconds=0.1, repetitions=50),
-        "butt in lease":
+        "jump back in":
             AsynchronousAction([L(S(["cancel"], context.nav, ["left", "(~[~{~<"]))],
-            finisher=Key("right"), time_in_seconds=0.1, repetitions=50),
-        "butt out ross":
-            Key("right") + AsynchronousAction([L(S(["cancel"], context.nav, ["right", "(~[~{~<"]))],
-            finisher=Key("left"), time_in_seconds=0.1, repetitions=50),
-        "butt out lease":
-            Key("left") + AsynchronousAction([L(S(["cancel"], context.nav, ["left", ")~]~}~>"]))],
-            finisher=Key("right"), time_in_seconds=0.1, repetitions=50),
+            finisher=Key("right"), time_in_seconds=0.1, repetitions=50 ),
 
     # keyboard shortcuts
+        'save':
+            R(Key("c-s"), rspec="save"),
         'shock [<nnavi50>]':
             R(Key("enter"), rspec="shock")* Repeat(extra="nnavi50"),
         # "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]":
@@ -254,29 +241,9 @@ class Navigation(MergeRule):
             R(Function(textformat.prior_text_format)),
         "<word_limit> [<big>] format <textnv>":
             R(Function(textformat.partial_format_text)),
+
         "hug <enclosure>":
             R(Function(text_utils.enclose_selected)),
-		"doon [<nnavi500>]":
-            R(Key("pagedown"))*Repeat(extra="nnavi500"),
-		"sun [<nnavi500>]":
-            R(Key("pageup"))*Repeat(extra="nnavi500"),
-		"rope [<nnavi500>]":
-            R(Key("c-right"))*Repeat(extra="nnavi500"),
-		"laib [<nnavi500>]":
-            R(Key("c-left"))*Repeat(extra="nnavi500"),
-		"nope [<nnavi500>]":
-            R(ContextAction(default=Key("cs-left")*Repeat(extra="nnavi500") + Key("backspace"), actions=[
-                (AppContext(executable=["\\sh.exe", "\\bash.exe", "\\mintty.exe"]), Key("c-w")*Repeat(extra="nnavi500")),
-                (AppContext(executable=["\\cmd.exe"]), Key("c-backspace")*Repeat(extra="nnavi500")),
-                ])),
-		"kay [<nnavi500>]":
-            R(Key("cs-right"))*Repeat(extra="nnavi500") + Key("backspace"),
-		"hum":
-            R(Key("home")),
-		"end":
-            R(Key("end")),
-
-
         "dredge [<nnavi10>]":
             R(Key("alt:down, tab/20:%(nnavi10)d, alt:up"),
                rdescript="Core: switch to most recent Windows"),
@@ -292,7 +259,7 @@ class Navigation(MergeRule):
             R(Function(navigation.left_down, nexus=_NEXUS)),
         "bench":
             R(Function(navigation.left_up, nexus=_NEXUS)),
-
+        
         # keystroke commands
         "<direction> [<nnavi500>]": R(Key("%(direction)s") * Repeat(extra='nnavi500'),
             rdescript="arrow keys"),
@@ -304,9 +271,9 @@ class Navigation(MergeRule):
         "frick [<nnavi500>]": R(Key("s-right:%(nnavi500)s")),
         "blitch [<nnavi500>]": R(Key("cs-left:%(nnavi500)s")),
         "flitch [<nnavi500>]": R(Key("cs-right:%(nnavi500)s")),
-
+        
         "<modifier> <button_dictionary_500> [<nnavi500>]":
-              R(Key("%(modifier)s%(button_dictionary_500)s") * Repeat(extra='nnavi500'),
+              R(Key("%(modifier)s%(button_dictionary_500)s") * Repeat(extra='nnavi500'), 
               rdescript="press modifier keys plus buttons from button_dictionary_500"),
         "<modifier> <button_dictionary_10> [<nnavi10>]":
               R(Key("%(modifier)s%(button_dictionary_10)s") * Repeat(extra='nnavi10'),
@@ -314,32 +281,9 @@ class Navigation(MergeRule):
         "<modifier> <button_dictionary_1>":
               R(Key("%(modifier)s%(button_dictionary_1)s"),
               rdescript="press modifiers plus buttons from button_dictionary_1, non-repeatable"),
-
-        # "key stroke [<modifier>] <combined_button_dictionary>":
+        
+        # "key stroke [<modifier>] <combined_button_dictionary>": 
         #     R(Text('Key("%(modifier)s%(combined_button_dictionary)s")')),
-
-        # keystroke commands
-        "<direction> [<nnavi500>]": R(Key("%(direction)s") * Repeat(extra='nnavi500'),
-            rdescript="arrow keys"),
-        "(lease wally | latch) [<nnavi10>]": R(Key("home:%(nnavi10)s")),
-        "(ross wally | ratch) [<nnavi10>]": R(Key("end:%(nnavi10)s")),
-        "bird [<nnavi500>]": R(Key("c-left:%(nnavi500)s")),
-        "fird [<nnavi500>]": R(Key("c-right:%(nnavi500)s")),
-        "brick [<nnavi500>]": R(Key("s-left:%(nnavi500)s")),
-        "frick [<nnavi500>]": R(Key("s-right:%(nnavi500)s")),
-        "blitch [<nnavi500>]": R(Key("cs-left:%(nnavi500)s")),
-        "flitch [<nnavi500>]": R(Key("cs-right:%(nnavi500)s")),
-
-        "<modifier> <button_dictionary_500> [<nnavi500>]":
-              R(Key("%(modifier)s-%(button_dictionary_500)s") * Repeat(extra='nnavi500'),
-              rdescript="press modifier keys plus buttons from button_dictionary_500"),
-        "<modifier> <button_dictionary_10> [<nnavi10>]":
-              R(Key("%(modifier)s-%(button_dictionary_10)s") * Repeat(extra='nnavi10'),
-              rdescript="press modifier keys plus buttons from button_dictionary_10"),
-        "<modifier> <button_dictionary_1>":
-              R(Key("%(modifier)s-%(button_dictionary_1)s"),
-              rdescript="press modifiers plus buttons from button_dictionary_1, non-repeatable"),
-
 
     }
     tell_commands_dict = {"dock": ";", "doc": ";", "sink": "", "com": ",", "deck": ":"}
@@ -353,12 +297,12 @@ class Navigation(MergeRule):
     button_dictionary_10 = {"function {}".format(i):"f{}".format(i) for i in range(1, 10)}
     button_dictionary_10.update(caster_alphabet)
     button_dictionary_10.update(text_punc_dict)
-    button_dictionary_1 = {"(home | hum | lease wally | latch)": "home", "(end | ross wally | ratch)": "end", "insert": "insert", "zero": "0",
+    button_dictionary_1 = {"(home | lease wally | latch)": "home", "(end | ross wally | ratch)": "end", "insert": "insert", "zero": "0",
     "one": "1", "two": "2", "three": "3", "four": "4", "five": "5", "six":"6", "seven": "7", "eight": "8", "nine": "9"}
     combined_button_dictionary = {}
     for dictionary in [button_dictionary_1, button_dictionary_10, button_dictionary_500]:
         combined_button_dictionary.update(dictionary)
-
+    
     modifier_choice_object = Choice("modifier", {
             "(control | fly)": "c-", #TODO: make DRY
             "(shift | shin)": "s-",
@@ -376,10 +320,10 @@ class Navigation(MergeRule):
             "windows shift": "ws-",
             "windows alt": "wa-",
             "control windows alt shift": "cwas-",
-            "hit": "",
+            "hit": "", 
         })
     extras = [
-
+        
         IntegerRefST("nnavi10", 1, 11),
         IntegerRefST("nnavi3", 1, 4),
         IntegerRefST("nnavi50", 1, 50),
@@ -394,17 +338,16 @@ class Navigation(MergeRule):
         }),
         modifier_choice_object,
         Choice("button_dictionary_1", button_dictionary_1),
-        Choice("button_dictionary_10", button_dictionary_10),
+        Choice("button_dictionary_10", button_dictionary_10), 
         Choice("button_dictionary_500", button_dictionary_500),
         Choice("combined_button_dictionary", combined_button_dictionary),
-
+        
         Choice("capitalization", {
             "yell": 1,
             "tie": 2,
             "Gerrish": 3,
             "sing": 4,
-            "laws": 5,
-            "drag": 6
+            "laws": 5
         }),
         Choice(
             "spacing", {
@@ -429,7 +372,7 @@ class Navigation(MergeRule):
         Choice("mtn_mode", {
             "shin": "s",
             "queue": "cs",
-            "poopadeedoop": "c",
+            "fly": "c",
         }),
         Choice("extreme", {
             "Wally": "way",
