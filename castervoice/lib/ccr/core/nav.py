@@ -260,6 +260,9 @@ class Navigation(MergeRule):
         "bench":
             R(Function(navigation.left_up, nexus=_NEXUS)),
         
+        "hum": R(Key("home")),
+        "end": R(Key("end")),
+        
         # keystroke commands
         "<direction> [<nnavi500>]": R(Key("%(direction)s") * Repeat(extra='nnavi500'),
             rdescript="arrow keys"),
