@@ -262,8 +262,8 @@ class Navigation(MergeRule):
         
         "hum": R(Key("home")),
         "end": R(Key("end")),
-        "son [<nnavi500>]": R(Key("c-pageup:%(nnavi500)s")),
-        "doon [<nnavi500>]": R(Key("c-pageup:%(nnavi500)s")),
+        "son [<nnavi500>]": R(Key("pageup:%(nnavi500)s")),
+        "doon [<nnavi500>]": R(Key("pageup:%(nnavi500)s")),
         
         # keystroke commands
         "<direction> [<nnavi500>]": R(Key("%(direction)s") * Repeat(extra='nnavi500'),
@@ -312,7 +312,7 @@ class Navigation(MergeRule):
     
     modifier_choice_object = Choice("modifier", {
             "(control | fly)": "c-", #TODO: make DRY
-            "(shift | shine)": "s-",
+            "(shift | shin)": "s-",
             "alt": "a-",
             "(control shift | que)": "cs-",
             "control alt": "ca-",
@@ -376,11 +376,6 @@ class Navigation(MergeRule):
         }),
         navigation.TARGET_CHOICE,
         navigation.get_direction_choice("mtn_dir"),
-        Choice("mtn_mode", {
-            "shine": "s",
-            "queue": "cs",
-            "fly": "c",
-        }),
         Choice("extreme", {
             "Wally": "way",
         }),
