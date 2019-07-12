@@ -263,7 +263,7 @@ class Navigation(MergeRule):
         "hum": R(Key("home")),
         "end": R(Key("end")),
         "son [<nnavi500>]": R(Key("pageup:%(nnavi500)s")),
-        "doon [<nnavi500>]": R(Key("pageup:%(nnavi500)s")),
+        "doon [<nnavi500>]": R(Key("pagedown:%(nnavi500)s")),
         
         # keystroke commands
         "<direction> [<nnavi500>]": R(Key("%(direction)s") * Repeat(extra='nnavi500'),
@@ -272,8 +272,8 @@ class Navigation(MergeRule):
         "(ross wally | ratch) [<nnavi10>]": R(Key("end:%(nnavi10)s")),
         "bird [<nnavi500>]": R(Key("c-left:%(nnavi500)s")),
         "fird [<nnavi500>]": R(Key("c-right:%(nnavi500)s")),
-        "blird [<nnavi500>]": R(Key("cs-left:%(nnavi500)s") + Key("backspace")),
-        "flird [<nnavi500>]": R(Key("cs-right:%(nnavi500)s") + Key("backspace")),
+        "nope [<nnavi500>]": R(Key("cs-left:%(nnavi500)s") + Key("backspace")),
+        "kay [<nnavi500>]": R(Key("cs-right:%(nnavi500)s") + Key("backspace")),
         "brick [<nnavi500>]": R(Key("s-left:%(nnavi500)s")),
         "frick [<nnavi500>]": R(Key("s-right:%(nnavi500)s")),
         "blitch [<nnavi500>]": R(Key("cs-left:%(nnavi500)s")),

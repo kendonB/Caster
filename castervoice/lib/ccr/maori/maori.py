@@ -21,6 +21,7 @@ maori_phrases = {
     "(tamaki makaurau | tah mucky Makoto | Auckland)":               u"Tāmaki Makaurau",
     "maori | multi-":                                                u"Māori", 
     "Whakatipu Rawa | fakatipu dawa":                                u"Whakatipu Rawa", 
+    "LTO door | aa o teah doah | Aotearoa":                          u"Aotearoa", 
 }
 
 def maori_words(capitalization, spacing, phrase):
