@@ -8,7 +8,6 @@ from castervoice.lib.ccr.core.punctuation import text_punc_dict,  double_text_pu
 from castervoice.lib.alphanumeric import caster_alphabet
 import timeit
 
-
 new_text_punc_dict = copy.deepcopy(text_punc_dict)
 new_text_punc_dict.update(caster_alphabet)
 character_dict = new_text_punc_dict
@@ -296,11 +295,7 @@ def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search
             before_after = "after"
         if direction == "right":
             before_after = "before"
-    end = timeit.timeit()
-    print("deal_with_up_down_directions")
-    print(end - start)
     
-    start = timeit.timeit()
     selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
     end = timeit.timeit()
     print("select_text_and_return_it")
