@@ -272,7 +272,9 @@ class Navigation(MergeRule):
         "(ross wally | ratch) [<nnavi10>]": R(Key("end:%(nnavi10)s")),
         "bird [<nnavi500>]": R(Key("c-left:%(nnavi500)s")),
         "fird [<nnavi500>]": R(Key("c-right:%(nnavi500)s")),
-        "nope [<nnavi500>]": R(Key("cs-left:%(nnavi500)s") + Key("backspace")),
+        "nope [<nnavi500>]": R(ContextAction(default=Key("cs-left:%(nnavi500)s") + Key("backspace"), actions=[
+                  (AppContext(executable=["\\sh.exe", "\\bash.exe"]), Key("c-w:%(nnavi500)s")),
+                ])),
         "kay [<nnavi500>]": R(Key("cs-right:%(nnavi500)s") + Key("backspace")),
         "brick [<nnavi500>]": R(Key("s-left:%(nnavi500)s")),
         "frick [<nnavi500>]": R(Key("s-right:%(nnavi500)s")),

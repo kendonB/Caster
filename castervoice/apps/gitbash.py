@@ -148,9 +148,10 @@ class GitBashRule(MergeRule):
     }
     extras = [
         IntegerRefST("n", 1, 10000),
+        IntegerRefST("ngb100", 1, 100),
         Choice("desired_item", _rebuild_folders()),
     ]
-    defaults = {"n": 0}
+    defaults = {"n": 0, "ngb100": 1}
 
 
 terminal_context = AppContext(executable=[
