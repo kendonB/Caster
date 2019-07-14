@@ -1,14 +1,16 @@
+# import comtypes
 import unittest
 from dragonfly.engines import _engines_by_name, get_engine
+
 if not _engines_by_name:
     engine = get_engine("text")
     engine.connect()
-from castervoice.lib.tests.unit import merger, mergerule, filter, state, stack, node, textformat
+from castervoice.lib.tests.unit import merger, mergerule, filter, state, stack, node, textformat, text_test_hello_world
 
 
 def get_master_suite():
     test_cases = [
-        merger.TestMerger, mergerule.TestMergeRule, filter.TestFilterNonBootTime,
+        text_test_hello_world.TestHelloWord, merger.TestMerger, mergerule.TestMergeRule, filter.TestFilterNonBootTime,
         stack.TestStack, state.TestState, node.TestNode, node.TestNodeRule, textformat.TestTextFormat
     ]
     master_suite = unittest.TestSuite()
