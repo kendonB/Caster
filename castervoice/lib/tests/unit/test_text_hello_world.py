@@ -2,12 +2,9 @@ import unittest
 
 import os, time
 from pywinauto.application import Application
-from dragonfly import Key, Text
+from dragonfly import Key, Text, Playback, Mimic
 
 class TestHelloWord(unittest.TestCase):
-    def setUp(self):
-        x = 1
-
     def test_hw(self):
         test_out_path = os.path.abspath(os.path.join(os.getcwd(), "test_out.txt"))
         if os.path.exists(test_out_path):
@@ -16,8 +13,13 @@ class TestHelloWord(unittest.TestCase):
 
         app = Application().start("notepad.exe " + test_out_path)
 
-        Text("Hello world").execute()
-        time.sleep(0.1)
+        window = app.window()
+        window.set_focus()
+        Playback([
+                   (["big", "hotel", "echo", "lima", "lima",
+                   "oscar", "ace", "whiskey", "oscar", "romeo",
+                   "lima", "delta"], 1.0),
+                 ]).execute()
         app.Notepad.type_keys("^S")
         while not os.path.exists(os.path.abspath(test_out_path)):
             time.sleep(0.1)
