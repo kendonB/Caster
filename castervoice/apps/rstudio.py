@@ -89,17 +89,23 @@ class RStudioRule(MergeRule):
 	    Key("c-2") + R(Text("c") + Key("enter"), rdescript="R: Continue while debugging"),
 	"stop":
 	    Key("c-2") + R(Text("Q") + Key("enter"), rdescript="R: Stop debugging"),
+        
+    "<action> [line] <ln1> [by <ln2>]"  :
+        R(Function(navigation.action_lines, go_to_line="as-g/10", select_line_down="s-down", wait="/3", upon_arrival="home, ")),
+
 
     }
     extras = [
         IntegerRefST("n", 1, 10000),
 		IntegerRefST("nrstudio500", 1, 500),
 		IntegerRefST("nrstudio50", 1, 50),
+        Choice("action", navigation.actions),
     ]
     defaults = {
 	    "n" : 1,
 		"nrstudio500": 1,
 		"nrstudio50": 1,
+        "ln2": ""
 	}
 
 
