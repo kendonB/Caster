@@ -99,6 +99,8 @@ class RStudioRule(MergeRule):
         IntegerRefST("n", 1, 10000),
 		IntegerRefST("nrstudio500", 1, 500),
 		IntegerRefST("nrstudio50", 1, 50),
+        IntegerRefST("ln1", 1, 10000),
+        IntegerRefST("ln2", 1, 10000),
         Choice("action", navigation.actions),
     ]
     defaults = {
