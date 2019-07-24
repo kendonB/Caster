@@ -20,6 +20,7 @@ package_dict = {
     "fist": "fst",
     "cow plot": "cowplot",
     "direct labels": "directlabels",
+    "X table": "xtable"
 }
 
 class Rlang(MergeRule):

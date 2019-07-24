@@ -76,8 +76,8 @@ class LegionGridRule(MergeRule):
     }
     extras = [
         Choice("action", {
-            "kick": 0,
-            "psychic": 1,
+            "ssss": 0,
+            "shsh": 1,
             "select | light": 2,
         }),
         IntegerRefST("n", 0, 1000),
