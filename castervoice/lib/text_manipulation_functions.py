@@ -6,7 +6,7 @@ from dragonfly import Key, Pause, AppContext, Window
 from castervoice.lib import context
 from castervoice.lib.ccr.core.punctuation import text_punc_dict,  double_text_punc_dict
 from castervoice.lib.alphanumeric import caster_alphabet
-import timeit
+
 
 contexts = {
     "texstudio": AppContext(executable="texstudio"),
