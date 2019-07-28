@@ -280,9 +280,6 @@ def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search
             before_after = "before"
     
     selected_text = select_text_and_return_it(direction, number_of_lines_to_search, application)
-    end = timeit.timeit()
-    print("select_text_and_return_it")
-    print(end - start)
     if not selected_text:
         return
     phrase = str(phrase)
@@ -307,11 +304,7 @@ def move_until_phrase(direction, before_after, phrase, number_of_lines_to_search
                 selected_text_to_the_left_of_phrase = selected_text[:right_index]
                 multiline_offset_correction = selected_text_to_the_left_of_phrase.count("\r\n")
                 offset = right_index - multiline_offset_correction
-            start = timeit.timeit()
             Key("right:%d" %offset).execute()
-            end = timeit.timeit()
-            print("keyright")
-            print(end - start)
 
         if direction == "right":
             # cursor is at the left side of the previously selected text
