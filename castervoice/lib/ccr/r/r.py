@@ -274,6 +274,7 @@ class Rlang(MergeRule):
                 "safely": "safely",
                 "sample en": "sample_n",
                 "seck": "seq",
+                "seck along": "seq_along",
                 "select": "select",
                 "set diff": "setdiff",
                 "set names": "set_names",
