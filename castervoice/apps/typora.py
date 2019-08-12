@@ -64,7 +64,7 @@ class TyporaRule(MergeRule):
         "source code [mode]": R(Key("c-slash")),
         "focus mode": R(Key("f8")),
         "typewriter [mode]": R(Key("f9")),
-        "[toggle] fullscreen": R(Key("f11")),
+        "[toggle] full screen": R(Key("f11")),
         "actual size": R(Key("cs-0")),
         "zoom in <n>": R(Key("cs-="))*Repeat(extra="n"),
         "zoom out <n>": R(Key("cs--"))*Repeat(extra="n"),

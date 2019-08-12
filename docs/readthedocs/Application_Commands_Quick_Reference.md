@@ -142,7 +142,7 @@
 | `[toggle] caret browsing`              | `[go home] page`                     | `[show] history`             |
 | `address bar`                          | `[show] downloads`                   | `[add] bookmark`             |
 | `bookmark all tabs`                    | `[toggle] bookmark bar`              | `[show] bookmarks`           |
-| `switch user`                          | `chrome task manager`                | `[toggle] full-screen`       |
+| `switch user`                          | `chrome task manager`                | `[toggle] fullscreen`        |
 | `focus notification`                   | `allow notification`                 | `deny notification`          |
 | `developer tools`                      | `view [page] source`                 | `resume`                     |
 | `step over`                            | `step into`                          | `step out`                   |
@@ -252,7 +252,7 @@
 | `[toggle] caret browsing`              | `[go home] page`                     | `[show] history`             |
 | `address bar`                          | `[show] downloads`                   | `[add] bookmark`             |
 | `bookmark all tabs`                    | `[toggle] bookmark bar`              | `[show] bookmarks`           |
-| `switch user`                          | `[toggle] full-screen`               | `duplicate tab`              |
+| `switch user`                          | `[toggle] fullscreen`                | `duplicate tab`              |
 | `focus notification`                   | `allow notification`                 | `deny notification`          |
 | `developer tools`                      | `[show page] source`                 | `resume`                     |
 | `step over`                            | `step into`                          | `step out`                   |
