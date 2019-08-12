@@ -272,8 +272,8 @@ class Navigation(MergeRule):
         "(ross wally | ratch) [<nnavi10>]": R(Key("end:%(nnavi10)s")),
         "sauce wally [<nnavi10>]": R(Key("c-home:%(nnavi10)s")),
         "dunce wally [<nnavi10>]": R(Key("c-end:%(nnavi10)s")),
-        "bird [<nnavi500>]": R(Key("c-left:%(nnavi500)s")),
-        "firch [<nnavi500>]": R(Key("c-right:%(nnavi500)s")),
+        "laib [<nnavi500>]": R(Key("c-left:%(nnavi500)s")),
+        "rope [<nnavi500>]": R(Key("c-right:%(nnavi500)s")),
         "nope [<nnavi500>]": R(ContextAction(default=Key("cs-left:%(nnavi500)s") + Key("backspace"), actions=[
                   (AppContext(executable=["\\sh.exe", "\\bash.exe", "\\mintty.exe"]), Key("c-w:%(nnavi500)s")),
                 ])),
