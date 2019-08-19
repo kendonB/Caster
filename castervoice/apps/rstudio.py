@@ -93,7 +93,15 @@ class RStudioRule(MergeRule):
     "<action> [line] <ln1> [by <ln2>]"  :
         R(Function(navigation.action_lines, go_to_line="as-g/10", select_line_down="s-down", wait="/3", upon_arrival="home, ")),
 
-
+    "connect nesi":
+        R(Text("nes") + 
+            Key("enter") + 
+            Pause("50") +
+            BringApp("chrome.exe") + Pause("50") + 
+            Key("escape/10, as-t/10, left:3/10, enter/50") + Text("nesi") + 
+            Pause("50") + Key("down/10, right:2/10, enter/10, down:2/10, enter/10") + Key("a-tab") + 
+            Pause("50") +
+            Key("s-insert/25, enter") + BringApp("Authy Desktop.exe")),
     }
     extras = [
         IntegerRefST("n", 1, 10000),
