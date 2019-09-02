@@ -91,7 +91,7 @@ class AtomRule(MergeRule):
         "select grammar":
             R(Key("cs-l")),
         #Lines Submenu
-        "toggle outdent":
+        "toggle out dent":
             R(Key("c-rightbrace")),
         "auto indent windows":
             ACP("Window Auto Indent"),

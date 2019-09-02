@@ -310,7 +310,7 @@ class VSCodeCcrRule(MergeRule):
         "scroll page down [<n>]":
             R(Key("a-pgdown")*Repeat(extra='n'),
               rdescript="VS Code: Scroll Down One Page Down At a Time"),
-        "(unindent|outdent) [<n>]":
+        "(unindent|out dent) [<n>]":
             R(Key("home, s-tab:%(n)s"), rdescript="VS Code: Unindent"),
         "comment [line]":
             R(Key("c-slash"), rdescript="VS Code: Line Comment"),
