@@ -224,7 +224,7 @@ class Rlang(MergeRule):
                 "inner join": "inner_join",
                 "install packages":"install.packages",
                 "install github":"devtools::install_github",
-                "is dot na":"is.na",
+                "is dot (na | N A)":"is.na",
                 "lag": "lag",
                 "left join": "left_join",
                 "length": "length",
