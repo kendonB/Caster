@@ -68,7 +68,7 @@ class GitBashRule(MergeRule):
             R(Text("git push ")),
         "(git|get) pull":
             R(Text("git pull ")),
-        "CD up":
+        "(CD | get) up":
             R(Text("cd ..")),
         "CD":
             R(Text("cd ")),
