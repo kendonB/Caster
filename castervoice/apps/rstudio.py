@@ -10,8 +10,8 @@ from castervoice.lib.temporary import Store, Retrieve
 
 class RStudioRule(MappingRule):
     mapping = {
-    "new file":
-        R(Key("cs-n")),
+    "new (file | tab)":
+        R(Key("cs-n"), rdescript="RStudio: New File"),
     "open file":
         R(Key("c-o")),
     "open recent project":
@@ -23,24 +23,48 @@ class RStudioRule(MappingRule):
     "select all":
         R(Key("c-a")),
     "find":
-        R(Key("c-f")),
+        R(Key("c-f"), rdescript="RStudio: Find"),
+    "add comment":
+        R(Key("cs-c"), rdescript="RStudio: Comment"),
+    "terminate R":
+        R(Key("a-s, t"), rdescript="RStudio: Comment"),
+	"[file] save as":
+	    R(Key("a-f, a"), rdescript="RStudio: Save as"),
 
-    "[go to] line <ln1>":
-        R(Key("as-g") + Pause("10") + Text("%(ln1)s") + Key("enter")),
-    "<action> [line] <ln1> [by <ln2>]"  :
-        R(Function(navigation.action_lines, go_to_line="as-g/10", select_line_down="s-down", wait="/3", upon_arrival="home, ")),
-
+    # "[go to] line <nrstudio500>":
+        # R(Key("as-g") + Pause("10") + Text("%(nrstudio500)s") + Key("enter"),
+          # rdescript="RStudio: Go to Line #"),
     "focus console":
         R(Key("c-2")),
     "focus main":
-        R(Key("c-1")),
+        R(Key("c-1"), rdescript="RStudio: Focus Main"),
+    "focus terminal":
+        R(Key("as-t"), rdescript="RStudio: Focus Terminal"),
+    "focus help":
+        R(Key("c-3"), rdescript="RStudio: Focus Help"),
 
-    "next tab":
-        R(Key("c-f12")),
-    "first tab":
-        R(Key("cs-f11")),
-    "previous tab":
-        R(Key("c-f11")),
+    "(zoom | unzoom) console":
+        R(Key("cs-2"), rdescript="RStudio: Zoom Console"),
+    "(zoom | unzoom)  main":
+        R(Key("cs-1"), rdescript="RStudio: Zoom Main"),
+    "(zoom | unzoom)  help":
+        R(Key("cs-3"), rdescript="RStudio: Zoom Help"),
+
+	"new terminal":
+        R(Key("as-r"), rdescript="RStudio: New Terminal"),
+	"next terminal":
+        R(Key("cas-pagedown"), rdescript="RStudio: Next Terminal"),
+	"prior terminal":
+        R(Key("cas-pageup"), rdescript="RStudio: Prior Terminal"),
+    "close terminal":
+        R(Key("cas-backspace"), rdescript="RStudio: Close Terminal"),
+
+    "next tab [<nrstudio50>]":
+        R(Key("c-pagedown"), rdescript="RStudio: Next Tab")*Repeat(extra="nrstudio50"),
+    "first tab [<nrstudio50>]":
+        R(Key("cs-f11"), rdescript="RStudio: First Tab"),
+    "(previous | prior) tab [<nrstudio50>]":
+        R(Key("c-pageup"), rdescript="RStudio: Previous Tab")*Repeat(extra="nrstudio50"),
     "last tab":
         R(Key("cs-f12")),
     "close tab":
@@ -59,20 +83,50 @@ class RStudioRule(MappingRule):
     "previous plot":
         R(Key("ac-f11")),
 
-    "(help | document) that":
-        R(Store() + Key("c-2, question") + Retrieve() + Key("enter, c-3")),
-    "glimpse that":
-        R(Store() + Key("c-2") + Retrieve() + Key("space, percent, rangle, percent") + Text(" glimpse()") + Key("enter/50, c-1")),
-    "vee table that":
-        R(Store() + Key("c-2") + Text("library(vtable)") + Key("enter/50") + Retrieve() + Key("space, percent, rangle, percent") + Text(" vtable()") + Key("enter/50, c-1")),
+    "open":
+        R(Key("c-o"), rdescript="RStudio: Open"),
+	"build package":
+        R(Key("cs-b"), rdescript="RStudio: Build package"),
 
+	"next [<nrstudio500>]":
+        Key("c-2") + R(Text("n") + Key("enter"), rdescript="R: Next while debugging")*Repeat(extra="nrstudio500"),
+
+	"step in":
+	    Key("c-2") + R(Text("s") + Key("enter"), rdescript="R: Step in while debugging"),
+	"continue":
+	    Key("c-2") + R(Text("c") + Key("enter"), rdescript="R: Continue while debugging"),
+	"stop":
+	    Key("c-2") + R(Text("Q") + Key("enter"), rdescript="R: Stop debugging"),
+        
+    "<action> [line] <ln1> [by <ln2>]"  :
+        R(Function(navigation.action_lines, go_to_line="as-g/10", select_line_down="s-down", wait="/3", upon_arrival="home, ")),
+
+    "connect nesi":
+        R(Text("nes") + 
+            Key("enter") + 
+            Pause("50") +
+            BringApp("chrome.exe") + Pause("50") + 
+            Key("escape/10, as-t/10, left:3/10, enter/50") + Text("nesi") + 
+            Pause("50") + Key("down/10, right:2/10, enter/10, down:2/10, enter/10") + Key("a-tab") + 
+            Pause("50") +
+            Key("s-insert/25, enter") + BringApp("Authy Desktop.exe")),
     }
     extras = [
+        IntegerRefST("n", 1, 10000),
+		IntegerRefST("nrstudio500", 1, 500),
+		IntegerRefST("nrstudio50", 1, 50),
         IntegerRefST("ln1", 1, 10000),
         IntegerRefST("ln2", 1, 10000),
         Choice("action", navigation.actions),
     ]
-    defaults = {"ln2": ""}
+    defaults = {
+	    "n" : 1,
+		"nrstudio500": 1,
+		"nrstudio50": 1,
+        "ln2": ""
+	}
+
+
 
 
 def get_rule():

@@ -38,6 +38,7 @@ def github_checkoutupdate_pull_request(new):
             repo_url = split_string[0]
             pr_name = split_string[1].split("/")[0]
             CONFIG = load_toml_file(settings.SETTINGS["paths"]["GIT_REPO_LOCAL_REMOTE_PATH"])
+            
             if not CONFIG:
                 # logger.warn("Could not load bringme defaults")
                 raise Exception("Could not load " + settings.SETTINGS["paths"]["GIT_REPO_LOCAL_REMOTE_PATH"])
@@ -50,7 +51,7 @@ def github_checkoutupdate_pull_request(new):
                 TERMINAL_PATH = settings.SETTINGS["paths"]["TERMINAL_PATH"]
                 AHK_PATH = settings.SETTINGS["paths"]["AHK_PATH"]
                 ahk_installed = os.path.isfile(AHK_PATH)
-                print "AHK_PATH = " + AHK_PATH
+                print("AHK_PATH = " + AHK_PATH)
                 if TERMINAL_PATH != "":
                     load_terminal = True  # set default value
                     # ready fetch command string to be appended to
@@ -72,14 +73,14 @@ def github_checkoutupdate_pull_request(new):
                             # set the first portion of the fetch command
                             fetch_command += directory_command + " && "
                             load_terminal = False
-                            print "Msg:" + ahk_script + " has activated window: " + pattern_match
+                            print("Msg:" + ahk_script + " has activated window: " + pattern_match)
                         # if an existing git bash window is not already open
                         elif stdout == pattern_match + " does not exist":
-                            print "Msg:" + ahk_script + " has found no window: " + pattern_match
-                            print "Load new instance of: " + pattern_match
+                            print("Msg:" + ahk_script + " has found no window: " + pattern_match)
+                            print("Load new instance of: " + pattern_match)
                         else:
-                            print "Error:" + ahk_script + " neither returned 'activated' nor 'does not exist'"
-                            print "Fallback: load new instance of :" + pattern_match
+                            print("Error:" + ahk_script + " neither returned 'activated' nor 'does not exist'")
+                            print("Fallback: load new instance of :" + pattern_match)
                     if load_terminal:
                         # open up a new git bash terminal
                         terminal = Popen(TERMINAL_PATH, cwd=local_directory)

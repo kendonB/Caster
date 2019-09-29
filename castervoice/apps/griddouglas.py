@@ -96,8 +96,8 @@ class DouglasGridRule(MappingRule):
         IntegerRefST("x2", 0, 300),
         IntegerRefST("y2", 0, 300),
         Choice("action", {
-            "kick": 0,
-            "psychic": 1,
+            "ssss": 0,
+            "shsh": 1,
             "move": 2,
         }),
         Choice("point", {

@@ -5,6 +5,27 @@ from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 
+CONFIG = utilities.load_toml_file(settings.SETTINGS["paths"]["BRINGME_PATH"])
+if not CONFIG:
+    CONFIG = utilities.load_toml_file(settings.SETTINGS["paths"]["BRINGME_DEFAULTS_PATH"])
+if not CONFIG:
+    print("Could not load bringme defaults")
+
+def _rebuild_folders():
+    return {
+        key: (os.path.expandvars(value), 'folder') for key, value in CONFIG['folder'].iteritems()
+    }
+
+def navigate_to(desired_item):
+    item, item_type = desired_item
+    if item_type == 'folder':
+        Text("cd " + item.replace("\\", "/")).execute()
+        Key("enter").execute()
+
+def type_path(desired_item):
+    item, item_type = desired_item
+    if item_type == 'folder':
+        Text(item.replace("\\", "/")).execute()
 
 def _apply(n):
     if n != 0:
@@ -35,6 +56,8 @@ class GitBashRule(MappingRule):
             R(Mimic("get", "commit") + Text("refs #%(n)d ") + Key("backspace")),
         "(git|get) checkout":
             R(Text("git checkout ")),
+        "(git|get) checkout mine":
+            R(Text("git checkout what_i_use")),
         "(git|get) branch":
             R(Text("git branch ")),
         "(git|get) remote":
@@ -49,7 +72,7 @@ class GitBashRule(MappingRule):
             R(Text("git push ")),
         "(git|get) pull":
             R(Text("git pull ")),
-        "CD up":
+        "(CD | get) up":
             R(Text("cd ..")),
         "CD":
             R(Text("cd ")),
@@ -99,11 +122,40 @@ class GitBashRule(MappingRule):
             R(Text("find . -name \"*.java\" -exec grep -rinH \"PATTERN\" {} \\;")),
         "to file":
             R(Text(" > FILENAME")),
+
+        "git merge into mine":
+            R(Text("git branch | grep \"*\" | awk '{ print $2 }' | clip") +
+              Key("enter/100") + Text("git checkout what_i_use") +
+              Key("enter/100") + Text("git merge ") + Key("insert")),
+        "hub pull request":
+            R(Text("hub pull-request -o -b develop -a kendonB")),
+        "git push [back to] pull request":
+            R(Text("git branch | grep \"*\" | awk '{ print $2 }' | clip") +
+              Key("enter/100") + Text("git push <pr_url> ") + Key("insert") +
+              Text(":<pr_branch_name>") + Key("home") + Key("right:17")),
+        "git push [back to] pull request alex":
+            R(Text("git branch | grep \"*\" | awk '{ print $2 }' | clip") +
+              Key("enter/100") + Text("git push https://github.com/alexboche/caster-1.git ") + Key("insert") +
+              Text(":<pr_branch_name>")),
+        "git push [back to] pull request em rob":
+            R(Text("git branch | grep \"*\" | awk '{ print $2 }' | clip") +
+              Key("enter/100") + Text("git push https://github.com/mrob95/caster.git ") + Key("insert") +
+              Text(":<pr_branch_name>")),
+        "update [my] master [branch]":
+            R(Text("git checkout master && git pull upstream master")),
+
+        # Folder path commands (not git specific)
+        "[folder] path <desired_item>":
+            R(Function(type_path), rdescript="GIT: type in folder path"),
+        "(CD | go to | navigate to | [shell] bring me) <desired_item>":
+            R(Function(navigate_to), rdescript="GIT: go to folder"),
     }
     extras = [
         IntegerRefST("n", 1, 10000),
+        IntegerRefST("ngb100", 1, 100),
+        Choice("desired_item", _rebuild_folders()),
     ]
-    defaults = {"n": 0}
+    defaults = {"n": 0, "ngb100": 1}
 
 
 _executables = [

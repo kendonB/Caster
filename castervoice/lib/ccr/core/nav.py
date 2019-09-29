@@ -138,22 +138,25 @@ class Navigation(MergeRule):
             R(Function(navigation.left_down)),
         "bench":
             R(Function(navigation.left_up)),
+        
+        "hum": R(Key("home")),
+        "end": R(Key("end")),
+        "son [<nnavi500>]": R(Key("pageup:%(nnavi500)s")),
+        "shine son [<nnavi500>]": R(Key("s-pageup:%(nnavi500)s")),
+        "doon [<nnavi500>]": R(Key("pagedown:%(nnavi500)s")),
+        "shine doon [<nnavi500>]": R(Key("s-pagedown:%(nnavi500)s")),
+        
+        "laib [<nnavi500>]": R(Key("c-left:%(nnavi500)s")),
+        "rope [<nnavi500>]": R(Key("c-right:%(nnavi500)s")),
+        "nope [<nnavi500>]": R(ContextAction(default=Key("cs-left:%(nnavi500)s") + Key("backspace"), actions=[
+                  (AppContext(executable=["\\sh.exe", "\\bash.exe", "\\mintty.exe"]), Key("c-w:%(nnavi500)s")),
+                ])),
+        "kay [<nnavi500>]": R(Key("cs-right:%(nnavi500)s") + Key("backspace")),
 
         # keystroke commands
         "<direction> [<nnavi500>]":
             R(Key("%(direction)s")*Repeat(extra='nnavi500'), rdescript="arrow keys"),
-        "(lease wally | latch) [<nnavi10>]":
-            R(Key("home:%(nnavi10)s")),
-        "(ross wally | ratch) [<nnavi10>]":
-            R(Key("end:%(nnavi10)s")),
-        "sauce wally [<nnavi10>]":
-            R(Key("c-home:%(nnavi10)s")),
-        "dunce wally [<nnavi10>]":
-            R(Key("c-end:%(nnavi10)s")),
-        "bird [<nnavi500>]":
-            R(Key("c-left:%(nnavi500)s")),
-        "firch [<nnavi500>]":
-            R(Key("c-right:%(nnavi500)s")),
+
         "brick [<nnavi500>]":
             R(Key("s-left:%(nnavi500)s")),
         "frick [<nnavi500>]":
@@ -171,9 +174,6 @@ class Navigation(MergeRule):
         "<modifier> <button_dictionary_1>":
               R(Key("%(modifier)s%(button_dictionary_1)s"),
               rdescript="press modifiers plus buttons from button_dictionary_1, non-repeatable"),
-
-        # "key stroke [<modifier>] <combined_button_dictionary>":
-        #     R(Text('Key("%(modifier)s%(combined_button_dictionary)s")')),
 
         # "key stroke [<modifier>] <combined_button_dictionary>":
         #     R(Text('Key("%(modifier)s%(combined_button_dictionary)s")')),
@@ -297,11 +297,6 @@ class Navigation(MergeRule):
         }),
         navigation.TARGET_CHOICE,
         navigation.get_direction_choice("mtn_dir"),
-        Choice("mtn_mode", {
-            "shin": "s",
-            "queue": "cs",
-            "fly": "c",
-        }),
         Choice("extreme", {
             "Wally": "way",
         }),

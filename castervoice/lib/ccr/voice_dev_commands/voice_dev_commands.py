@@ -17,6 +17,7 @@ from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
 
 new_modifier_choice_object = copy.deepcopy(Navigation.modifier_choice_object)
+new_combined_button_dictionary = copy.deepcopy(Navigation.combined_button_dictionary)
 
 def split_dictation(text):
     if text:
@@ -102,7 +103,7 @@ class VoiceDevCommands(MergeRule):
         "dev repeat":
             R(Text(" * Repeat(extra='n')"), rdescript="DragonflyDev: Snippet for Repeat"),
         "dev choice":
-            R(Text('Choice("", {') + Pause("10") + Key("enter, up, right:4"),
+            R(Text('Choice("", {})') + Pause("10") + Key("left:2, enter, up, end, left:4"),
               rdescript="DragonflyDev: Snippet for the Choice Extra"),
         "dev mouse [<mouse_button>]":
             R(Function(type_mouse), rdescript="DragonflyDev: Snippet for Mouse Click Command"),
@@ -199,7 +200,7 @@ class VoiceDevCommands(MergeRule):
 
     extras = [
         new_modifier_choice_object,
-        Choice("combined_button_dictionary", Navigation.combined_button_dictionary),
+        Choice("combined_button_dictionary", new_combined_button_dictionary),
         Dictation("text"),
         Dictation("dict"),
         Dictation("spec"),

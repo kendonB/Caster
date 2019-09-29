@@ -125,8 +125,8 @@ class RainbowGridRule(MappingRule):
         IntegerRefST("n1", 0, 100),
         IntegerRefST("n2", 0, 100),
         Choice("action", {
-            "kick": 0,
-            "psychic": 1,
+            "ssss": 0,
+            "shsh": 1,
             "move": 2,
         }),
         Choice("point", {

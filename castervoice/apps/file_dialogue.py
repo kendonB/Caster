@@ -8,9 +8,9 @@ from castervoice.lib.merge.state.short import R
 
 class FileDialogueRule(MappingRule):
     mapping = {
-        "up [<n>]": R(Key("a-up"))*Repeat(extra="n"),
-        "back [<n>]": R(Key("a-left"))*Repeat(extra="n"),
-        "forward [<n>]": R(Key("a-right"))*Repeat(extra="n"),
+        "get up [<n>]": R(Key("a-up"))*Repeat(extra="n"),
+        "get back [<n>]": R(Key("a-left"))*Repeat(extra="n"),
+        "get forward [<n>]": R(Key("a-right"))*Repeat(extra="n"),
         "search [<text>]": R(Key("c-l, tab") + Text("%(text)s")),
         "organize": R(Key("c-l, tab:2")),
         "(left | navigation) pane": R(Key("c-l, tab:3")),
@@ -18,7 +18,6 @@ class FileDialogueRule(MappingRule):
         "sort [headings]": R(Key("c-l, tab:5")),
         "[file] name": R(Key("a-n")),
         "file type": R(Key("c-l, tab:7")),
-
     }
     extras = [IntegerRefST("n", 1, 10), Dictation("text")]
     defaults = {

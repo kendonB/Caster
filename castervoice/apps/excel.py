@@ -84,6 +84,15 @@ class ExcelRule(MappingRule):
         "freeze panes":
             R(Key("a-w, f")),
 
+        "quick access one":
+            R(Key("a-1")),
+        "quick access two":
+            R(Key("a-2")),
+        "quick access three":
+            R(Key("a-3")),
+        "quick access four":
+            R(Key("a-4")),
+
         # From Mark Lillibridge regarding the edit cell command below:
         # There are at least two modes, edit (blue background) and enter (yellow background).
         # In enter mode for formulas, arrow keys select a

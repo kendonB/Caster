@@ -53,7 +53,7 @@ class TextFormat():
 
     @classmethod
     def get_text_format_description(cls, capitalization, spacing):
-        caps = {0: "<none>", 1: "yell", 2: "tie", 3: "gerrish", 4: "sing", 5: "laws"}
+        caps = {0: "<none>", 1: "yell", 2: "tie", 3: "gerrish", 4: "sing", 5: "laws", 6: "drag"}
         spaces = {
             0: "<none>",
             1: "gum",
@@ -73,6 +73,8 @@ class TextFormat():
     def normalize_text_format(cls, capitalization, spacing):
         if capitalization == 0:
             capitalization = 5
+        if capitalization == 6:
+            capitalization = 0
         if spacing == 0 and capitalization == 3:
             spacing = 1
         return (capitalization, spacing)
