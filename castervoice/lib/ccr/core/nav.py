@@ -285,7 +285,9 @@ class Navigation(MergeRule):
         "hum": R(Key("home")),
         "end": R(Key("end")),
         "son [<nnavi500>]": R(Key("pageup:%(nnavi500)s")),
+        "shine son [<nnavi500>]": R(Key("s-pageup:%(nnavi500)s")),
         "doon [<nnavi500>]": R(Key("pagedown:%(nnavi500)s")),
+        "shine doon [<nnavi500>]": R(Key("s-pagedown:%(nnavi500)s")),
         
         "laib [<nnavi500>]": R(Key("c-left:%(nnavi500)s")),
         "rope [<nnavi500>]": R(Key("c-right:%(nnavi500)s")),

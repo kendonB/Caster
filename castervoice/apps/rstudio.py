@@ -47,9 +47,11 @@ class RStudioRule(MergeRule):
 	"new terminal":
         R(Key("as-r"), rdescript="RStudio: New Terminal"),
 	"next terminal":
-        R(Key("as-f11"), rdescript="RStudio: Next Terminal"),
+        R(Key("cas-pagedown"), rdescript="RStudio: Next Terminal"),
 	"prior terminal":
-        R(Key("as-f12"), rdescript="RStudio: Prior Terminal"),
+        R(Key("cas-pageup"), rdescript="RStudio: Prior Terminal"),
+    "close terminal":
+        R(Key("cas-backspace"), rdescript="RStudio: Close Terminal"),
 
     "next tab [<nrstudio50>]":
         R(Key("c-pagedown"), rdescript="RStudio: Next Tab")*Repeat(extra="nrstudio50"),
