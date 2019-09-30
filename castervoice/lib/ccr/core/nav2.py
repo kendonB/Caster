@@ -21,6 +21,8 @@ class NavigationNon(MappingRule):
             R(Function(navigation.erase_multi_clipboard)),
         "find":
             R(Key("c-f")),
+        "open":
+            R(Key("c-o")),
         "find next [<n>]":
             R(Key("f3"))*Repeat(extra="n"),
         "find prior [<n>]":
