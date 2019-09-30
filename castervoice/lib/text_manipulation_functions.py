@@ -55,16 +55,10 @@ def get_start_end_position(text, phrase, direction, occurrence_number, dictation
             return 
     left_index, right_index = match
     return (left_index, right_index)
-<<<<<<< HEAD
 
 
-copy_pause_time_dict = {"standard": "10", "texstudio": "70", "lyx": "60", "winword": "90"}
-paste_pause_time_dict = {"standard": "0", "texstudio": "100", "lyx": "20", "winword": "20"} 
-=======
-    
 copy_pause_time_dict = {"standard": "10", "texstudio": "15", "lyx": "60", "winword": "90"}
 paste_pause_time_dict = {"standard": "0", "texstudio": "25", "lyx": "20", "winword": "20"} 
->>>>>>> what_i_use
 # winword (a.k.a. Microsoft Word) pause times may need some tweaking, 
 # people are probably better off just using the native Dragon commands in winword.
 

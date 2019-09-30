@@ -1,4 +1,4 @@
-from dragonfly import Key, Pause, Function, Choice, MappingRule
+from dragonfly import Key, Pause, Function, Choice, MappingRule, Repeat, BringApp
 
 from castervoice.lib import navigation
 from castervoice.lib.actions import Text

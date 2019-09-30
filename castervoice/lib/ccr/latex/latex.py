@@ -2,7 +2,7 @@
 Created on Sep 4, 2018
 @author: Mike Roberts
 '''
-from dragonfly import Key, Function, Choice
+from dragonfly import Key, Function, Choice, Repeat, Dictation
 
 from castervoice.lib.actions import Text
 from castervoice.lib.ccr.standard import SymbolSpecs
@@ -10,7 +10,7 @@ from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
-
+from castervoice.lib.merge.additions import IntegerRefST
 
 def back_curl(first, second):
     # Return \first{second}, if second is empty then end inside the brackets for user input

@@ -1,15 +1,14 @@
-from dragonfly import Key, Mimic, Function, MappingRule
+from dragonfly import Key, Mimic, Function, MappingRule, Choice
 
 from castervoice.lib.actions import Text
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
+from castervoice.lib import utilities, settings
 
-CONFIG = utilities.load_toml_file(settings.SETTINGS["paths"]["BRINGME_PATH"])
-if not CONFIG:
-    CONFIG = utilities.load_toml_file(settings.SETTINGS["paths"]["BRINGME_DEFAULTS_PATH"])
-if not CONFIG:
-    print("Could not load bringme defaults")
+import os
+
+CONFIG = utilities.load_toml_file(settings.SETTINGS["paths"]["SM_BRINGME_PATH"])
 
 def _rebuild_folders():
     return {

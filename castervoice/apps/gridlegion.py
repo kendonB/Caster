@@ -77,15 +77,9 @@ class LegionGridRule(MappingRule):
         "refresh":
             R(Function(navigation.mouse_alternates, mode="legion")),
         SymbolSpecs.CANCEL:
-<<<<<<< HEAD
             R(Function(kill)),
-        "<n1> (select | light) <n2>":
-            R(Function(drag_highlight)),
-=======
-            R(Function(kill, nexus=_NEXUS)),
         "<n1> (select | light | grab) <n2>":
-            R(Function(drag_highlight, nexus=_NEXUS)),
->>>>>>> what_i_use
+            R(Function(drag_highlight)),
     }
     extras = [
         Choice("action", {
