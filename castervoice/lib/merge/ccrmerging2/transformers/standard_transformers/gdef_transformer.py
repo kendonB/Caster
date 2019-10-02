@@ -128,6 +128,7 @@ _DEFS = None
 def _load_definitions():
     if os.path.isfile(settings.SETTINGS["paths"]["GDEF_FILE"]):
         '''user must create castervoice/user/words.txt for it to get picked up here'''
+        print(settings.SETTINGS["paths"]["GDEF_FILE"])
         with io.open(
                 settings.SETTINGS["paths"]["GDEF_FILE"], "rt", encoding="utf-8") as f:
             lines = f.readlines()

@@ -214,7 +214,7 @@ class Navigation(MergeRule):
     }
     button_dictionary_10.update(longhand_punctuation_names)
     button_dictionary_1 = {
-        "(home | lease wally | latch)": "home",
+        "(hum | lease wally | latch)": "home",
         "(end | ross wally | ratch)": "end",
         "insert": "insert",
         "zero": "0",
@@ -233,8 +233,8 @@ class Navigation(MergeRule):
         combined_button_dictionary.update(dictionary)
 
     modifier_choice_object = Choice("modifier", {
-            "(control | fly)": "c-", #TODO: make DRY
-            "(shift | shin)": "s-",
+            "(control | fly)": "c-", #TODO: make '
+            "(shift | shine)": "s-",
             "alt": "a-",
             "(control shift | que)": "cs-",
             "control alt": "ca-",
@@ -279,8 +279,7 @@ class Navigation(MergeRule):
         }),
         Choice(
             "spacing", {
-                "gum": 1,
-                "gun": 1,
+                "flat": 1,
                 "spine": 2,
                 "snake": 3,
                 "pebble": 4,
