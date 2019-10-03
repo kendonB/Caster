@@ -94,9 +94,9 @@ class Rlang(MergeRule):
             R(Text(" <- ")),
         "in (op | operator)":
             R(Key('space, percent, i, n, percent, space')),
-        "slurp | our pipe":
+        "slurp":
             R(Key('space, percent, rangle, percent, space')),
-        "tell (slurp | pipe)":
+        "tell slurp":
             R(Key('end, space, percent, rangle, percent, enter')),
         "tell add":
             R(Key('end, space, plus, enter')),

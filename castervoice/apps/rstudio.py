@@ -34,13 +34,13 @@ class RStudioRule(MappingRule):
     # "[go to] line <nrstudio500>":
         # R(Key("as-g") + Pause("10") + Text("%(nrstudio500)s") + Key("enter"),
           # rdescript="RStudio: Go to Line #"),
-    "focus (console | soul)":
+    "focus console":
         R(Key("c-2")),
-    "focus (main | ed)":
+    "focus main":
         R(Key("c-1"), rdescript="RStudio: Focus Main"),
     "focus terminal":
         R(Key("as-t"), rdescript="RStudio: Focus Terminal"),
-    "focus docs":
+    "focus help":
         R(Key("c-3"), rdescript="RStudio: Focus Help"),
 
     "(zoom | unzoom) console":
