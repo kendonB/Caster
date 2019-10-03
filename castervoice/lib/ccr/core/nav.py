@@ -128,11 +128,11 @@ class Navigation(MergeRule):
               rdescript="Core: switch to most recent Windows"),
 
         # Ccr Mouse Commands
-        "ssss [<nnavi3>]":
+        "kick [<nnavi3>]":
             R(Function(navigation.left_click))*Repeat(extra="nnavi3"),
-        "shsh":
+        "psychic":
             R(Function(navigation.right_click)),
-        "(ssss double|double ssss)":
+        "(kick double|double kick)":
             R(Function(navigation.left_click)*Repeat(2)),
         "squat":
             R(Function(navigation.left_down)),
@@ -234,7 +234,7 @@ class Navigation(MergeRule):
 
     modifier_choice_object = Choice("modifier", {
             "(control | fly)": "c-", #TODO: make '
-            "(shift | shine)": "s-",
+            "(shift | shin)": "s-",
             "alt": "a-",
             "(control shift | que)": "cs-",
             "control alt": "ca-",
