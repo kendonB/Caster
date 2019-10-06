@@ -234,7 +234,7 @@ class Navigation(MergeRule):
 
     modifier_choice_object = Choice("modifier", {
             "(control | fly)": "c-", #TODO: make '
-            "(shift | shin)": "s-",
+            "(shift | shine)": "s-",
             "alt": "a-",
             "(control shift | que)": "cs-",
             "control alt": "ca-",
