@@ -12,7 +12,7 @@ def caster_alphabet():
         "delta"   : "d",
         "eco-"    : "e",
         "foxy"    : "f",
-        "goof"     : "g",
+        "gas"     : "g",
         "hotel"   : "h",
         "India"   : "i",
         "julia"   : "j",

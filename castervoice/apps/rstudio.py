@@ -31,9 +31,9 @@ class RStudioRule(MappingRule):
 	"[file] save as":
 	    R(Key("a-f, a"), rdescript="RStudio: Save as"),
 
-    # "[go to] line <nrstudio500>":
-        # R(Key("as-g") + Pause("10") + Text("%(nrstudio500)s") + Key("enter"),
-          # rdescript="RStudio: Go to Line #"),
+    "[go to] line <nrstudio500>":
+        R(Key("as-g") + Pause("10") + Text("%(nrstudio500)s") + Key("enter"),
+          rdescript="RStudio: Go to Line #"),
     "focus console":
         R(Key("c-2")),
     "focus main":
