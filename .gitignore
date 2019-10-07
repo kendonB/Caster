@@ -49,3 +49,6 @@ castervoice.egg-info
 
 # Ignore Notepad++ backup files
 **/nppBackup
+
+# Ignore Aenea server_state file
+server_state.json
