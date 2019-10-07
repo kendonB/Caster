@@ -149,9 +149,9 @@ class Rlang(MergeRule):
         "run below":
 	        Key("ca-e"),
 
-		"focus console":
+		"look soul":
             R(Key("c-2"), rdescript="RStudio: Focus Console"),
-        "focus main":
+        "look ed":
             R(Key("c-1"), rdescript="RStudio: Focus Main"),
         "help this":
 		    R(Key("f1"), rdescript="R: Help for function at cursor"),
