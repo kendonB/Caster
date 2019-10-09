@@ -274,7 +274,7 @@ class Navigation(MergeRule):
             "yell": 1,
             "tie": 2,
             "Gerrish": 3,
-            "sing": 4,
+            "dock": 4,
             "laws": 5
         }),
         Choice(
