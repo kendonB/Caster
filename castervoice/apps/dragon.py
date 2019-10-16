@@ -6,13 +6,11 @@ from castervoice.apps.dragon_support import cap_dictation, fix_dragon_double, ex
     defaults_for_whole_file
 from castervoice.lib import utilities
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.mergerule import MappingRule
 from castervoice.lib.merge.state.short import R
 
 
-class DragonRule(MergeRule):
-    pronunciation = "dragon"
-
+class DragonRule(MappingRule):
     mapping = {
         "format <text>": Function(cap_dictation, extra={"text"}),
         '(lock Dragon | deactivate)':

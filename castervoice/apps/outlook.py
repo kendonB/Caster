@@ -3,7 +3,7 @@ from dragonfly import Function, Repeat, Dictation, Choice, AppContext
 from castervoice.lib.actions import Key, Text
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
-from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.mergerule import MappingRule
 from castervoice.lib.merge.state.short import R
 
 
@@ -12,7 +12,7 @@ def capitalize(text):
     Text(output).execute()
 
 
-class OutlookRule(MergeRule):
+class OutlookRule(MappingRule):
     mapping = {
         # create new thing
         "new (appointment | event)": R(Key("sc-a")),

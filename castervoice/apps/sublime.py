@@ -4,12 +4,12 @@ from castervoice.lib import navigation
 from castervoice.lib.actions import Key, Text
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.additions import IntegerRefST
-from castervoice.lib.merge.mergerule import MergeRule
+from castervoice.lib.merge.mergerule import MappingRule
 from castervoice.lib.merge.state.short import R
 from castervoice.lib.temporary import Store, Retrieve
 
 
-class SublimeRule(MergeRule):
+class SublimeRule(MappingRule):
     mapping = {
         "new file":
             R(Key("c-n")),

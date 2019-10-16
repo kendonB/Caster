@@ -6,12 +6,11 @@ from castervoice.apps.dragon_support import extras_for_whole_file, defaults_for_
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.short import R
-
+from castervoice.lib.const import CCRType
 
 class SpellingWindowRule(MergeRule):
+    pronunciation = "dragon spelling window"
     mapping = {
-        # todo: make these CCR
-
         "<first_second_third> word":
             R(Key("home, c-right:%(first_second_third)d, cs-right"),
               rdescript="Dragon: select the first second or third etc. word"),
@@ -31,4 +30,4 @@ class SpellingWindowRule(MergeRule):
 
 
 def get_rule():
-    return SpellingWindowRule, RuleDetails(name="dragon spelling window", executable="natspeak")
+    return SpellingWindowRule, RuleDetails(ccrtype=CCRType.APP, executable="natspeak")
