@@ -4,7 +4,7 @@ import threading
 import time
 from subprocess import Popen
 
-from dragonfly import AppContext, Function, Choice, Dictation, ContextAction
+from dragonfly import AppContext, Function, Choice, Dictation, ContextAction, Pause
 
 from castervoice.lib import settings, utilities, context, contexts
 from castervoice.lib.actions import Text, Key
@@ -173,7 +173,7 @@ class BringRule(BaseSelfModifyingRule):
         if not app:
             ContextAction(Function(lambda: Popen([BringRule._explorer_path, folder])), [
                 (BringRule._terminal_context, Text("cd \"%s\"\n" % folder)),
-                (BringRule._explorer_context, Key("c-l/5") + Text("%s\n" % folder))
+                (BringRule._explorer_context, Key("c-l/5") + Text("%s\n" % folder) + Pause("20") + Key("a-d, tab:3"))
             ]).execute()
         elif app == "terminal":
             Popen([BringRule._terminal_path, "--cd=" + folder.replace("\\", "/")])
