@@ -16,6 +16,6 @@ echo ----------------------------------------------------------------
 echo(
 echo(
 
-python -m dragonfly test _caster.py --delay 3
+python -m dragonfly test _caster.py --delay 0
 
 pause 1
