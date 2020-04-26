@@ -28,9 +28,11 @@ CORE = [
 # default-on modules that are platform or engine specific
 if sys.platform == "win32":
     CORE.extend([
-         "LegionGridRule"
+         "LegionGridRule",
+         "IERule"
     ])
-    if dragonfly.get_current_engine().name == 'natlink':
+    # get_engine() is used here as a workaround for running Natlink inprocess
+    if dragonfly.get_engine().name == 'natlink':
         CORE.append("DragonRule")
 
 # internal rules
