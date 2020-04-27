@@ -7,7 +7,7 @@ from castervoice.lib.merge.state.short import R
 
 class MouseAlternativesRule(MappingRule):
     mapping = {
-        "legion [<monitor>]":
+        "legion [<monitor>] [<rough>] [grid] [<region>]":
             R(Function(navigation.mouse_alternates, mode="legion") +
                 Function(utilities.focus_mousegrid, gridtitle="legiongrid")),
         "rainbow [<monitor>]":
@@ -21,9 +21,14 @@ class MouseAlternativesRule(MappingRule):
                 Function(utilities.focus_mousegrid, gridtitle="sudokugrid")),
     }
     extras = [
-        IntegerRefST("monitor", 1, 10)
+        IntegerRefST("monitor", 1, 10),
+        IntegerRefST("region", 1, 10),
+        Choice("rough", {
+            "rough": True,
+            "detailed": False
+        })
     ]
-    defaults = {}
+    defaults = {"rough": True, "region": 0}
 
 
 def get_rule():

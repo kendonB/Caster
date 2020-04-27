@@ -9,6 +9,7 @@ from dragonfly import get_current_engine, monitors
 from castervoice.lib import control, settings, utilities, textformat
 from castervoice.lib.actions import Key, Text, Mouse
 from castervoice.lib.clipboard import Clipboard
+import time
 
 _CLIP = {}
 GRID_PROCESS = None
@@ -24,25 +25,37 @@ def initialize_clipboard():
 initialize_clipboard()
 
 
-def mouse_alternates(mode, monitor=1):
+def mouse_alternates(mode, monitor=1, rough=True, region=0):
     args = []
     if mode == "legion" and not utilities.window_exists(None, "legiongrid"):
         from castervoice.asynch.mouse.legion import LegionScanner
         r = monitors[int(monitor) - 1].rectangle
-        bbox = [
-            int(r.x),
-            int(r.y),
-            int(r.x) + int(r.dx) - 1,
-            int(r.y) + int(r.dy) - 1
-        ]
+        if region > 0:
+            dx = int(r.dx) / 3
+            dy = int(r.dy) / 3
+            bbox = [
+                int(r.x) + ((region - 1) % 3) * dx,
+                int(r.y) + (((region - 1) / 3)) * dy,
+                int(r.x) + ((region - 1) % 3 + 1) * dx - 1,
+                int(r.y) + (((region - 1) / 3) + 1) * dy - 1
+            ]
+            rough = False
+        else:
+            bbox = [
+                int(r.x),
+                int(r.y),
+                int(r.x) + int(r.dx) - 1,
+                int(r.y) + int(r.dy) - 1
+            ]
         ls = LegionScanner()
-        ls.scan(bbox)
+        ls.scan(bbox, rough)
         tscan = ls.get_update()
         args = [
             settings.settings(["paths", "PYTHONW"]),
-            settings.settings(["paths", "LEGION_PATH"]), "-t", tscan[0], "-m",
-            str(monitor)
+            settings.settings(["paths", "LEGION_PATH"]), "-t", tscan[0], "-m", str(monitor)
         ]
+        if region > 0:
+            args = args + ["-d", str(dx) + "_" + str(dy) + "_" + str(int(r.x) + ((region - 1) % 3) * dx) + "_" + str(int(r.y) + (((region - 1) / 3)) * dy)]
     elif mode == "rainbow" and not utilities.window_exists(None, "rainbowgrid"):
         args = [
             settings.settings(["paths", "PYTHONW"]),
