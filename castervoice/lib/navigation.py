@@ -25,8 +25,9 @@ def initialize_clipboard():
 initialize_clipboard()
 
 
-def mouse_alternates(mode, monitor=1, rough=True, region=0):
+def mouse_alternates(mode, monitor=1, rough=True):
     args = []
+
     if mode == "legion" and not utilities.window_exists(None, "legiongrid"):
         from castervoice.asynch.mouse.legion import LegionScanner
         r = monitors[int(monitor) - 1].rectangle
