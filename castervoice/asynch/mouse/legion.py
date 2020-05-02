@@ -43,12 +43,12 @@ class Rectangle:
 
 
 class LegionGrid(TkTransparent):
-    def __init__(self, grid_size=None, tirg=None, auto_quit=False, width_factor=1):
+    def __init__(self, grid_size=None, tirg=None, auto_quit=False):
         self.setup_xmlrpc_server()
         TkTransparent.__init__(self, settings.LEGION_TITLE, grid_size)
         self.attributes("-alpha", 0.7)
         self.max_rectangle_width = int(
-            grid_size.width*width_factor/settings.SETTINGS["miscellaneous"]["legion_vertical_columns"])
+            grid_size.width/settings.SETTINGS["miscellaneous"]["legion_vertical_columns"])
         self.tirg_positions = {}
         if tirg is not None:
             self.process_rectangles(tirg)
@@ -237,7 +237,6 @@ def main(argv):
     monitor = 1
     dimensions = None
     auto_quit = False
-    width_factor=1
 
     error_code = windll.shcore.SetProcessDpiAwareness(2)  #enable 1-1 pixel mapping
     if error_code == -2147024891:
@@ -261,7 +260,6 @@ def main(argv):
             elif opt in ("-d", "--dimensions"):
                 # wxh+x+y
                 dimensions = Dimensions(*[int(n) for n in arg.split("_")])
-                width_factor=3
             elif opt in ("-a", "--autoquit"):
                 auto_quit = arg in ("1", "t")
 
@@ -269,7 +267,7 @@ def main(argv):
             r = monitors[int(monitor) - 1].rectangle
             dimensions = Dimensions(int(r.dx), int(r.dy), int(r.x), int(r.y))
 
-        lg = LegionGrid(grid_size=dimensions, tirg=tirg, auto_quit=auto_quit, width_factor=width_factor)
+        lg = LegionGrid(grid_size=dimensions, tirg=tirg, auto_quit=auto_quit)
     except Exception:
         utilities.simple_log(True)
 
