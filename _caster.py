@@ -8,7 +8,7 @@ import six
 if six.PY2:
     import logging
     logging.basicConfig()
-
+    
 from castervoice.lib.ctrl.dependencies import DependencyMan  # requires nothing
 DependencyMan().initialize()
 
@@ -41,3 +41,6 @@ if settings.SETTINGS["sikuli"]["enabled"]:
     sikuli_controller.get_instance().bootstrap_start_server_proxy()
 
 print("\n*- Starting " + settings.SOFTWARE_NAME + " -*")
+
+if six.PY2:
+    logging.getLogger('action.exec').setLevel(logging.WARN)
