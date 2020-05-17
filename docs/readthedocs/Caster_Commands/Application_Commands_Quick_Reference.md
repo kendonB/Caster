@@ -37,6 +37,7 @@ Classic Install Location: `castervoice\rules\apps' ` in Caster source code.
 - [Sublime](#sublime) - sublime
 - [Total Commander](#total-commander) total commander/synchronize directories
 - [Typora](#typora) - tie poor a
+- [Unity](#unity) - unity
 - [Visual Studio](#visual-studio) - visual studio
 - [Visual Studio Code](#visual-studio-code) Visual Studio Code CCR/Visual Studio Code
 - [Webex Teams](#webex-teams) - webex teams
@@ -588,6 +589,17 @@ Same Commands as [Git Bash](#git-bash)
 | `zoom in <n>`        | `zoom out <n>`                 | `switch documnets`             |
 | `toggle [dev] tools` | `|`                            |                                |
 
+# Unity
+| Command                    | Command                        | Command                        |
+| :------------------------- | :----------------------------- | :----------------------------- |
+| `show <window>`            | `search <window>`              | `clear <window>`               |
+| `max view`                 | `(play \| stop) game`          | `pause game`                   |
+| `build and run`            | `build settings`               | `make empty [game object]`     |
+| `align with view`          | `move to view`                 | `move [sibling] first`         |
+| `move [sibling] last`      | `(set active \| toggle )`      | `[load] selection [<1to9>]`    |
+| `store selection [<1to9>]` | `rename`                       |                                |
+
+
 # Visual Studio
 
 | Command                            | Command                      | Command                             |
@@ -611,16 +623,18 @@ Same Commands as [Git Bash](#git-bash)
 
 | Command                      | Command                                   | Command                                 |
 | :--------------------------- | :---------------------------------------- | :-------------------------------------- |
-| `scroll up [<n>]`            | `scroll down [<n>]`                       | `scroll page up [<n>]`                  |
-| `scroll page down [<n>]`     | `(Unindent/outdent) [<n>]`                | `Comment line`                          |
-| `Block comment`              | `cursor above [<n>]`                      | `cursor below [<n>]`                    |
-| `remove cursor`              | `tall cursor up`                          | `tall cursor down`                      |
-| `select [in] brackets [<n>]` | `all current selection`                   | `all current word`                      |
-| `select next [<n>]`          | `go to next [<n>]`                        | `select prior [<n>]`                    |
-| `go to prior [<n>]`          | `cursor all`                              | `next cursor [<n>]`                     |
-| `indent [<n>]`               | `hard delete [<n>]`                       | `copy line up [<n>]`                    |
-| `copy line up [<n>]`         | `switch line down [<n>]`                  | `switch line up [<n>]`                  |
-| `match bracket`              | `select between <between_parables> [<n>]` | `select around <around_parables> [<n>]` |
+| `scroll up [<n>]`            | `scroll page up [<n>]`                    | `Comment line`                          |
+| `scroll down [<n>]`          | `scroll page down [<n>]`                  | `Block comment`                         |
+| `cursor above [<n>]`         | `cursor all`                              | `tall cursor up`                        |
+| `cursor below [<n>]`         | `remove cursor`                           | `tall cursor down`                      |
+| `select [in] brackets [<n>]` | `all current selection`                   | `go to next [<n>]`                      |
+| `select next [<n>]`          | `next cursor [<n>]`                       | `go to prior [<n>]`                     |
+| `select prior [<n>]`         | `skip next cursor [<n>]`                  | `copy line down [<n>]`                  |
+| `indent [<n>]`               | `all current word`                        | `copy line up [<n>]`                    |
+| `(Unindent/outdent) [<n>]`   | `select around <around_parables> [<n>]`   | `switch line up [<n>]`                  |
+| `match bracket`              | `select between <between_parables> [<n>]` | `switch line down [<n>]`                |
+| `hard delete [<n>]`          | 
+
 
 ## Non-CCR
 
