@@ -44,3 +44,5 @@ print("\n*- Starting " + settings.SOFTWARE_NAME + " -*")
 
 if six.PY2:
     logging.getLogger('action.exec').setLevel(logging.WARN)
+    logging.getLogger('kaldi.wrapper').setLevel(9)
+    logging.getLogger('engine').setLevel(12)

@@ -78,11 +78,11 @@ class DouglasGridRule(MappingRule):
             R(Function(send_input_select)),
         "<x1> [by] <y1> (grab | select) <x2>":
             R(Function(send_input_select_short)),
-        "squat":
+        "squat {weight=1000}":
             R(Function(store_first_point)),
-        "bench":
+        "bench {weight=1000}":
             R(Function(select_text)),
-        SymbolSpecs.CANCEL:
+        SymbolSpecs.CANCEL + " {weight=1000}":
             R(Function(kill)),
     }
     extras = [

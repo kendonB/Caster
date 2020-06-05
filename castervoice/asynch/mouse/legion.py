@@ -179,8 +179,7 @@ class LegionScanner:
                 self.tirg_dll = cdll.LoadLibrary(str(Path(settings.SETTINGS["paths"]["DLL_PATH"]).joinpath("tirg-32.dll")).encode(
                 sys.getfilesystemencoding()))
             else:
-                self.tirg_dll = cdll.LoadLibrary(str(Path(settings.SETTINGS["paths"]["DLL_PATH"]).joinpath("tirg-64.dll")).encode(
-                sys.getfilesystemencoding()))
+                self.tirg_dll = cdll.LoadLibrary(str(Path(settings.SETTINGS["paths"]["DLL_PATH"]).joinpath("tirg-64.dll")))
         except Exception as e:
             print("Legion loading failed with '%s'" % str(e))
         self.tirg_dll.getTextBBoxesFromFile.argtypes = [c_char_p, c_int, c_int]
