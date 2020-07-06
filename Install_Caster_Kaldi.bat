@@ -1,6 +1,8 @@
 @echo off
 set currentpath=%~dp0
 echo Installation path: %currentpath%
+echo Using this python/pip:
+python -m pip -V
 
 echo Installing Caster Dependencies
 C:\Python27\python.exe -m pip install -r "%currentpath%requirements.txt"

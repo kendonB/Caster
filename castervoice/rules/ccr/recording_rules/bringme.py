@@ -4,6 +4,7 @@ import shlex
 import threading
 import time
 from subprocess import Popen
+import re
 
 import six
 if six.PY2:
@@ -62,7 +63,6 @@ class BringRule(BaseSelfModifyingRule):
         """
         This _deserialize creates mapping which uses the user-made extras.
         """
-
         self._initialize()
 
         self._smr_mapping = {
@@ -88,7 +88,8 @@ class BringRule(BaseSelfModifyingRule):
                 "terminal": "terminal",
                 "explorer": "explorer",
             }),
-            Dictation("key"),
+            # Sanitize free dictation for spec, words and apostrophes only.
+            Dictation("key").apply(lambda key: re.sub(r'[^A-Za-z\'\s]+', '', key).lower()),
         ]
         self._smr_extras.extend(self._rebuild_items())
         self._smr_defaults = {"app": None}
