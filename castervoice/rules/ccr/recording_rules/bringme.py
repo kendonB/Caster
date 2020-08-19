@@ -26,7 +26,7 @@ from castervoice.lib.merge.state.short import R
 file_dialogue_wait = "40"
 if settings.settings(["miscellaneous", "file_dialogue_wait"]):
     file_dialogue_wait = str(settings.SETTINGS["miscellaneous"]["file_dialogue_wait"])
-
+print(file_dialogue_wait)
 class BringRule(BaseSelfModifyingRule):
     """
     BringRule adds entries to a 2-layered map which can be described as
@@ -191,7 +191,7 @@ class BringRule(BaseSelfModifyingRule):
             ContextAction(Function(lambda: Popen([BringRule._explorer_path, folder])), [
                 (BringRule._terminal_context, Text("cd \"%s\"\n" % folder)),
                 (BringRule._explorer_context, 
-                    Key("c-l/5") + Text("%s\n" % folder) + Key("c-l, tab/" + file_dialogue_wait + ":3, tab:1"))
+                    Key("c-l/5") + Text("%s\n" % folder) + Key("c-l, tab/" + file_dialogue_wait + ":3"))
             ]).execute()
         elif app == "terminal":
             Popen([BringRule._terminal_path, "--cd=" + folder.replace("\\", "/")])
