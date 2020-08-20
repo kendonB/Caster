@@ -26,6 +26,8 @@ class LoggingHandler(logging.Handler):
         except ConnectionRefusedError:  # pylint: disable=undefined-variable
             print("# {}".format(record.msg))
 
+settings.initialize()
+
 
 class Observer(RecognitionObserver):
     def __init__(self):
@@ -46,6 +48,8 @@ class Observer(RecognitionObserver):
         except ConnectionRefusedError:  # pylint: disable=undefined-variable
             print("?!")
 
+from castervoice.lib.ctrl.configure_engine import EngineConfigEarly, EngineConfigLate
+EngineConfigEarly() # requires settings/dependencies
 
 if six.PY2:
     logging.basicConfig()
@@ -65,7 +69,8 @@ if control.nexus() is None:
     _crg = ContentRequestGenerator()
     _content_loader = ContentLoader(_crg)
     control.init_nexus(_content_loader)
-
+    EngineConfigLate() # Requires grammars to be loaded and nexus
+   
 if settings.SETTINGS["sikuli"]["enabled"]:
     from castervoice.asynch.sikuli import sikuli_controller
     sikuli_controller.get_instance().bootstrap_start_server_proxy()

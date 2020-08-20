@@ -37,6 +37,7 @@ Classic Install Location: `castervoice\rules\apps' ` in Caster source code.
 - [Sublime](#sublime) - sublime
 - [Total Commander](#total-commander) total commander/synchronize directories
 - [Typora](#typora) - tie poor a
+- [Unity](#unity) - unity
 - [Visual Studio](#visual-studio) - visual studio
 - [Visual Studio Code](#visual-studio-code) Visual Studio Code CCR/Visual Studio Code
 - [Webex Teams](#webex-teams) - webex teams
@@ -546,30 +547,38 @@ Same Commands as [Git Bash](#git-bash)
 
 # Sublime
 
-| Command                        | Command                           | Command                        |
-| :----------------------------- | :-------------------------------- | :----------------------------- |
-| `new file`                     | `new window`                      | `open file`                    |
-| `open folder`                  | `open recent`                     | `save as`                      |
-| `comment line`                 | `comment block`                   | `outdent lines`                |
-| `join lines`                   | `match bracket`                   | `(select / sell) all`          |
-| `(select / sell) scope [<n2>]` | `(select / sell) brackets [<n2>]` | `(select / sell) indent`       |
-| `find`                         | `get all`                         | `replace`                      |
-| `edit lines`                   | `edit next [<n3>]`                | `edit up [<n3>]`               |
-| `edit down [<n3>]`             | `edit all`                        | `transform upper`              |
-| `transform lower`              | `line <n>`                        | `<action>* line <n> [to <nn>]` |
-| `go to file`                   | `go to <dict> [<filetype>]`       | `go to word`                   |
-| `go to symbol`                 | `go to [symbol in] project`       | `go to that`                   |
-| `find that in project`         | `find that`                       | `command pallette`             |
-| `fold`                         | `unfold`                          | `unfold all`                   |
-| `fold [level] <n2>`            | `full screen`                     | `toggle side bar`              |
-| `zoom in [<n2>]`               | `zoom out [<n2>]`                 | `(set / add) bookmark`         |
-| `next bookmark`                | `previous bookmark`               | `clear bookmarks`              |
-| `build it`                     | `record macro`                    | `play [back] macro [<n3>]`     |
-| `(new / create) snippet`       | `close tab`                       | `next tab`                     |
-| `previous tab`                 | `<nth> tab`                       | `column <cols>`                |
-| `focus <panel>`                | `move <panel>`                    | `open terminal`                |
+| Command                          | Command                          | Command                          |
+| :------------------------------- | :------------------------------- | :------------------------------  |
+|`new file`                        |`new window`                      |`open file`                       |
+|`open folder`                     |`open recent`                     |`save as`                         |
+|`comment line`                    |`comment block`                   |`outdent lines`                   |
+|`join lines`                      |`match bracket`                   |`(select / sell) all`             |
+|`(select / sell) scope [<n2>]`    |`(select / sell) brackets [<n2>]` |`(select / sell) indent`          |
+|`find`                            |`get all`                         |`replace`                         |
+|`replace all`                     |`paste from history`              |`edit lines`                      |
+|`edit next [<n3>]`                |`edit only next [<n3>]`           |`edit up [<n3>]`                  |
+|`edit down [<n3>]`                |`edit all`                        |`transform upper`                 |
+|`transform lower`                 |`line <ln1>`                      |`<action> [line] <ln1> [by <ln2>]`|
+|`[move] line down [<n3>]`         |`[move] line up [<n3>]`           |`go to file`                      |
+|`go to <dict> [<filetype>]`       |`file back [<n2>]`                |`go to word`                      |
+|`go to symbol`                    |`go to [symbol in] project`       |`go to that`                      |
+|`find that in project`            |`find that`                       |`command pallette`                |
+|`go back [<n2>]`                  |`go forward [<n2>]`               |`next modification`               |
+|`previous modification`           |`fold`                            |`unfold`                          |
+|`unfold all`                      |`fold [level] <n2>`               |`full screen`                     |
+|`toggle side bar`                 |`show key bindings`               |`show at center`                  |
+|`zoom in [<n2>]`                  |`zoom out [<n2>]`                 |`(set / add) bookmark`            |
+|`next bookmark`                   |`previous bookmark`               |`clear bookmarks`                 |
+|`set mark`                        |`select mark`                     |`swap with mark`                  |
+|`delete mark`                     |`build it`                        |`build with`                      |
+|`build <nth>`                     |`build [<nth>] last`              |`record macro`                    |
+|`play [back] macro [<n3>]`        |`(new / create) snippet`          |`close tab`                       |
+|`next tab`                        |`previous tab`                    |`<nth> tab`                       |
+|`[<nth>] last tab`                |`column <cols>`                   |`focus <panel>`                   |
+|`move <panel>`                    |`open terminal`                   |`open console`                    |
 
-\* select / copy / cut / paste / delete
+
+\* select / copy / cut / paste / delete / comment
 
 # Typora
 
@@ -592,6 +601,17 @@ Same Commands as [Git Bash](#git-bash)
 | `typewriter [mode]`  | `[toggle] full screen`         | `actual size`                  |
 | `zoom in <n>`        | `zoom out <n>`                 | `switch documnets`             |
 | `toggle [dev] tools` | `|`                            |                                |
+
+# Unity
+| Command                    | Command                        | Command                        |
+| :------------------------- | :----------------------------- | :----------------------------- |
+| `show <window>`            | `search <window>`              | `clear <window>`               |
+| `max view`                 | `(play \| stop) game`          | `pause game`                   |
+| `build and run`            | `build settings`               | `make empty [game object]`     |
+| `align with view`          | `move to view`                 | `move [sibling] first`         |
+| `move [sibling] last`      | `(set active \| toggle )`      | `[load] selection [<1to9>]`    |
+| `store selection [<1to9>]` | `rename`                       |                                |
+
 
 # Visual Studio
 
@@ -616,16 +636,18 @@ Same Commands as [Git Bash](#git-bash)
 
 | Command                      | Command                                   | Command                                 |
 | :--------------------------- | :---------------------------------------- | :-------------------------------------- |
-| `scroll up [<n>]`            | `scroll down [<n>]`                       | `scroll page up [<n>]`                  |
-| `scroll page down [<n>]`     | `(Unindent/outdent) [<n>]`                | `Comment line`                          |
-| `Block comment`              | `cursor above [<n>]`                      | `cursor below [<n>]`                    |
-| `remove cursor`              | `tall cursor up`                          | `tall cursor down`                      |
-| `select [in] brackets [<n>]` | `all current selection`                   | `all current word`                      |
-| `select next [<n>]`          | `go to next [<n>]`                        | `select prior [<n>]`                    |
-| `go to prior [<n>]`          | `cursor all`                              | `next cursor [<n>]`                     |
-| `indent [<n>]`               | `hard delete [<n>]`                       | `copy line up [<n>]`                    |
-| `copy line up [<n>]`         | `switch line down [<n>]`                  | `switch line up [<n>]`                  |
-| `match bracket`              | `select between <between_parables> [<n>]` | `select around <around_parables> [<n>]` |
+| `scroll up [<n>]`            | `scroll page up [<n>]`                    | `Comment line`                          |
+| `scroll down [<n>]`          | `scroll page down [<n>]`                  | `Block comment`                         |
+| `cursor above [<n>]`         | `cursor all`                              | `tall cursor up`                        |
+| `cursor below [<n>]`         | `remove cursor`                           | `tall cursor down`                      |
+| `select [in] brackets [<n>]` | `all current selection`                   | `go to next [<n>]`                      |
+| `select next [<n>]`          | `next cursor [<n>]`                       | `go to prior [<n>]`                     |
+| `select prior [<n>]`         | `skip next cursor [<n>]`                  | `copy line down [<n>]`                  |
+| `indent [<n>]`               | `all current word`                        | `copy line up [<n>]`                    |
+| `(Unindent/outdent) [<n>]`   | `select around <around_parables> [<n>]`   | `switch line up [<n>]`                  |
+| `match bracket`              | `select between <between_parables> [<n>]` | `switch line down [<n>]`                |
+| `hard delete [<n>]`          | 
+
 
 ## Non-CCR
 
@@ -643,7 +665,7 @@ Same Commands as [Git Bash](#git-bash)
 | `close editor`                         | `save as`                             | `save all`                               |
 | `next tab [<n>]`                       | `previous tab [<n>]`                  | `close tab [<n>]`                        |
 | `(recent / R) tab [<n>]`               | `reopen tab [<n>]`                    | `Exit preview`                           |
-| `keep preview open`                    | `copy path`                           | `windows explorer here`                  |
+| `keep [preview] open`                  | `copy path`                           | `windows explorer here`                  |
 | `show active file in new window`       | `(search / find)`                     | `replace`                                |
 | `find in files`                        | `replace in files`                    | `next find`                              |
 | `(prior / previous) find`              | `select all occurrences`              | `toggle regex`                           |
@@ -652,7 +674,7 @@ Same Commands as [Git Bash](#git-bash)
 | `split editor`                         | `next pane`                           | `(prior / previous / un) pane`           |
 | `shift group left`                     | `shift group left`                    | `<nth> tab`                              |
 | `Go to definition`                     | `Go to required definition`           | `peak definition`                        |
-| `trigger parameter hints`              | `format that`                         | `(definition to side / side def)`        |
+| `trigger parameter hints`              | `format (that | selection)`           | `(definition to side / side def)`        |
 | `show references`                      | `rename symbol`                       | `(trim white)`                           |
 | `change file language`                 | `debug`                               | `[toggle] break point`                   |
 | `step over [<n>]`                      | `step into`                           | `step out [of]`                          |
@@ -666,7 +688,7 @@ Same Commands as [Git Bash](#git-bash)
 | `join line`                            | `toggle blame`                        | `lens commit details`                    |
 | `lens file history`                    | `lens repo status`                    | `toggle git lens`                        |
 | `mark (prev / prior / previous)`       | `mark next`                           | `<action>* [line] <ln1> [by <ln2>]`      |
-| `open project [<text>]`                |                                       |                                          |
+| `open project [<text>]`                | `format (doc | document)`             |                                          |
 
 \* select / copy / cut / paste / delete
 

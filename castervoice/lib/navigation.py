@@ -222,13 +222,24 @@ def curse(direction, direction2, nnavi500, dokick):
         elif int(dokick) == 2:
             right_click()
 
+def previous_line(semi):
+    semi = str(semi)
+    Key("escape").execute()
+    time.sleep(0.05)
+    Key("end").execute()
+    time.sleep(0.05)
+    Text(semi).execute()
+    time.sleep(0.05)
+    Key("up").execute()
+    time.sleep(0.05)
+    Key("enter").execute()
 
 def next_line(semi):
     semi = str(semi)
     Key("escape").execute()
-    time.sleep(0.07)
+    time.sleep(0.05)
     Key("end").execute()
-    time.sleep(0.07)
+    time.sleep(0.05)
     Text(semi).execute()
     Key("enter").execute()
 
@@ -267,5 +278,6 @@ actions = {
     "copy": "c-c",
     "cut": "c-x",
     "paste": "c-v",
-    "delete": "backspace"
+    "delete": "backspace",
+    "comment": "c-slash",
 }
