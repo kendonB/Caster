@@ -67,13 +67,13 @@ def github_checkoutupdate_pull_request(new):
                         p.terminate()
 
                         # if an existing git bash window has been activated
-                        if stdout == pattern_match + " activated":
+                        if stdout.decode("ascii") == pattern_match + " activated":
                             # set the first portion of the fetch command
                             fetch_command += directory_command + " && "
                             load_terminal = False
                             print("Msg:" + ahk_script + " has activated window: " + pattern_match)
                         # if an existing git bash window is not already open
-                        elif stdout == pattern_match + " does not exist":
+                        elif stdout.decode("ascii") == pattern_match + " does not exist":
                             print("Msg:" + ahk_script + " has found no window: " + pattern_match)
                             print("Load new instance of: " + pattern_match)
                         else:
