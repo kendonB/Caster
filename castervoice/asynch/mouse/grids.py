@@ -7,6 +7,7 @@ import six
 import sys
 import threading as th
 import time
+import ctypes
 from dragonfly import monitors
 if six.PY2:
     from SimpleXMLRPCServer import SimpleXMLRPCServer  # pylint: disable=import-error
@@ -397,14 +398,14 @@ class SudokuGrid(TkTransparent):
     # n2 - inner number from 1 to 9
     def xmlrpc_move_mouse(self, n1, n2):
         x, y = self.get_mouse_pos(n1, n2)
-        self.move_mouse(x, y)
+        self.move_mouse(x + self.dimensions.x, y + self.dimensions.y)
 
     # RPC function to get the mouse position from screen number and inner number
     # n1 - the screen number from 1 to m
     # n2 - inner number from 1 to 9
     def xmlrpc_get_mouse_pos(self, n1, n2):
         return self.get_mouse_pos(n1, n2)
-
+...
     # Draw the grid on screen
     def draw(self):
         self.pre_redraw()
@@ -481,6 +482,7 @@ class SudokuGrid(TkTransparent):
     # Convert a square number to a screen position
     # sq - square number
     def square_to_pos(self, sq):
+        # ctypes.windll.user32.MessageBoxW(0, unicode(str(self.dimensions.x)), "Your title", 1)
         x, y = self.square_to_xy(sq)
         return (int((x + 0.5) * self.square_width),
                 int((y + 0.5) * self.square_height))

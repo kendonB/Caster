@@ -5,7 +5,7 @@ master_text_nav shouldn't take strings as arguments - it should take ints, so it
 import six
 import subprocess
 import time
-from dragonfly import get_current_engine, monitors
+from dragonfly import get_current_engine, monitors, Pause
 from castervoice.lib import control, settings, utilities, textformat
 from castervoice.lib.actions import Key, Text, Mouse
 from castervoice.lib.clipboard import Clipboard
@@ -269,7 +269,7 @@ def action_lines(action,
     top_line = min(int(ln2), int(ln1)) if ln2 else int(ln1)
     command = Key(go_to_line) + Text(str(top_line)) + Key(
         "enter%s, %s%s%s:%s, %s" %
-        (wait, upon_arrival, select_line_down, wait, str(num_lines), action))
+        (wait, upon_arrival, select_line_down, wait, str(num_lines), action)) + Pause("50")
     command.execute()
 
 
