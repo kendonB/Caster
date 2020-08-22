@@ -401,13 +401,13 @@ class SudokuGrid(TkTransparent):
     # n2 - inner number from 1 to 9
     def xmlrpc_get_mouse_pos(self, n1, n2):
         return self.get_mouse_pos(n1, n2)
-...
+    
     # Draw the grid on screen
     def draw(self):
         self.pre_redraw()
         self.draw_lines_and_numbers()
         self.unhide()
-
+    
     # Get the mouse position from screen number and enter number
     # n1 - the screen number from 1 to m
     # n2 - inner number from 1 to 9
