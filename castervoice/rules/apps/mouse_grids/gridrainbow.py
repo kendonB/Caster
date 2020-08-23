@@ -17,13 +17,17 @@ def send_input(pre, color, n, action):
     s = control.nexus().comm.get_com("grids")
     s.move_mouse(int(pre), int(color), int(n))
     int_a = int(action)
-    if (int_a == 0) | (int_a == 1) | (int_a == -1):
+    if int_a != 0:
         s.kill()
         navigation.wait_for_grid_exit()
         time.sleep(0.1)
-    if int_a == 0:
+    if int_a == 1:
         Mouse("left").execute()
-    elif int_a == 1:
+    if int_a == 2:
+        Mouse("left:2").execute()
+    if int_a == 3:
+        Mouse("left:3").execute()
+    elif int_a == 4:
         Mouse("right").execute()
 
 
@@ -74,17 +78,17 @@ def select_text():
 class RainbowGridRule(MappingRule):
 
     mapping = {
-        "[<pre>] <color> <n> [<action>]":
+        "[<pre>] <color> <n> [<action>] {weight=2}":
             R(Function(send_input)),
-        "[<pre1>] <color1> <n1> select [<pre2>] <color2> <n2>":
+        "[<pre1>] <color1> <n1> select [<pre2>] <color2> <n2> {weight=2}":
             R(Function(send_input_select)),
-        "[<pre1>] <color1> <n1> select <n2>":
+        "[<pre1>] <color1> <n1> select <n2> {weight=2}":
             R(Function(send_input_select_short)),
-        "squat":
+        "squat {weight=2}":
             R(Function(store_first_point)),
-        "bench":
+        "bench {weight=2}":
             R(Function(select_text)),
-        SymbolSpecs.CANCEL:
+        SymbolSpecs.CANCEL + "{weight=2}":
             R(Function(kill)),
     }
     extras = [
@@ -122,9 +126,11 @@ class RainbowGridRule(MappingRule):
         IntegerRefST("n1", 0, 100),
         IntegerRefST("n2", 0, 100),
         Choice("action", {
-            "kick": 0,
-            "psychic": 1,
-            "move": 2,
+            "move": 0,
+            "kick": 1,
+            "kick (double | 2)": 2,
+            "kick 3": 3,
+            "psychic": 4,
         }),
         Choice("point", {
             "one": 1,

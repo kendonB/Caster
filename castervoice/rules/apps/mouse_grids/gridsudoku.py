@@ -22,6 +22,22 @@ def perform_mouse_action(action):
         Mouse("left:2").execute()
     elif action == 3:
         Mouse("right").execute()
+        
+def send_input(x, y, action):
+    s = control.nexus().comm.get_com("grids")
+    s.move_mouse(int(x), int(y))
+    int_a = int(action)
+    if int_a != 0:
+        s.kill()
+        navigation.wait_for_grid_exit()
+    if int_a == 1:
+        Mouse("left").execute()
+    if int_a == 2:
+        Mouse("left:2").execute()
+    if int_a == 3:
+        Mouse("left:3").execute()
+    elif int_a == 4:
+        Mouse("right").execute()
 
 
 # Command to move the mouse
@@ -59,6 +75,17 @@ def drag_mouse(n0, s0, n, s, action):
     Mouse("left:up/30").execute()
     perform_mouse_action(int(action))
 
+def store_first_point():
+    global x1, y1
+    x1, y1 = get_cursor_position()
+
+def select_text():
+    global x1, y1, x2, y2
+    x2, y2 = get_cursor_position()
+    s = control.nexus().comm.get_com("grids")
+    s.kill()
+    navigation.wait_for_grid_exit()
+    drag_from_to(x1, y1, x2, y2)
 
 '''
 Rules for sudoku grid. We can either move the mouse or drag it.
@@ -75,8 +102,10 @@ class SudokuGridRule(MappingRule):
             R(Function(move_mouse)),
         "[<n0>] [grid <s0>] drag <n> [grid <s>] [<action>]":
             R(Function(drag_mouse)),
-        "escape":
-            R(Function(kill)),
+        "squat {weight=2}":
+            R(Function(store_first_point)),
+        "bench {weight=2}":
+            R(Function(select_text)),
         SymbolSpecs.CANCEL:
             R(Function(kill)),
     }
@@ -89,7 +118,8 @@ class SudokuGridRule(MappingRule):
             "move": 0,
             "kick": 1,
             "kick (double | 2)": 2,
-            "psychic": 3,
+            "kick 3": 3,
+            "psychic": 4,
         }),
     ]
     defaults = {
