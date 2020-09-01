@@ -1,12 +1,12 @@
 from dragonfly import Function, Choice, Repetition, Dictation
 
 try:  # Try first loading from caster user directory
-    from text_manipulation_rules import text_manipulation_support
+    import text_manipulation_support
 except ImportError:
     from castervoice.rules.core.text_manipulation_rules import text_manipulation_support
 
 try:  # Try first loading from caster user directory
-    from alphabet_rules import alphabet_support
+    import alphabet_support
 except ImportError:
     from castervoice.rules.core.alphabet_rules import alphabet_support
 

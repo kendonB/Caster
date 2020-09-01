@@ -280,4 +280,5 @@ actions = {
     "paste": "c-v",
     "delete": "backspace",
     "comment": "c-slash",
+    "run": "c-enter",
 }
