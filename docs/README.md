@@ -9,10 +9,9 @@
 - Videos by the Caster Community:
 
   - [Caster voice coding: Advent of Code 2018](https://youtu.be/oDsMGroASSw?t=3) - Programming with Go
-  - [Caster Demo](https://www.youtube.com/watch?v=oIwh3z2jXD4) macro recorder, clipboard control, and text formatting commands.
   - [VimGolf and Project Euler](https://www.youtube.com/watch?v=T1bKAqDhH_E)
   - [Dictating maths into scientific notebook](https://www.youtube.com/watch?v=oq8EoPu0cGY&t=3s) and [Dictating math by voice using Caster](https://www.youtube.com/watch?v=z-iHvPmjcas)
-
+  
 - Read the [Frequently Asked Questions - FAQ](https://caster.readthedocs.io/en/latest/readthedocs/meta/Caster_FAQ/)
 
 - [Getting started with Caster - ReadTheDocs](https://caster.readthedocs.io/en/latest/readthedocs/Getting_Started/Getting_Started_Overview/)
@@ -41,7 +40,7 @@
 - [Contributing / How can I help?](https://caster.readthedocs.io/en/latest/Contributing/)
 
 - Do you want to financially support Caster development? 
-  Donate at [![Bountysource](https://www.bountysource.com/badge/team?team_id=407907&style=bounties_posted)](https://www.bountysource.com/teams/caster-dictation/bounties?utm_source=Bountysource&utm_medium=shield&utm_campaign=bounties_posted) 
+  Donate at [![IssueHunt](https://img.shields.io/badge/-IssueHunt-blue)](https://issuehunt.io/r/dictation-toolbox/Caster)
 
 - Need support or just curious? Join our community at [![Gitter](https://img.shields.io/gitter/room/dictation-toolbox/Caster?label=Chat)](https://gitter.im/dictation-toolbox/home) [![Discord](https://img.shields.io/discord/431142802005688340?label=Discord)](https://discord.gg/9eAAsCJ) [![Matrix](https://img.shields.io/matrix/caster:matrix.org?label=Matrix%20Chat&server_fqdn=matrix.org)](https://matrix.to/#/+dictation-toolbox:matrix.org)
 
