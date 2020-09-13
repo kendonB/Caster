@@ -17,13 +17,15 @@ def send_input(pre, color, n, action):
     s = control.nexus().comm.get_com("grids")
     s.move_mouse(int(pre), int(color), int(n))
     int_a = int(action)
-    if (int_a == 0) | (int_a == 1) | (int_a == -1):
+    if (int_a == 0) | (int_a == 1) | (int_a == 2) | (int_a == -1):
         s.kill()
         navigation.wait_for_grid_exit()
         time.sleep(0.1)
     if int_a == 0:
         Mouse("left").execute()
-    elif int_a == 1:
+    if int_a == 1:
+        Mouse("left:2").execute()
+    elif int_a == 2:
         Mouse("right").execute()
 
 
@@ -44,10 +46,11 @@ def send_input_select_short(pre1, color1, n1, n2):
 
 def drag_from_to(x1, y1, x2, y2):
     Mouse("[{}, {}]".format(x1, y1)).execute()
-    time.sleep(0.1)
+    time.sleep(0.5)
     Mouse("left:down").execute()
+    time.sleep(0.5)
     Mouse("[{}, {}]".format(x2, y2)).execute()
-    time.sleep(0.1)
+    time.sleep(0.5)
     Mouse("left:up").execute()
 
 
@@ -123,12 +126,9 @@ class RainbowGridRule(MappingRule):
         IntegerRefST("n2", 0, 100),
         Choice("action", {
             "kick": 0,
-            "psychic": 1,
-            "move": 2,
-        }),
-        Choice("point", {
-            "one": 1,
-            "two": 2,
+            "kick (double | 2)": 1,
+            "psychic": 2,
+            "move": 3,
         }),
     ]
     defaults = {

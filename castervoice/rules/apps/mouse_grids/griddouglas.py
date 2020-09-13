@@ -17,12 +17,14 @@ def send_input(x, y, action):
     s = control.nexus().comm.get_com("grids")
     s.move_mouse(int(x), int(y))
     int_a = int(action)
-    if (int_a == 0) | (int_a == 1) | (int_a == -1):
+    if (int_a == 0) | (int_a == 1) | (int_a == 2) | (int_a == -1):
         s.kill()
         navigation.wait_for_grid_exit()
     if int_a == 0:
         Mouse("left").execute()
-    elif int_a == 1:
+    if int_a == 1:
+        Mouse("left:2").execute()
+    elif int_a == 2:
         Mouse("right").execute()
 
 
@@ -43,10 +45,11 @@ def send_input_select_short(x1, y1, x2):
 
 def drag_from_to(x1, y1, x2, y2):
     Mouse("[{}, {}]".format(x1, y1)).execute()
-    time.sleep(0.1)
+    time.sleep(0.5)
     Mouse("left:down").execute()
+    time.sleep(0.5)
     Mouse("[{}, {}]".format(x2, y2)).execute()
-    time.sleep(0.1)
+    time.sleep(0.5)
     Mouse("left:up").execute()
 
 
@@ -74,15 +77,15 @@ class DouglasGridRule(MappingRule):
     mapping = {
         "<x> [by] <y> [<action>]":
             R(Function(send_input)),
-        "<x1> [by] <y1> (grab | select) <x2> [by] <y2>":
+        "<x1> [by] <y1> (grab | select | drag) <x2> [by] <y2>":
             R(Function(send_input_select)),
-        "<x1> [by] <y1> (grab | select) <x2>":
+        "<x1> [by] <y1> (grab | select | drag) <x2>":
             R(Function(send_input_select_short)),
-        "squat {weight=1000}":
+        "squat {weight=2}":
             R(Function(store_first_point)),
-        "bench {weight=1000}":
+        "bench {weight=2}":
             R(Function(select_text)),
-        SymbolSpecs.CANCEL + " {weight=1000}":
+        SymbolSpecs.CANCEL + "{weight=2}":
             R(Function(kill)),
     }
     extras = [
@@ -94,13 +97,10 @@ class DouglasGridRule(MappingRule):
         IntegerRefST("y2", 0, 300),
         Choice("action", {
             "kick": 0,
-            "psychic": 1,
-            "move": 2,
-        }),
-        Choice("point", {
-            "one": 1,
-            "two": 2,
-        }),
+            "kick (double | 2)": 1,
+            "psychic": 2,
+            "move": 3,
+        })
     ]
     defaults = {
         "action": -1,
