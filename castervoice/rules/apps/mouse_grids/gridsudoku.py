@@ -1,5 +1,5 @@
-import time
-from dragonfly import Function, Choice, MappingRule
+import time, psutil
+from dragonfly import Function, Choice, MappingRule, FuncContext
 from dragonfly.actions.mouse import get_cursor_position
 from castervoice.lib import control, navigation
 from castervoice.lib.actions import Mouse
@@ -59,7 +59,9 @@ def send_input(x, y, action):
 # action - optional mouse action after movement
 def drag_mouse(n0, s0, n, s, action):
     sudoku = control.nexus().comm.get_com("grids")
+    # These numbers are internal to the monitor the screen is on
     x, y = sudoku.get_mouse_pos(int(n), int(s))
+    
     # If dragging from a different location, move there first
     if int(n0) > 0:
         sudoku.move_mouse(int(n0), int(s0))
@@ -136,7 +138,21 @@ class SudokuGridRule(MappingRule):
         "action": -1,
     }
 
+global sudoku_on
+
+def is_sudoku_on():
+    for proc in psutil.process_iter():
+        try:
+            # Get process name & pid from process object.
+            if proc.name().startswith("python"):
+                if len(proc.cmdline()) > 2:
+                    if proc.cmdline()[1].endswith("grids.py"):
+                        if proc.cmdline()[3] == "s":
+                            return True
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            pass
+    return True
 
 def get_rule():
-    Details = RuleDetails(name="Sudoku Grid", title="sudokugrid")
+    Details = RuleDetails(name="Sudoku Grid", function_context=is_sudoku_on)
     return SudokuGridRule, Details

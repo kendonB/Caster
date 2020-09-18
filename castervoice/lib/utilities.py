@@ -15,12 +15,22 @@ import time
 import traceback
 from subprocess import Popen
 import tomlkit
+import webbrowser
 
 from dragonfly import Key, Pause, Window, get_current_engine
 
 from castervoice.lib.clipboard import Clipboard
 from castervoice.lib import printer
 from castervoice.lib.util import guidance
+
+from locale import getpreferredencoding
+import sys, os, subprocess
+
+from six import binary_type
+try:
+    from urllib import unquote
+except ImportError:
+    from urllib.parse import unquote
 
 if six.PY2:
     from castervoice.lib.util.pathlib import Path
@@ -257,7 +267,8 @@ def default_browser_command():
             CloseKey(reg)
         return path
     else:
-        printer.out("default_browser_command: Not implemented for OS")
+        default_browser = webbrowser.get()
+        return default_browser.name + " %1"
 
 
 def clear_log():
@@ -295,31 +306,46 @@ def get_clipboard_formats():
     Return list of all data formats currently in the clipboard
     '''
     formats = []
+    if sys.platform.startswith('linux'):
+        encoding = getpreferredencoding()
+        com = ["xclip", "-o", "-t", "TARGETS"]
+        try:
+            p = subprocess.Popen(com,
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE,
+                                stdin=subprocess.PIPE,
+                                )
+            for line in iter(p.stdout.readline, b''):
+                if isinstance(line, binary_type):
+                    line = line.decode(encoding)
+                    formats.append(line.strip())
+        except Exception as e:
+            print("Exception from starting subprocess {0}: " "{1}".format(com, e))
+
     if sys.platform.startswith('win'):
         import win32clipboard  # pylint: disable=import-error
         f = win32clipboard.EnumClipboardFormats(0)
         while f:
             formats.append(f)
-            f = win32clipboard.EnumClipboardFormats(f)
-        return formats
+            f = win32clipboard.EnumClipboardFormats(f)    
+
+    if not formats:
+        print("get_clipboard_formats: formats are {}: Not implemented".format(formats))
     else:
-        printer.out("get_clipboard_formats: Not implemented for OS")
+        return formats
 
 
 def get_selected_files(folders=False):
     '''
     Copy selected (text or file is subsequently of interest) to a fresh clipboard
     '''
-    if sys.platform.startswith('win'):
-        cb = Clipboard(from_system=True)
-        cb.clear_clipboard()
-        Key("c-c").execute()
-        time.sleep(0.1)
-        files = get_clipboard_files(folders)
-        cb.copy_to_system()
-        return files
-    else:
-        printer.out("get_selected_files: Not implemented for OS")
+    cb = Clipboard(from_system=True)
+    cb.clear_clipboard()
+    Key("c-c").execute()
+    time.sleep(0.1)
+    files = get_clipboard_files(folders)
+    cb.copy_to_system()
+    return files
 
 
 def get_clipboard_files(folders=False):
@@ -327,9 +353,9 @@ def get_clipboard_files(folders=False):
     Enumerate clipboard content and return files either directly copied or
     highlighted path copied
     '''
+    files = None
     if sys.platform.startswith('win'):
         import win32clipboard  # pylint: disable=import-error
-        files = None
         win32clipboard.OpenClipboard()
         f = get_clipboard_formats()
         if win32clipboard.CF_HDROP in f:
@@ -346,5 +372,44 @@ def get_clipboard_files(folders=False):
             files = [f for f in files if os.path.isfile(f)] if files else None
         win32clipboard.CloseClipboard()
         return files
-    else:
-        printer.out("get_clipboard_files: Not implemented for OS")
+
+    if sys.platform.startswith('linux'):
+        f = get_clipboard_formats()
+        print(f)
+        if "UTF8_STRING" in f:
+            files = enum_files_from_clipboard("UTF8_STRING")
+            print(files)
+        elif "TEXT" in f:
+            files = enum_files_from_clipboard("TEXT")
+        elif "text/plain" in f:
+            files = enum_files_from_clipboard("text/plain")
+        if folders:
+            files = [f for f in files if os.path.isdir(str(f))] if files else None
+        else:
+            files = [f for f in files if os.path.isfile(str(f))] if files else None
+        return files
+
+def enum_files_from_clipboard(target):
+    '''
+    Generates absolute paths from clipboard 
+    Returns file/dir with available mime type
+    '''
+    formats = []
+    if sys.platform.startswith('linux'):
+        encoding = getpreferredencoding()
+        com = ["xclip", "-selection", "clipboard","-o", target]
+        try:
+            p = subprocess.Popen(com,
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE,
+                                stdin=subprocess.PIPE,
+                                )
+            for line in iter(p.stdout.readline, b''):
+                if isinstance(line, binary_type):
+                    line = line.decode(encoding).strip()
+                    if line.startswith("file://"):
+                        formats.append(unquote(line.replace("file://", "")))
+            #print(formats)
+            return formats
+        except Exception as e:
+            print("Exception from starting subprocess {0}: " "{1}".format(com, e))

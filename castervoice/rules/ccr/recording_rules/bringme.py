@@ -12,6 +12,10 @@ if six.PY2:
 else:
     from pathlib import Path  # pylint: disable=import-error
 
+import subprocess, sys
+
+opener ="open" if sys.platform == "darwin" else "xdg-open"
+
 from dragonfly import Function, Choice, Dictation, ContextAction
 from castervoice.lib.context import AppContext
 
@@ -40,7 +44,7 @@ class BringRule(BaseSelfModifyingRule):
 
     # Contexts
     _browser_context = AppContext(["chrome", "firefox"])
-    _explorer_context = AppContext("explorer.exe") | contexts.DIALOGUE_CONTEXT
+    _explorer_context = contexts.DIALOGUE_CONTEXT
     _terminal_context = contexts.TERMINAL_CONTEXT
     # Paths
     _terminal_path = settings.settings(["paths", "TERMINAL_PATH"])
@@ -134,7 +138,7 @@ class BringRule(BaseSelfModifyingRule):
             Key("a-d/5").execute()
             fail, path = context.read_selected_without_altering_clipboard()
             if fail == 2:
-                # FIXME: A better solution would be to specify a number of retries and the time interval.
+{}                # FIXME: A better solution would be to specify a number of retries and the time interval.
                 time.sleep(0.1)
                 _, path = context.read_selected_without_altering_clipboard()
                 if not path:
@@ -202,7 +206,10 @@ class BringRule(BaseSelfModifyingRule):
         Popen(program)
 
     def _bring_file(self, file):
-        threading.Thread(target=os.startfile, args=(file, )).start()  # pylint: disable=no-member
+        if sys.platform == "windows":
+            threading.Thread(target=os.startfile, args=(file, )).start()  # pylint: disable=no-member
+        else:
+            threading.Thread(target=subprocess.call, args=([opener, file], )).start()  # pylint: disable=no-member
 
     # =================== BringMe default setup:
     _bm_defaults = {

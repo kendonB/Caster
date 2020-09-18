@@ -8,13 +8,16 @@ import sys
 import threading as th
 import time
 import ctypes
+
 from dragonfly import monitors
+
 if six.PY2:
     from SimpleXMLRPCServer import SimpleXMLRPCServer  # pylint: disable=import-error
     import Tkinter as tk
 else:
     from xmlrpc.server import SimpleXMLRPCServer  # pylint: disable=no-name-in-module
     import tkinter as tk
+
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0]
     if BASE_PATH not in sys.path:
@@ -24,11 +27,16 @@ finally:
     from castervoice.lib.actions import Mouse
     from castervoice.lib.merge.communication import Communicator
     settings.initialize()
+
 try:
-    from PIL import ImageGrab, ImageTk, ImageDraw, ImageFont
+    if sys.platform.startswith("linux"):
+        import pyscreenshot as ImageGrab
+    else:
+        from PIL import ImageGrab
+    
+    from PIL import ImageTk, ImageDraw, ImageFont
 except ImportError:
     utilities.availability_message("Douglas Grid / Rainbow Grid / Sudoku Grid", "PIL")
-
 
 class Dimensions:
     def __init__(self, w, h, x, y):
@@ -394,7 +402,7 @@ class SudokuGrid(TkTransparent):
     # n2 - inner number from 1 to 9
     def xmlrpc_move_mouse(self, n1, n2):
         x, y = self.get_mouse_pos(n1, n2)
-        self.move_mouse(x + self.dimensions.x, y + self.dimensions.y)
+        self.move_mouse(x, y)
 
     # RPC function to get the mouse position from screen number and inner number
     # n1 - the screen number from 1 to m
@@ -414,7 +422,10 @@ class SudokuGrid(TkTransparent):
     def get_mouse_pos(self, n1, n2):
         sq = self.num_to_square(n1)
         sq_refined = self.get_refined_square(sq, n2)
-        return self.square_to_pos(self.fit_to_screen(sq_refined))
+        # sq_refined is now the sudoku internal square number
+        pos = self.square_to_pos(self.fit_to_screen(sq_refined))
+        pos = (pos[0] + self.dimensions.x, pos[1] + self.dimensions.y)
+        return pos
 
     # Modify the square based on the inner number
     # sq - square number
@@ -458,7 +469,7 @@ class SudokuGrid(TkTransparent):
             up_x = self.width - 1
         if up_y >= self.height:
             up_y = self.height - 1
-
+        # self.width is the number of small squares across
         return up_x + up_y * self.width
 
     # Convert a screen number to an internal square number

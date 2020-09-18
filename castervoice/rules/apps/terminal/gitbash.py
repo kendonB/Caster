@@ -116,7 +116,8 @@ _executables = [
     "idea",
     "idea64",
     "studio64",
-    "pycharm"
+    "pycharm",
+    "gnome-terminal"
 ]
 
 
