@@ -151,7 +151,7 @@ def is_sudoku_on():
                             return True
         except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
             pass
-    return True
+    return False
 
 def get_rule():
     Details = RuleDetails(name="Sudoku Grid", function_context=is_sudoku_on)

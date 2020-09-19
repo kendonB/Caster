@@ -175,6 +175,7 @@ def volume_control(n, volume_mode):
 
 
 def kill_grids_and_wait():
+    print("here")
     window_title = utilities.get_active_window_title()
     if (window_title == settings.RAINBOW_TITLE or window_title == settings.DOUGLAS_TITLE
             or window_title == settings.LEGION_TITLE):
