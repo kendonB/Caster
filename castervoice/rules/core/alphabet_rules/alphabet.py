@@ -17,7 +17,7 @@ class Alphabet(MergeRule):
 
     mapping = {
         "[<big>] <letter>":
-            R(Function(alphabet_support.letters2, extra={"big", "letter"})),
+            R(Function(alphabet_support.letters, extra={"big", "letter"})),
     }
     extras = [
         alphabet_support.get_alphabet_choice("letter"),
