@@ -90,8 +90,10 @@ class NavigationNon(MappingRule):
             R(Key("sw-right"))*Repeat(extra="n"),
         "(next | prior) window":
             R(Key("ca-tab, enter")),
-        "switch (window | windows)":
-            R(Key("ca-tab"))*Repeat(extra="n"),
+"switch (window | windows)":
+            R(ContextAction(Key("ca-tab"), [
+                (contexts.LINUX_CONTEXT, Key("alt:down, tab"))
+            ])),
         "next tab [<n>]":
             R(Key("c-pgdown"))*Repeat(extra="n"),
         "prior tab [<n>]":
