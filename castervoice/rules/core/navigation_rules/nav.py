@@ -1,11 +1,11 @@
-from dragonfly import Function, Repeat, Dictation, Choice, ContextAction
+from dragonfly import Function, Repeat, Dictation, Choice, ContextAction, AppContext, Pause
 from castervoice.lib.context import AppContext
 
 from castervoice.lib import navigation, context, textformat, text_utils
 from castervoice.rules.core.navigation_rules import navigation_support
 from dragonfly.actions.action_mimic import Mimic
 
-from castervoice.lib.actions import Key, Mouse
+from castervoice.lib.actions import Key, Mouse, Text
 from castervoice.rules.ccr.standard import SymbolSpecs
 
 try:  # Try first loading from caster user directory
@@ -29,17 +29,6 @@ from castervoice.lib.merge.state.short import S, L, R
 _tpd = text_punc_dict()
 _dtpd = double_text_punc_dict()
 
-
-for key, value in _dtpd.items():
-    if len(value) == 2:
-        _dtpd[key] = value[0] + "~" + value[1]
-    elif len(value) == 4:
-        _dtpd[key] = value[0:1] + "~" + value[2:3]
-    else:
-        msg = "Need to deal with nonstandard pair length in double_text_punc_dict: {}"
-        raise Exception(msg.format(str(value)))
-
-
 class Navigation(MergeRule):
     pronunciation = "navigation"
 
@@ -57,35 +46,31 @@ class Navigation(MergeRule):
                       use_spoken=True))
             ]),
         # VoiceCoder-inspired -- these should be done at the IDE level
-        "fill <target>":
-            R(Key("escape, escape, end"), show=False) +
-            AsynchronousAction([L(S(["cancel"], Function(context.fill_within_line)))],
-            time_in_seconds=0.2, repetitions=50 ),
-        "jump in":
-            AsynchronousAction([L(S(["cancel"], context.nav, ["right", "(~[~{~<"]))],
-                               time_in_seconds=0.1,
-                               repetitions=50),
-        "jump out":
-            AsynchronousAction([L(S(["cancel"], context.nav, ["right", ")~]~}~>"]))],
-                               time_in_seconds=0.1,
-                               repetitions=50),
-        "jump back":
-            AsynchronousAction([L(S(["cancel"], context.nav, ["left", "(~[~{~<"]))],
-                               time_in_seconds=0.1,
-                               repetitions=50),
-        "jump back in":
-            AsynchronousAction([L(S(["cancel"], context.nav, ["left", "(~[~{~<"]))],
-                               finisher=Key("right"),
-                               time_in_seconds=0.1,
-                               repetitions=50),
+        # "fill <target>":
+            # R(Key("escape, escape, end"), show=False) +
+            # AsynchronousAction([L(S(["cancel"], Function(context.fill_within_line)))],
+            # time_in_seconds=0.2, repetitions=50 ),
+        # "jump in":
+            # AsynchronousAction([L(S(["cancel"], context.nav, ["right", "(~[~{~<"]))],
+                               # time_in_seconds=0.1,
+                               # repetitions=50),
+        # "jump out":
+            # AsynchronousAction([L(S(["cancel"], context.nav, ["right", ")~]~}~>"]))],
+                               # time_in_seconds=0.1,
+                               # repetitions=50),
+        # "jump back":
+            # AsynchronousAction([L(S(["cancel"], context.nav, ["left", "(~[~{~<"]))],
+                               # time_in_seconds=0.1,
+                               # repetitions=50),
+        # "jump back in":
+            # AsynchronousAction([L(S(["cancel"], context.nav, ["left", "(~[~{~<"]))],
+                               # finisher=Key("right"),
+                               # time_in_seconds=0.1,
+                               # repetitions=50),
 
         # keyboard shortcuts
-        'save':
-            R(Key("c-s"), rspec="save"),
         'shock [<nnavi50>]':
             R(Key("enter"), rspec="shock")*Repeat(extra="nnavi50"),
-        # "(<mtn_dir> | <mtn_mode> [<mtn_dir>]) [(<nnavi500> | <extreme>)]":
-        #     R(Function(text_utils.master_text_nav)), # this is now implemented below
         "shift click":
             R(Key("shift:down") + Mouse("left") + Key("shift:up")),
         "stoosh [<nnavi500>]":
@@ -93,7 +78,7 @@ class Navigation(MergeRule):
         "cut [<nnavi500>]":
             R(Function(navigation.cut_keep_clipboard), rspec="cut"),
         "spark [<nnavi500>] [(<capitalization> <spacing> | <capitalization> | <spacing>) [(bow|bowel)]]":
-            R(Function(navigation.drop_keep_clipboard), rspec="spark"),
+            R(Function(navigation.drop_keep_clipboard) + Pause("10"), rspec="spark"),
         "splat [<splatdir>] [<nnavi10>]":
             R(Key("c-%(splatdir)s"), rspec="splat")*Repeat(extra="nnavi10"),
         "deli [<nnavi50>]":
@@ -104,13 +89,9 @@ class Navigation(MergeRule):
             R(Key("escape"), rspec="cancel"),
         "shackle":
             R(Key("home/5, s-end"), rspec="shackle"),
-        "(tell | tau) <semi>":
-            R(Function(navigation.next_line), rspec="tell dock"),
-        "(hark | heart) <semi>":
-            R(Function(navigation.previous_line), rspec="hark dock"),
         "duple [<nnavi50>]":
             R(Function(navigation.duple_keep_clipboard), rspec="duple"),
-        "Kraken":
+        "Kraken | crack in":
             R(Key("c-space"), rspec="Kraken"),
         "undo [<nnavi10>]":
             R(Key("c-z"))*Repeat(extra="nnavi10"),
@@ -135,8 +116,6 @@ class Navigation(MergeRule):
             R(Function(textformat.prior_text_format)),
         "<word_limit> [<big>] format <textnv>":
             R(Function(textformat.partial_format_text)),
-        "hug <enclosure>":
-            R(Function(text_utils.enclose_selected)),
         "dredge [<nnavi10>]":
             R(Key("alt:down, tab/20:%(nnavi10)d, alt:up"),
               rdescript="Core: switch to most recent Windows"),
@@ -168,14 +147,32 @@ class Navigation(MergeRule):
             R(Key("c-left:%(nnavi500)s")),
         "firch [<nnavi500>]":
             R(Key("c-right:%(nnavi500)s")),
-        "brick [<nnavi500>]":
-            R(Key("s-left:%(nnavi500)s")),
-        "frick [<nnavi500>]":
-            R(Key("s-right:%(nnavi500)s")),
         "blitch [<nnavi500>]":
             R(Key("cs-left:%(nnavi500)s")),
         "flitch [<nnavi500>]":
             R(Key("cs-right:%(nnavi500)s")),
+        "nope [<nnavi500>]":
+            R(Key("cs-left:%(nnavi500)s") + Key("backspace")),
+        "kay [<nnavi500>]":
+            R(Key("cs-right:%(nnavi500)s") + Key("backspace")),
+        "son [<nnavi500>]": R(Key("pageup:%(nnavi500)s")),
+        "shin son [<nnavi500>]": R(Key("s-pageup:%(nnavi500)s")),
+        "doon [<nnavi500>]": R(Key("pagedown:%(nnavi500)s")),
+        "shin doon [<nnavi500>]": R(Key("s-pagedown:%(nnavi500)s")),
+        "find words":
+            R(Key("c-f/30")),
+        "replace words":
+            R(Key("c-h/30")),
+        "select all":
+            R(Key("c-a/30")),
+        "later [<nnavi50>]":
+            R(Key("f3"))*Repeat(extra="nnavi50"),
+        "earlier [<nnavi50>]":
+            R(Key("s-f3"))*Repeat(extra="n"),
+        "next tab [<nnavi50>]":
+            R(Key("c-pgdown") + Pause("20"))*Repeat(extra="nnavi50"),
+        "prior tab [<nnavi50>]":
+            R(Key("c-pgup") + Pause("20"))*Repeat(extra="nnavi50"),            
         "<pre_modifier> <button_dictionary_500> [<nnavi500>]":
             R(Key("%(pre_modifier)s%(button_dictionary_500)s")*Repeat(extra='nnavi500'),
               rdescript="press pre_modifier keys plus buttons from button_dictionary_500"),
@@ -283,7 +280,6 @@ class Navigation(MergeRule):
         IntegerRefST("nnavi50", 1, 50),
         IntegerRefST("nnavi500", 1, 500),
         Dictation("textnv"),
-        Choice("enclosure", _dtpd),
         Choice("direction", {
             "dunce": "down",
             "sauce": "up",
@@ -298,11 +294,12 @@ class Navigation(MergeRule):
         Choice("modifier_button_dictionary", modifier_button_dictionary),
         Choice("combined_button_dictionary", combined_button_dictionary),
 
+
         Choice("capitalization", {
             "yell": 1,
             "tie": 2,
             "gerrish": 3,
-            "sing": 4,
+            "dock": 4,
             "laws": 5,
             "say": 6,
             "cop": 7,
@@ -319,7 +316,6 @@ class Navigation(MergeRule):
                 "dissent": 6,
                 "descent": 6,
             }),
-        Choice("semi", tell_commands_dict),
         Choice("word_limit", {
             "single": 1,
             "double": 2,
@@ -327,12 +323,6 @@ class Navigation(MergeRule):
             "Quadra": 4
         }),
         navigation_support.TARGET_CHOICE,
-        navigation_support.get_direction_choice("mtn_dir"),
-        Choice("mtn_mode", {
-            "shin": "s",
-            "queue": "cs",
-            "fly": "c",
-        }),
         Choice("extreme", {
             "Wally": "way",
         }),

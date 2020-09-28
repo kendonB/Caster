@@ -16,7 +16,7 @@ import subprocess, sys
 
 opener ="open" if sys.platform == "darwin" else "xdg-open"
 
-from dragonfly import Function, Choice, Dictation, ContextAction
+from dragonfly import Function, Choice, Dictation, ContextAction, Pause
 from castervoice.lib.context import AppContext
 
 from castervoice.lib import settings, utilities, context, contexts
@@ -30,7 +30,6 @@ from castervoice.lib.merge.state.short import R
 file_dialogue_wait = "100"
 if settings.settings(["miscellaneous", "file_dialogue_wait"]):
     file_dialogue_wait = str(settings.SETTINGS["miscellaneous"]["file_dialogue_wait"])
-print(file_dialogue_wait)
 class BringRule(BaseSelfModifyingRule):
     """
     BringRule adds entries to a 2-layered map which can be described as
@@ -44,11 +43,19 @@ class BringRule(BaseSelfModifyingRule):
 
     # Contexts
     _browser_context = AppContext(["chrome", "firefox"])
-    _explorer_context = contexts.DIALOGUE_CONTEXT
+    _explorer_context = AppContext(["explorer.exe", "nautilus"]) | contexts.DIALOGUE_CONTEXT
     _terminal_context = contexts.TERMINAL_CONTEXT
+    _windows_context =contexts.WINDOWS_CONTEXT
+    _linux_context = contexts.LINUX_CONTEXT
+    _macos_context = contexts.MACOS_CONTEXT
+    
     # Paths
     _terminal_path = settings.settings(["paths", "TERMINAL_PATH"])
-    _explorer_path = str(Path("C:\\Windows\\explorer.exe"))
+    if sys.platform == "windows":
+        _explorer_path = str(Path("C:\\Windows\\explorer.exe"))
+    elif sys.platform == "linux":
+        _explorer_path = "nautilus"
+    
     _source_dir =  Path(settings.SETTINGS["paths"]["BASE_PATH"]).parents[0]
     _user_dir = settings.SETTINGS["paths"]["USER_DIR"]
     _home_dir = Path.home()
@@ -74,6 +81,7 @@ class BringRule(BaseSelfModifyingRule):
             "bring me <website>": R(Function(self._bring_website)),
             "bring me <folder> [in <app>]": R(Function(self._bring_folder)),
             "bring me <file>": R(Function(self._bring_file)),
+            "[bring me] compare <file> with <file2>": R(Function(self._compare_files)),
             "refresh bring me": R(Function(self._load_and_refresh)),
             "<launch_type> to bring me as <key>": R(Function(self._bring_add)),
             "to bring me as <key>": R(Function(self._bring_add_auto)),
@@ -101,12 +109,14 @@ class BringRule(BaseSelfModifyingRule):
     def _rebuild_items(self):
         # E.g. [Choice("folder", {"my pictures": ...}), ...]
         config_copy = self._config.get_copy()
-        return [
+        out = [
             Choice(header,
                    {key: os.path.expandvars(value)
                     for key, value in section.items()})
             for header, section in config_copy.items()
         ]
+        out.append(Choice("file2", config_copy["file"]))
+        return out
 
     def _refresh(self, *args):
         """
@@ -138,7 +148,7 @@ class BringRule(BaseSelfModifyingRule):
             Key("a-d/5").execute()
             fail, path = context.read_selected_without_altering_clipboard()
             if fail == 2:
-{}                # FIXME: A better solution would be to specify a number of retries and the time interval.
+                # FIXME: A better solution would be to specify a number of retries and the time interval.
                 time.sleep(0.1)
                 _, path = context.read_selected_without_altering_clipboard()
                 if not path:
@@ -189,27 +199,54 @@ class BringRule(BaseSelfModifyingRule):
     def _bring_website(self, website):
         browser = utilities.default_browser_command()
         Popen(shlex.split(browser.replace('%1', website)))
+    
+    def _bring_explorer(folder):
+        if sys.platform == "win32":
+            Popen([BringRule._explorer_path, folder])
+        elif sys.platform.startswith("linux"):
+            Popen([BringRule._explorer_path, folder])
+            Pause("50").execute()
+            Key("c-right").execute()
 
     def _bring_folder(self, folder, app):
         if not app:
-            ContextAction(Function(lambda: Popen([BringRule._explorer_path, folder])), [
-                (BringRule._terminal_context, Text("cd \"%s\"\n" % folder)),
-                (BringRule._explorer_context, 
-                    Key("c-l/5") + Text("%s\n" % folder) + Key("c-l, tab/" + file_dialogue_wait + ":3"))
+            # ContextAction(default=Text("default"), actions=[
+            ContextAction(default=Function(lambda: BringRule._bring_explorer(folder=folder)), actions=[
+                (BringRule._terminal_context & BringRule._windows_context, Text("cd \"%s\"\n" % folder)),
+                (BringRule._terminal_context & BringRule._linux_context, Text("cd %s\n" % folder)),
+                (BringRule._explorer_context & BringRule._windows_context, 
+                    Key("c-l/5") + Text("%s\n" % folder) + Pause(file_dialogue_wait) + Key("c-l, tab/" + file_dialogue_wait + ":3")),
+                (BringRule._explorer_context & BringRule._linux_context, 
+                    Key("c-l/5") + Text("%s" % folder) + Pause(file_dialogue_wait) + Key("enter/" + file_dialogue_wait + ":2")),
+                (BringRule._explorer_context & BringRule._linux_context, 
+                    Key("c-l/5") + Text("%s" % folder) + Pause(file_dialogue_wait) + Key("enter/" + file_dialogue_wait + ":2")),
+                    # Text("explorernotapp2")),
             ]).execute()
+
         elif app == "terminal":
-            Popen([BringRule._terminal_path, "--cd=" + folder.replace("\\", "/")])
+            if sys.platform == "win32":
+                Popen([BringRule._terminal_path, "--cd=" + folder.replace("\\", "/")])
+            elif sys.platform.startswith("linux"):
+                Popen([BringRule._terminal_path, "--working-directory=" + folder.replace("\\", "/")])
         elif app == "explorer":
-            Popen([BringRule._explorer_path, folder])
+            BringRule._bring_explorer(folder=folder)
+
+            
 
     def _bring_program(self, program):
-        Popen(program)
+        Popen(program, shell=True)
 
     def _bring_file(self, file):
         if sys.platform == "windows":
             threading.Thread(target=os.startfile, args=(file, )).start()  # pylint: disable=no-member
         else:
             threading.Thread(target=subprocess.call, args=([opener, file], )).start()  # pylint: disable=no-member
+
+    def _compare_files(self, file, file2):
+        if sys.platform == "windows":
+            print("implement compare for windows")
+        else:
+            Popen(["meld", file, file2])
 
     # =================== BringMe default setup:
     _bm_defaults = {
