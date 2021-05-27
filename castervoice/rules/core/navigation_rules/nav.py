@@ -1,4 +1,4 @@
-from dragonfly import Function, Repeat, Dictation, Choice, ContextAction, AppContext, Pause
+from dragonfly import Function, Repeat, Dictation, Choice, ContextAction, ShortIntegerRef
 from castervoice.lib.context import AppContext
 
 from castervoice.lib import navigation, context, textformat, text_utils
@@ -9,18 +9,23 @@ from castervoice.lib.actions import Key, Mouse, Text
 from castervoice.rules.ccr.standard import SymbolSpecs
 
 try:  # Try first loading from caster user directory
-    from alphabet_rules.alphabet_support import caster_alphabet
-except ImportError: 
-    from castervoice.rules.core.alphabet_rules.alphabet_support import caster_alphabet
-
-try:  # Try  first loading  from caster user directory
     from punctuation_rules.punctuation_support import double_text_punc_dict, text_punc_dict
+except ImportError:
+    try:  # Try  first loading from caster user directory top level
+        from punctuation_support import double_text_punc_dict, text_punc_dict
+    except ImportError:
+        from castervoice.rules.core.punctuation_rules.punctuation_support import double_text_punc_dict, text_punc_dict
+
+try:
+    from keyboard_rules import keyboard_support
 except ImportError: 
-    from castervoice.rules.core.punctuation_rules.punctuation_support import double_text_punc_dict, text_punc_dict
+    try:
+        from keyboard_support import keyboard_support
+    except ImportError: 
+        from castervoice.rules.core.keyboard_rules import keyboard_support
 
 from castervoice.lib.const import CCRType
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.mergerule import MergeRule
 from castervoice.lib.merge.state.actions import AsynchronousAction, ContextSeeker
 from castervoice.lib.merge.state.actions2 import UntilCancelled
@@ -69,8 +74,8 @@ class Navigation(MergeRule):
                                # repetitions=50),
 
         # keyboard shortcuts
-        'shock [<nnavi50>]':
-            R(Key("enter"), rspec="shock")*Repeat(extra="nnavi50"),
+        'save':
+            R(Key("c-s"), rspec="save"),
         "shift click":
             R(Key("shift:down") + Mouse("left") + Key("shift:up")),
         "stoosh [<nnavi500>]":
@@ -81,10 +86,6 @@ class Navigation(MergeRule):
             R(Function(navigation.drop_keep_clipboard) + Pause("10"), rspec="spark"),
         "splat [<splatdir>] [<nnavi10>]":
             R(Key("c-%(splatdir)s"), rspec="splat")*Repeat(extra="nnavi10"),
-        "deli [<nnavi50>]":
-            R(Key("del/5"), rspec="deli")*Repeat(extra="nnavi50"),
-        "clear [<nnavi50>]":
-            R(Key("backspace/5:%(nnavi50)d"), rspec="clear"),
         SymbolSpecs.CANCEL:
             R(Key("escape"), rspec="cancel"),
         "shackle":
@@ -132,9 +133,7 @@ class Navigation(MergeRule):
         "bench":
             R(Function(navigation.left_up)),
 
-        # keystroke commands
-        "<direction> [<nnavi500>]":
-            R(Key("%(direction)s")*Repeat(extra='nnavi500'), rdescript="arrow keys"),
+        # special keystroke commands
         "(lease wally | latch) [<nnavi10>]":
             R(Key("home:%(nnavi10)s")),
         "(ross wally | ratch) [<nnavi10>]":
@@ -173,128 +172,49 @@ class Navigation(MergeRule):
             R(Key("c-pgdown") + Pause("20"))*Repeat(extra="nnavi50"),
         "prior tab [<nnavi50>]":
             R(Key("c-pgup") + Pause("20"))*Repeat(extra="nnavi50"),            
-        "<pre_modifier> <button_dictionary_500> [<nnavi500>]":
-            R(Key("%(pre_modifier)s%(button_dictionary_500)s")*Repeat(extra='nnavi500'),
-              rdescript="press pre_modifier keys plus buttons from button_dictionary_500"),
-        "<pre_modifier> <button_dictionary_10> [<nnavi10>]":
-            R(Key("%(pre_modifier)s%(button_dictionary_10)s")*Repeat(extra='nnavi10'),
-              rdescript="press pre_modifier keys plus buttons from button_dictionary_10"),
-        "<pre_modifier> <button_dictionary_1>":
-              R(Key("%(pre_modifier)s%(button_dictionary_1)s"),
-              rdescript="press pre_modifiers plus buttons from button_dictionary_1, non-repeatable"),
-        "<post_modifier> <modifier_button_dictionary>":
-              R(Key("%(modifier_button_dictionary)s:%(post_modifier)s"),
-              rdescript="press buttons from modifier_button_dictionary with post modifier, non-repeatable"),
+        "<button_dictionary_500_no_prefix_no_modifier> [<nnavi500>]":
+            R(Key("%(button_dictionary_500_no_prefix_no_modifier)s")*Repeat(extra='nnavi500'),
+              rdescript="press buttons from button_dictionary_500_no_prefix_no_modifier"),
+        "<modifier> <button_dictionary_500_modifier> [<nnavi500>]":
+            R(Key("%(modifier)s-%(button_dictionary_500_modifier)s")*Repeat(extra='nnavi500'),
+              rdescript="press modifiers plus buttons from button_dictionary_500_modifier"),
+        "<modifier> <button_dictionary_1_modifier>":
+            R(Key("%(modifier)s-%(button_dictionary_1_modifier)s"),
+              rdescript="press modifiers plus buttons from button_dictionary_1_modifier"),              
     }
+    
     tell_commands_dict = {"dock": ";", "doc": ";", "sink": "", "com": ",", "deck": ":"}
     tell_commands_dict.update(_tpd)
-
-    # I tried to limit which things get repeated how many times in hopes that it will help prevent the bad grammar error
-    # this could definitely be changed. perhaps some of these should be made non-CCR
-    button_dictionary_500 = {
-        "(tab | tabby)": "tab",
-        "(backspace | clear)": "backspace",
-        "(delete|deli)": "del",
-        "(escape | cancel)": "escape",
-        "(enter | shock)": "enter",
-        "(left | lease)": "left",
-        "(right | ross)": "right",
-        "(up | sauce)": "up",
-        "(down | dunce)": "down",
+    button_dictionary_500_no_prefix_no_modifier = {
+        "tabby": "tab",
+        "clear": "backspace",
+        "deli": "del",
+        "shock": "enter",
+        "lease": "left",
+        "ross": "right",
+        "sauce": "up",
+        "dunce": "down",
         "page (down | dunce)": "pgdown",
         "page (up | sauce)": "pgup",
-        "space": "space"
     }
-    button_dictionary_10 = {
-        "(F{}".format(i) + " | function {})".format(i) : "f{}".format(i)
-        for i in range(1, 13)
+    button_dictionary_500_modifier = { 
+        key:value for key, value in keyboard_support.button_dictionary_1.items() if value in [
+            "backspace", "del", "enter", "left", "right", "up", "down", "pgdown", "pgup"
+            ]
     }
-    button_dictionary_10.update(caster_alphabet())
-    button_dictionary_10.update(_tpd)
-    longhand_punctuation_names = {
-        "minus": "hyphen",
-        "hyphen": "hyphen",
-        "comma": "comma",
-        "deckle": "colon",
-        "colon": "colon",
-        "slash": "slash",
-        "backslash": "backslash"
-    }
-    button_dictionary_10.update(longhand_punctuation_names)
-    modifier_button_dictionary = {
-        "[lease | left] alt": "alt",
-        "(ross | right) alt": "ralt",
-        "[lease | left] (control | fly)": "control",
-        "(ross | right) (control | fly)": "rcontrol",
-        "[lease | left] (shin | shift)": "shift",
-        "(ross | right) (shin | shift)": "rshift",
-    }
-    button_dictionary_1 = {
-        "(home | lease wally | latch)": "home",
-        "(end | ross wally | ratch)": "end",
-        "insert": "insert",
-        "zero": "0",
-        "one": "1",
-        "two": "2",
-        "three": "3",
-        "four": "4",
-        "five": "5",
-        "six": "6",
-        "seven": "7",
-        "eight": "8",
-        "nine": "9",
-        "windows": "win"
-    }
-    button_dictionary_1.update(modifier_button_dictionary)
-    combined_button_dictionary = {}
-    for dictionary in [button_dictionary_1, button_dictionary_10, button_dictionary_500]:
-        combined_button_dictionary.update(dictionary)
-
-    pre_modifier_choice_object = Choice("pre_modifier", {
-            "(control | fly)": "c-", #TODO: make DRY
-            "(shift | shin)": "s-",
-            "alt": "a-",
-            "(control shift | queue)": "cs-",
-            "control alt": "ca-",
-            "(shift alt | alt shift)": "sa-",
-            "(control alt shift | control shift alt)": "csa-",  # control must go first
-            "windows": "w-",  # windows should go before alt/shift
-            "control windows": "cw-",
-            "control windows alt": "cwa-",
-            "control windows shift": "cws-",
-            "windows shift alt": "wsa-",
-            "windows alt shift": "was-",
-            "windows shift": "ws-",
-            "windows alt": "wa-",
-            "control windows alt shift": "cwas-",
-            "hit": "",
-        })
-
-    post_modifier_choice_object = Choice("post_modifier", {
-            "hold": "down",
-            "release": "up"
-        })
+    button_dictionary_1_modifier = { 
+        key:value for key, value in keyboard_support.button_dictionary_1.items() if value in [
+            "home", "end"
+            ]
+    }    
     extras = [
-        IntegerRefST("nnavi10", 1, 11),
-        IntegerRefST("nnavi3", 1, 4),
-        IntegerRefST("nnavi50", 1, 50),
-        IntegerRefST("nnavi500", 1, 500),
+        ShortIntegerRef("nnavi10", 1, 11),
+        ShortIntegerRef("nnavi3", 1, 4),
+        ShortIntegerRef("nnavi50", 1, 50),
+        ShortIntegerRef("nnavi500", 1, 500),
         Dictation("textnv"),
-        Choice("direction", {
-            "dunce": "down",
-            "sauce": "up",
-            "lease": "left",
-            "ross": "right",
-        }),
-        pre_modifier_choice_object,
-        post_modifier_choice_object,
-        Choice("button_dictionary_1", button_dictionary_1),
-        Choice("button_dictionary_10", button_dictionary_10),
-        Choice("button_dictionary_500", button_dictionary_500),
-        Choice("modifier_button_dictionary", modifier_button_dictionary),
-        Choice("combined_button_dictionary", combined_button_dictionary),
-
-
+        Choice("enclosure", _dtpd),
+        
         Choice("capitalization", {
             "yell": 1,
             "tie": 2,
@@ -333,6 +253,10 @@ class Navigation(MergeRule):
             "lease": "backspace",
             "ross": "delete",
         }),
+        keyboard_support.modifier_choice_object,
+        Choice("button_dictionary_500_no_prefix_no_modifier", button_dictionary_500_no_prefix_no_modifier),
+        Choice("button_dictionary_500_modifier", button_dictionary_500_modifier),
+        Choice("button_dictionary_1_modifier", button_dictionary_1_modifier)        
     ]
 
     defaults = {
@@ -343,12 +267,9 @@ class Navigation(MergeRule):
         "textnv": "",
         "capitalization": 0,
         "spacing": 0,
-        "mtn_mode": None,
-        "mtn_dir": "right",
         "extreme": None,
         "big": False,
         "splatdir": "backspace",
-        "pre_modifier": "",
     }
 
 

@@ -1,10 +1,8 @@
-import time, psutil
-from dragonfly import Function, Choice, MappingRule, FuncContext
-from dragonfly.actions.mouse import get_cursor_position
+import time
+from dragonfly import Function, Choice, MappingRule, ShortIntegerRef
 from castervoice.lib import control, navigation
 from castervoice.lib.actions import Mouse
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
-from castervoice.lib.merge.additions import IntegerRefST
 from castervoice.lib.merge.state.short import R
 from castervoice.rules.ccr.standard import SymbolSpecs
 
@@ -119,10 +117,10 @@ class SudokuGridRule(MappingRule):
             R(Function(kill)),
     }
     extras = [
-        IntegerRefST("n", -1, 1500),
-        IntegerRefST("n0", -1, 1500),
-        IntegerRefST("s", 0, 10),
-        IntegerRefST("s0", 0, 10),
+        ShortIntegerRef("n", -1, 1500),
+        ShortIntegerRef("n0", -1, 1500),
+        ShortIntegerRef("s", 0, 10),
+        ShortIntegerRef("s0", 0, 10),
         Choice("action", {
             "kick": 0,
             "kick (double | 2)": 1,
