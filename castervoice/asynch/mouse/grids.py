@@ -25,18 +25,18 @@ try:  # Style C -- may be imported into Caster, or externally
 finally:
     from castervoice.lib import settings, utilities
     from castervoice.lib.actions import Mouse
+    from castervoice.lib.contexts import is_linux
     from castervoice.lib.merge.communication import Communicator
     settings.initialize()
-
-try:
-    if sys.platform.startswith("linux"):
-        import pyscreenshot as ImageGrab
-    else:
-        from PIL import ImageGrab
-    
+if is_linux():
+    from tkinter import ttk,font
+    import pyscreenshot as ImageGrab
     from PIL import ImageTk, ImageDraw, ImageFont
-except ImportError:
-    utilities.availability_message("Douglas Grid / Rainbow Grid / Sudoku Grid", "PIL")
+else:
+    try:
+        from PIL import ImageGrab, ImageTk, ImageDraw, ImageFont
+    except ImportError:
+        utilities.availability_message("Douglas Grid / Rainbow Grid / Sudoku Grid", "PIL")
 
 class Dimensions:
     def __init__(self, w, h, x, y):
@@ -206,7 +206,10 @@ class RainbowGrid(TkTransparent):
         ys_size = len(self.ys)
         box_number = 0
         colors_index = 0
-        font = ImageFont.truetype("arialbd.ttf", 15)
+        if is_linux():
+            font = ImageFont.truetype("FreeMono.ttf", 15)
+        else: 
+            font = ImageFont.truetype("arialbd.ttf", 15)
         draw = ImageDraw.Draw(self.img, 'RGBA')
 
         for ly in range(0, ys_size - 1):

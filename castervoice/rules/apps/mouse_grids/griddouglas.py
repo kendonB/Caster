@@ -74,17 +74,7 @@ def select_text():
 
 class DouglasGridRule(MappingRule):
     mapping = {
-        "<x> [by] <y> [<action>]":
-            R(Function(send_input)),
-        "<x1> [by] <y1> (grab | select | drag) <x2> [by] <y2>":
-            R(Function(send_input_select)),
-        "<x1> [by] <y1> (grab | select | drag) <x2>":
-            R(Function(send_input_select_short)),
-        "squat {weight=2}":
-            R(Function(store_first_point)),
-        "bench {weight=2}":
-            R(Function(select_text)),
-        SymbolSpecs.CANCEL + "{weight=2}":
+        "<x> [by] <y> [<actionpsutil{weight=2}":
             R(Function(kill)),
     }
     extras = [
@@ -99,7 +89,7 @@ class DouglasGridRule(MappingRule):
             "kick (double | 2)": 1,
             "psychic": 2,
             "move": 3,
-        })
+        }),
     ]
     defaults = {
         "action": -1,

@@ -1,5 +1,6 @@
-import time
+import time, psutil
 from dragonfly import Function, Choice, MappingRule, ShortIntegerRef
+from dragonfly.actions.mouse import get_cursor_position
 from castervoice.lib import control, navigation
 from castervoice.lib.actions import Mouse
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
@@ -73,6 +74,7 @@ def drag_mouse(n0, s0, n, s, action):
     Mouse("left:up/30").execute()
     perform_mouse_action(int(action))
 
+# This is used for the fine movement dragging
 def drag_from_to(x1, y1, x2, y2):
     Mouse("[{}, {}]".format(x1, y1)).execute()
     time.sleep(0.5)
@@ -135,8 +137,6 @@ class SudokuGridRule(MappingRule):
         "s0": 0,
         "action": -1,
     }
-
-global sudoku_on
 
 def is_sudoku_on():
     for proc in psutil.process_iter():
