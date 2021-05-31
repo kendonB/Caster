@@ -74,7 +74,7 @@ def select_text():
 
 class DouglasGridRule(MappingRule):
     mapping = {
-        "<x> [by] <y> [<actionpsutil{weight=2}":
+        "<x> [by] <y> {weight=2}":
             R(Function(kill)),
     }
     extras = [
