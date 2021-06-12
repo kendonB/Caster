@@ -7,17 +7,13 @@ import six
 import sys
 import threading as th
 import time
-import ctypes
-
 from dragonfly import monitors
-
 if six.PY2:
     from SimpleXMLRPCServer import SimpleXMLRPCServer  # pylint: disable=import-error
     import Tkinter as tk # pylint: disable=import-error
 else:
     from xmlrpc.server import SimpleXMLRPCServer  # pylint: disable=no-name-in-module
     import tkinter as tk
-
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0]
     if BASE_PATH not in sys.path:
@@ -28,15 +24,15 @@ finally:
     from castervoice.lib.contexts import is_linux
     from castervoice.lib.merge.communication import Communicator
     settings.initialize()
+
 if is_linux():
     from tkinter import ttk,font
-    import pyscreenshot as ImageGrab
-    from PIL import ImageTk, ImageDraw, ImageFont
-else:
-    try:
-        from PIL import ImageGrab, ImageTk, ImageDraw, ImageFont
-    except ImportError:
-        utilities.availability_message("Douglas Grid / Rainbow Grid / Sudoku Grid", "PIL")
+
+try:
+    from PIL import ImageGrab, ImageTk, ImageDraw, ImageFont
+except ImportError:
+    utilities.availability_message("Douglas Grid / Rainbow Grid / Sudoku Grid", "PIL")
+
 
 class Dimensions:
     def __init__(self, w, h, x, y):
@@ -109,10 +105,6 @@ class TkTransparent(tk.Tk):
         ''''''
         self.deiconify()
         self.lift()
-        time.sleep(0.1)
-        self.focus_force()
-        self.focus_set()
-        self.focus()
 
     def hide(self):
         self.withdraw()
@@ -156,7 +148,9 @@ class RainbowGrid(TkTransparent):
 
     def refresh(self):
         '''thread safe'''
-        self.hide()
+        if not sys.platform.startswith("linux"):
+            # When the grid is hidden on Linux it fails to draw on the correct monitor
+            self.hide()
         self.after(10, self.draw)
 
     def finalize(self):
@@ -405,30 +399,27 @@ class SudokuGrid(TkTransparent):
     # n2 - inner number from 1 to 9
     def xmlrpc_move_mouse(self, n1, n2):
         x, y = self.get_mouse_pos(n1, n2)
-        self.move_mouse(x, y)
+        self.move_mouse(x + self.dimensions.x, y + self.dimensions.y)
 
     # RPC function to get the mouse position from screen number and inner number
     # n1 - the screen number from 1 to m
     # n2 - inner number from 1 to 9
     def xmlrpc_get_mouse_pos(self, n1, n2):
         return self.get_mouse_pos(n1, n2)
-    
+
     # Draw the grid on screen
     def draw(self):
         self.pre_redraw()
         self.draw_lines_and_numbers()
         self.unhide()
-    
+
     # Get the mouse position from screen number and enter number
     # n1 - the screen number from 1 to m
     # n2 - inner number from 1 to 9
     def get_mouse_pos(self, n1, n2):
         sq = self.num_to_square(n1)
         sq_refined = self.get_refined_square(sq, n2)
-        # sq_refined is now the sudoku internal square number
-        pos = self.square_to_pos(self.fit_to_screen(sq_refined))
-        pos = (pos[0] + self.dimensions.x, pos[1] + self.dimensions.y)
-        return pos
+        return self.square_to_pos(self.fit_to_screen(sq_refined))
 
     # Modify the square based on the inner number
     # sq - square number
@@ -472,7 +463,7 @@ class SudokuGrid(TkTransparent):
             up_x = self.width - 1
         if up_y >= self.height:
             up_y = self.height - 1
-        # self.width is the number of small squares across
+
         return up_x + up_y * self.width
 
     # Convert a screen number to an internal square number
@@ -492,7 +483,6 @@ class SudokuGrid(TkTransparent):
     # Convert a square number to a screen position
     # sq - square number
     def square_to_pos(self, sq):
-        # ctypes.windll.user32.MessageBoxW(0, unicode(str(self.dimensions.x)), "Your title", 1)
         x, y = self.square_to_xy(sq)
         return (int((x + 0.5) * self.square_width),
                 int((y + 0.5) * self.square_height))
