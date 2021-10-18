@@ -21,10 +21,9 @@ except ImportError:
 import tomlkit
 import webbrowser
 
-from dragonfly import Key, Pause, Window, get_current_engine
+from dragonfly import Key, Window, get_current_engine
 
 from castervoice.lib.clipboard import Clipboard
-from castervoice.lib import printer
 from castervoice.lib.util import guidance
 
 from locale import getpreferredencoding
@@ -49,7 +48,7 @@ finally:
     from castervoice.lib import settings, printer
 
 DARWIN = sys.platform.startswith('darwin')
-LINUX =  sys.platform.startswith('linux')
+LINUX = sys.platform.startswith('linux')
 WIN32 = sys.platform.startswith('win')
 
 # TODO: Move functions that manipulate or retrieve information from Windows to `window_mgmt_support` in navigation_rules.
