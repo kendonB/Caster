@@ -5,11 +5,7 @@ import time
 from subprocess import Popen
 import re
 
-import six
-if six.PY2:
-    from castervoice.lib.util.pathlib import Path
-else:
-    from pathlib import Path  # pylint: disable=import-error
+from pathlib import Path  # pylint: disable=import-error
 
 import subprocess, sys
 

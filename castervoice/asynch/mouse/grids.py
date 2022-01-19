@@ -1,22 +1,12 @@
-from __future__ import division
-
 import getopt
 import os
 import signal
-import six
 import sys
 import threading as th
-import time
-import ctypes
-
 from dragonfly import monitors
 
-if six.PY2:
-    from SimpleXMLRPCServer import SimpleXMLRPCServer  # pylint: disable=import-error
-    import Tkinter as tk # pylint: disable=import-error
-else:
-    from xmlrpc.server import SimpleXMLRPCServer  # pylint: disable=no-name-in-module
-    import tkinter as tk
+from xmlrpc.server import SimpleXMLRPCServer
+import tkinter as tk
 
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0]
@@ -29,12 +19,9 @@ finally:
     from castervoice.lib.merge.communication import Communicator
     settings.initialize()
 
-<<<<<<< HEAD
-=======
 if is_linux():
     from tkinter import ttk,font
 
->>>>>>> master
 try:
     if sys.platform.startswith("linux"):
         import pyscreenshot as ImageGrab
