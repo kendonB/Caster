@@ -1,6 +1,6 @@
 from dragonfly import Function, Repeat, Dictation, Choice, MappingRule, ShortIntegerRef, ContextAction, AppContext, Pause
 
-from castervoice.lib.actions import Key, Mouse, Text
+from castervoice.lib.actions import Key, Mouse
 from castervoice.lib import navigation, utilities
 from castervoice.rules.core.navigation_rules import navigation_support
 
@@ -13,30 +13,12 @@ from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.actions import AsynchronousAction
 from castervoice.lib.merge.state.short import S, L, R
 
-from castervoice.lib import contexts
-
-def tmp_fun():
-    print("Foreground window: %r, %r" % (Window.get_foreground().executable, Window.get_foreground().title))
 
 class NavigationNon(MappingRule):
 
     pronunciation = "navigation companion"
 
     mapping = {
-        "save":
-            R(Key("c-s")),
-        "display context":
-            R(Function(tmp_fun)),
-        "save as":
-            R(Key("a-f/30, a")),
-        "open":
-            R(
-                ContextAction(default=Key("c-o/150") + Key("c-l/40, tab/40:4"),
-                              actions=[
-                                  (contexts.LINUX_CONTEXT, Key("c-o")),
-                                  (AppContext(executable=["rstudio", "texstudio", "notepad++"]),
-                                   Key("c-o/150") + Key("s-tab/40:2"))
-                              ])),
         "<direction> <time_in_seconds>":
             AsynchronousAction(
                 [L(S(["cancel"], Key("%(direction)s"), consume=False))],
@@ -44,6 +26,12 @@ class NavigationNon(MappingRule):
                 blocking=False),
         "erase multi clipboard":
             R(Function(navigation.erase_multi_clipboard)),
+        "find":
+            R(Key("c-f")),
+        "find next [<n>]":
+            R(Key("f3"))*Repeat(extra="n"),
+        "find prior [<n>]":
+            R(Key("s-f3"))*Repeat(extra="n"),
         "find everywhere":
             R(Key("cs-f")),
         "replace":
@@ -62,11 +50,21 @@ class NavigationNon(MappingRule):
             R(Function(navigation.curse)),
         "scree <direction> [<nnavi500>]":
             R(Function(navigation.wheel_scroll)),
+        "scree <direction> <time_in_seconds>":
+            R(AsynchronousAction(
+                [L(S(["cancel"], Function(navigation.wheel_scroll, nnavi500=1)))],
+                repetitions=1000,
+                blocking=False)),
         "colic":
             R(Key("control:down") + Mouse("left") + Key("control:up")),
         "garb [<nnavi500>]":
             R(Mouse("left") + Mouse("left") + Function(
                 navigation.stoosh_keep_clipboard)),
+        "drop [<nnavi500>]":
+            R(Mouse("left") + Mouse("left") + Function(
+                navigation.drop_keep_clipboard,
+                capitalization=0,
+                spacing=0)),
         "sure stoosh":
             R(Key("c-c")),
         "sure cut":
@@ -75,7 +73,7 @@ class NavigationNon(MappingRule):
             R(Key("c-v")),
         "refresh":
             R(Key("c-r")),
-        "maxiwin | maximise":
+        "maxiwin":
             R(Key("w-up")),
         "move window":
             R(Key("a-space, r, a-space, m")),
@@ -87,19 +85,10 @@ class NavigationNon(MappingRule):
             R(Key("sw-left"))*Repeat(extra="n"),
         "monitor (right | ross) [<n>]":
             R(Key("sw-right"))*Repeat(extra="n"),
-        "zinc <direction> <time_in_seconds>":
-            R(AsynchronousAction(
-                [L(S(["cancel"], Function(navigation.wheel_scroll, nnavi500=1)))],
-                repetitions=1000,
-                blocking=False)),            
         "(next | prior) window":
             R(Key("ca-tab, enter")),
         "switch (window | windows)":
-            R(ContextAction(Key("ca-tab"), [
-                (contexts.LINUX_CONTEXT, Key("alt:down, tab"))
-            ])),
-        "toggle smart word features":
-            R(Pause("200") + Key("escape/50, escape/50, a-f/50, t/50, a/50, a-w/50, space/50, a-m/50, space/50, a-e/50, space/50, escape")),     
+            R(Key("ca-tab"))*Repeat(extra="n"),
         "next tab [<n>]":
             R(Key("c-pgdown"))*Repeat(extra="n"),
         "prior tab [<n>]":

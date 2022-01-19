@@ -41,11 +41,10 @@ def send_input_select_short(x1, y1, x2):
 
 def drag_from_to(x1, y1, x2, y2):
     Mouse("[{}, {}]".format(x1, y1)).execute()
-    time.sleep(0.5)
+    time.sleep(0.1)
     Mouse("left:down").execute()
-    time.sleep(0.5)
     Mouse("[{}, {}]".format(x2, y2)).execute()
-    time.sleep(0.5)
+    time.sleep(0.1)
     Mouse("left:up").execute()
 
 
@@ -73,9 +72,9 @@ class DouglasGridRule(MappingRule):
     mapping = {
         "<x> [by] <y> [<action>]":
             R(Function(send_input)),
-        "<x1> [by] <y1> (grab | select | drag) <x2> [by] <y2>":
+        "<x1> [by] <y1> (grab | select) <x2> [by] <y2>":
             R(Function(send_input_select)),
-        "<x1> [by] <y1> (grab | select | drag) <x2>":
+        "<x1> [by] <y1> (grab | select) <x2>":
             R(Function(send_input_select_short)),
         "squat {weight=2}":
             R(Function(store_first_point)),

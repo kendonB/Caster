@@ -42,11 +42,10 @@ def send_input_select_short(pre1, color1, n1, n2):
 
 def drag_from_to(x1, y1, x2, y2):
     Mouse("[{}, {}]".format(x1, y1)).execute()
-    time.sleep(0.5)
+    time.sleep(0.1)
     Mouse("left:down").execute()
-    time.sleep(0.5)
     Mouse("[{}, {}]".format(x2, y2)).execute()
-    time.sleep(0.5)
+    time.sleep(0.1)
     Mouse("left:up").execute()
 
 
