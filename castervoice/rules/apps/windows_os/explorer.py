@@ -1,4 +1,4 @@
-from dragonfly import Dictation, MappingRule, ShortIntegerRef
+from dragonfly import Dictation, MappingRule, ShortIntegerRef, Repeat
 
 from castervoice.lib.actions import Key, Text
 
@@ -37,7 +37,7 @@ class ExplorerRule(MappingRule):
         "sort [headings]":
             R(Key("escape/10, c-l, tab/" + file_dialogue_wait + ":3, tab:1")),
     }
-    extras = [IntegerRefST("n", 1, 10), Dictation("text")]
+    extras = [ShortIntegerRef("n", 1, 10), Dictation("text")]
     defaults = {
         "n": 1,
     }

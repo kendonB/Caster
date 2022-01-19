@@ -5,8 +5,6 @@ from builtins import str
 
 import collections
 import io
-import os
-import sys
 import tomlkit
 from past.builtins import xrange
 
@@ -47,7 +45,6 @@ QTYPE_DIRECTORY = "5"
 QTYPE_CONFIRM = "6"
 WXTYPE_SETTINGS = "7"
 HMC_SEPARATOR = "[hmc]"
-STARTUP_MESSAGES = []
 
 # calculated fields
 SETTINGS = None
@@ -57,16 +54,6 @@ _BASE_PATH = None
 _USER_DIR = None
 _SETTINGS_PATH = None
 
-def add_message(message):
-    """
-    Add string message to be printed when Caster initializes
-    message: str
-    """
-    try:
-        if message not in STARTUP_MESSAGES:
-            STARTUP_MESSAGES.append(str(message))
-    except Exception as e:
-        print(e)
 
 def _get_platform_information():
     """Return a dictionary containing platform-specific information."""
@@ -82,9 +69,9 @@ def _get_platform_information():
     else:
         system_information.update({"binary path": str(Path(sys.exec_prefix).joinpath(sys.exec_prefix).joinpath("bin"))})
         system_information.update(
-            {"main binary": str(Path(sys.exec_prefix).joinpath("bin", "python"))})
+            {"main binary": sys.executable})
         system_information.update(
-            {"hidden console binary": str(Path(sys.exec_prefix).joinpath("bin", "python"))})
+            {"hidden console binary": sys.executable})
     return system_information
 
 
@@ -325,7 +312,7 @@ def _get_defaults():
             "SUDOKU_PATH":
                 str(Path(_BASE_PATH).joinpath("asynch/mouse/grids.py")),
             "WSR_PATH":
-                str(Path(_BASE_PATH).joinpath("C:/Windows/Speech/Common/sapisvr.exe")),
+                str(Path("C:/Windows/Speech/Common/sapisvr.exe")),
             "TERMINAL_PATH":
                 str(Path(terminal_path_default)),
 
@@ -497,12 +484,19 @@ def initialize():
         _USER_DIR = user_data_dir(appname="caster", appauthor=False)
     _SETTINGS_PATH = str(Path(_USER_DIR).joinpath("settings/settings.toml"))
 
-    for directory in ["data", "rules", "transformers", "hooks", "sikuli", "settings"]:
-        d = Path(_USER_DIR).joinpath(directory)
-        d.mkdir(parents=True, exist_ok=True)
     # Kick everything off.
     SETTINGS = _init(_SETTINGS_PATH)
+    from castervoice.lib.migration import UserDirUpdater
+    migrator = UserDirUpdater(_USER_DIR)
+    migrator.create_user_dir_directories()
+    migrator.update_user_dir_packages_to_v1_7_0()
+    migrator.update_bringme_toml_to_v1_7_0()
     _debugger_path = SETTINGS["paths"]["REMOTE_DEBUGGER_PATH"]  # pylint: disable=invalid-sequence-index
     if _debugger_path not in sys.path and os.path.isdir(_debugger_path):
         sys.path.append(_debugger_path)
+
+    # set up printer -- it doesn't matter where you do this; messages will start printing to the console after this
+    dh = printer.get_delegating_handler()
+    dh.register_handler(printer.SimplePrintMessageHandler())
+    # begin using printer
     printer.out("Caster User Directory: {}".format(_USER_DIR))

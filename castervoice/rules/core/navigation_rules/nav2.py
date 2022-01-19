@@ -1,4 +1,4 @@
-from dragonfly import Function, Repeat, Dictation, Choice, MappingRule, ShortIntegerRef
+from dragonfly import Function, Repeat, Dictation, Choice, MappingRule, ShortIntegerRef, ContextAction, AppContext, Pause
 
 from castervoice.lib.actions import Key, Mouse, Text
 from castervoice.lib import navigation, utilities
@@ -48,8 +48,6 @@ class NavigationNon(MappingRule):
             R(Key("cs-f")),
         "replace":
             R(Key("c-h")),
-        "hit F<function_key>":
-            R(Key("f%(function_key)s")),
         "[show] context menu":
             R(Key("s-f10")),
         "lean":

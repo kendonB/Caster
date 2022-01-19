@@ -21,10 +21,9 @@ except ImportError:
 import tomlkit
 import webbrowser
 
-from dragonfly import Key, Pause, Window, get_current_engine
+from dragonfly import Key, Window, get_current_engine
 
 from castervoice.lib.clipboard import Clipboard
-from castervoice.lib import printer
 from castervoice.lib.util import guidance
 
 from locale import getpreferredencoding
@@ -49,7 +48,7 @@ finally:
     from castervoice.lib import settings, printer
 
 DARWIN = sys.platform.startswith('darwin')
-LINUX =  sys.platform.startswith('linux')
+LINUX = sys.platform.startswith('linux')
 WIN32 = sys.platform.startswith('win')
 
 # TODO: Move functions that manipulate or retrieve information from Windows to `window_mgmt_support` in navigation_rules.
@@ -104,37 +103,11 @@ def minimize_window():
     Window.get_foreground().minimize()
 
 
-def focus_mousegrid(gridtitle):
-    '''
-    Loops over active windows for MouseGrid window titles. Issue #171
-    When MouseGrid window titles found focuses MouseGrid overly.
-    '''
-    if WIN32:
-        # May not be needed for Linux/Mac OS - testing required
-        try:
-            for i in range(9):
-                matches = Window.get_matching_windows(title=gridtitle, executable="python")
-                if not matches:
-                    Pause("50").execute()
-                else:
-                    break
-            if matches:
-                for handle in matches:
-                    handle.set_foreground()
-                    break
-            else:
-                printer.out("`Title: `{}` no matching windows found".format(gridtitle))
-        except Exception as e:
-            printer.out("Error focusing MouseGrid: {}".format(e))
-    else:
-        pass
-
-
 def save_toml_file(data, path):
     guidance.offer()
     try:
         formatted_data = str(tomlkit.dumps(data))
-        with io.open(path, "wt", encoding="utf-8") as f:
+        with io.open(os.path.expandvars(path), "wt", encoding="utf-8") as f:
             f.write(formatted_data)
     except Exception:
         simple_log(True)
@@ -144,7 +117,7 @@ def load_toml_file(path):
     guidance.offer()
     result = {}
     try:
-        with io.open(path, "rt", encoding="utf-8") as f:
+        with io.open(os.path.expandvars(path), "rt", encoding="utf-8") as f:
             result = tomlkit.loads(f.read()).value
     except IOError as e:
         if e.errno == 2:  # The file doesn't exist.
