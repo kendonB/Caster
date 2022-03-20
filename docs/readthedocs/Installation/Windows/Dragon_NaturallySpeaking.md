@@ -24,8 +24,6 @@ After installing Dragon, you can configure the DNS settings based on your prefer
 
    - Optional Step** for Caster's `Legion` MouseGrid- Legion Feature available on Windows 8 and above.
 
-5. The Legion MouseGrid requires [Microsoft Visual C++ Redistributable Packages for Visual Studio 2015, 2017 and 2019 (x86).](https://support.microsoft.com/en-nz/help/2977003/the-latest-supported-visual-c-downloads) Note: Should not be needed if Windows 10 is up-to-date.
-
 ### NatLink Install via CLI
 
 1. Close Dragon if open
