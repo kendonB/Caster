@@ -1,9 +1,12 @@
 import time
 from dragonfly import get_current_engine, register_recognition_callback, RecognitionObserver
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 from castervoice.lib.ctrl.mgr.engine_manager import EngineModesManager
 >>>>>>> 087ae2a0 (Add HUD (#773))
+=======
+>>>>>>> 8ecb21d8 (Convert HMC to QT on python 3 (#786))
 from castervoice.lib import settings
 from castervoice.lib import printer
 
