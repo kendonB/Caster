@@ -66,6 +66,7 @@ class TextManipulation(MergeRule):
               rdescript="Text Manipulation: replace character to the left of the cursor"),
 
         # remove text or character
+        # *** doesn't seem to be working
         "remove <direction> [<number_of_lines_to_search>] [<occurrence_number>] <dictation>":
             R(Function(text_manipulation_support.copypaste_remove_phrase_from_text,
                        dict(dictation="phrase"), dictation_versus_character="dictation"),

@@ -3,7 +3,6 @@ from collections.abc import Mapping
 import io
 import copy
 from pathlib import Path
-
 import tomlkit
 from appdirs import *
 from castervoice.lib import printer, version
@@ -213,6 +212,7 @@ def _init(path):
     try:
         with io.open(path, "rt", encoding="utf-8") as f:
             result = tomlkit.loads(f.read()).value
+            
     except ValueError as e:
         printer.out(
             "\n\n {} while loading settings file: {} \n\n".format(repr(e), path)
@@ -516,7 +516,6 @@ def initialize():
     else:
         _USER_DIR = user_data_dir(appname="caster", appauthor=False)
     _SETTINGS_PATH = str(Path(_USER_DIR).joinpath("settings/settings.toml"))
-
     # Kick everything off.
     SETTINGS = _init(_SETTINGS_PATH)
     from castervoice.lib.migration import UserDirUpdater

@@ -139,4 +139,4 @@ class ChromeRule(MappingRule):
 
 
 def get_rule():
-    return ChromeRule, RuleDetails(name="google chrome", executable="chrome")
+    return ChromeRule, RuleDetails(name="google chrome", executable="msedge")
