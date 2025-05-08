@@ -6,18 +6,18 @@ import dragonfly
 
 # TODO: Remove this try wrapper when CI server supports Qt
 try:
-    import PySide2.QtCore
-    from PySide2.QtWidgets import QApplication
-    from PySide2.QtWidgets import QCheckBox
-    from PySide2.QtWidgets import QDialog
-    from PySide2.QtWidgets import QFileDialog
-    from PySide2.QtWidgets import QFormLayout
-    from PySide2.QtWidgets import QLabel
-    from PySide2.QtWidgets import QLineEdit
-    from PySide2.QtWidgets import QScrollArea
-    from PySide2.QtWidgets import QTextEdit
-    from PySide2.QtWidgets import QVBoxLayout
-    from PySide2.QtWidgets import QWidget
+    import PySide6.QtCore
+    from PySide6.QtWidgets import QApplication
+    from PySide6.QtWidgets import QCheckBox
+    from PySide6.QtWidgets import QDialog
+    from PySide6.QtWidgets import QFileDialog
+    from PySide6.QtWidgets import QFormLayout
+    from PySide6.QtWidgets import QLabel
+    from PySide6.QtWidgets import QLineEdit
+    from PySide6.QtWidgets import QScrollArea
+    from PySide6.QtWidgets import QTextEdit
+    from PySide6.QtWidgets import QVBoxLayout
+    from PySide6.QtWidgets import QWidget
 except ImportError:
     sys.exit(0)
 
@@ -28,7 +28,7 @@ try:  # Style C -- may be imported into Caster, or externally
 finally:
     from castervoice.lib import settings
 
-RPC_DIR_EVENT = PySide2.QtCore.QEvent.Type(PySide2.QtCore.QEvent.registerEventType(-1))
+RPC_DIR_EVENT = PySide6.QtCore.QEvent.Type(PySide6.QtCore.QEvent.registerEventType(-1))
 
 
 class Homunculus(QDialog):
@@ -64,7 +64,7 @@ class Homunculus(QDialog):
         self.setWindowTitle(settings.HOMUNCULUS_VERSION)
         self.data = data.split("|") if data else [0, 0]
         label = QLabel(" ".join(self.data[0].split(settings.HMC_SEPARATOR))) if data else QLabel("Enter response then say 'complete'")  # pylint: disable=no-member
-        label.setAlignment(PySide2.QtCore.Qt.AlignCenter)
+        label.setAlignment(PySide6.QtCore.Qt.AlignCenter)
         self.ext_box = QTextEdit()
         self.mainLayout.addWidget(label)
         self.mainLayout.addWidget(self.ext_box)
@@ -98,7 +98,7 @@ class Homunculus(QDialog):
         self.setGeometry(x, y, 640, 480)
         self.setWindowTitle(settings.HOMUNCULUS_VERSION + settings.HMC_TITLE_RECORDING)
         label = QLabel("Macro Recording Options")
-        label.setAlignment(PySide2.QtCore.Qt.AlignCenter)
+        label.setAlignment(PySide6.QtCore.Qt.AlignCenter)
         self.mainLayout.addWidget(label)
         label = QLabel("Command Words:")
         self.word_box = QLineEdit()
@@ -108,7 +108,7 @@ class Homunculus(QDialog):
         self.repeatable = QCheckBox("Make Repeatable")
         self.mainLayout.addWidget(self.repeatable)
         label = QLabel("Dictation History")
-        label.setAlignment(PySide2.QtCore.Qt.AlignCenter)
+        label.setAlignment(PySide6.QtCore.Qt.AlignCenter)
         self.mainLayout.addWidget(label)
         self.word_state = []
         cb_number = 1
@@ -214,7 +214,7 @@ class Homunculus(QDialog):
 
     def xmlrpc_do_action_directory(self, action, details=None):
         if action == "dir":
-            PySide2.QtCore.QCoreApplication.postEvent(self, PySide2.QtCore.QEvent(RPC_DIR_EVENT))
+            PySide6.QtCore.QCoreApplication.postEvent(self, PySide6.QtCore.QEvent(RPC_DIR_EVENT))
 
     def xmlrpc_get_message_directory(self):
         response = None

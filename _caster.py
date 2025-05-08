@@ -12,6 +12,13 @@ from castervoice.lib.ctrl.configure_engine import EngineConfigEarly, EngineConfi
 from castervoice.lib.ctrl.dependencies import DependencyMan
 from castervoice.lib.ctrl.updatecheck import UpdateChecker
 from castervoice.asynch import hud_support
+import inspect
+
+if not hasattr(inspect, 'getargspec'):
+    def getargspec_replacement(func):
+        full_arg_spec = inspect.getfullargspec(func)
+        return (full_arg_spec.args, full_arg_spec.varargs, full_arg_spec.varkw, full_arg_spec.defaults)
+    inspect.getargspec = getargspec_replacement
 
 printer.out(
     "@ - Starting {} with `{}` Engine -\n".format(

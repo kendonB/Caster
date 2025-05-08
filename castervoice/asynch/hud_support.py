@@ -21,11 +21,17 @@ def start_hud():
     try:
         hud.ping()
     except Exception:
+        pythonw_exe_path = settings.SETTINGS["paths"]["PYTHONW"]
+        hud_script_path = settings.SETTINGS["paths"]["HUD_PATH"]
+        # Get the directory of pythonw.exe to use as the CWD
+        # This helps ensure pythonw.exe can find its own DLLs
+        pythonw_exe_dir = str(Path(pythonw_exe_path).parent)
         subprocess.Popen(
             [
-                settings.SETTINGS["paths"]["PYTHONW"],
-                settings.SETTINGS["paths"]["HUD_PATH"],
-            ]
+                pythonw_exe_path,
+                hud_script_path,
+            ],
+            cwd=pythonw_exe_dir # Set the current working directory
         )
 
 

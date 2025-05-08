@@ -9,16 +9,16 @@ import os
 import signal
 import sys
 import threading
-import PySide2.QtCore
-import PySide2.QtGui
+import PySide6.QtCore
+import PySide6.QtGui
 import dragonfly
 from xmlrpc.server import SimpleXMLRPCServer
-from PySide2.QtWidgets import QApplication
-from PySide2.QtWidgets import QMainWindow
-from PySide2.QtWidgets import QTextEdit
-from PySide2.QtWidgets import QTreeView
-from PySide2.QtWidgets import QVBoxLayout
-from PySide2.QtWidgets import QWidget
+from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QMainWindow
+from PySide6.QtWidgets import QTextEdit
+from PySide6.QtWidgets import QTreeView
+from PySide6.QtWidgets import QVBoxLayout
+from PySide6.QtWidgets import QWidget
 try:  # Style C -- may be imported into Caster, or externally
     BASE_PATH = os.path.realpath(__file__).rsplit(os.path.sep + "castervoice", 1)[0]
     if BASE_PATH not in sys.path:
@@ -27,18 +27,18 @@ finally:
     from castervoice.lib.merge.communication import Communicator
     from castervoice.lib import settings
 
-CLEAR_HUD_EVENT = PySide2.QtCore.QEvent.Type(PySide2.QtCore.QEvent.registerEventType(-1))
-HIDE_HUD_EVENT = PySide2.QtCore.QEvent.Type(PySide2.QtCore.QEvent.registerEventType(-1))
-SHOW_HUD_EVENT = PySide2.QtCore.QEvent.Type(PySide2.QtCore.QEvent.registerEventType(-1))
-HIDE_RULES_EVENT = PySide2.QtCore.QEvent.Type(PySide2.QtCore.QEvent.registerEventType(-1))
-SHOW_RULES_EVENT = PySide2.QtCore.QEvent.Type(PySide2.QtCore.QEvent.registerEventType(-1))
-SEND_COMMAND_EVENT = PySide2.QtCore.QEvent.Type(PySide2.QtCore.QEvent.registerEventType(-1))
+CLEAR_HUD_EVENT = PySide6.QtCore.QEvent.Type(PySide6.QtCore.QEvent.registerEventType(-1))
+HIDE_HUD_EVENT = PySide6.QtCore.QEvent.Type(PySide6.QtCore.QEvent.registerEventType(-1))
+SHOW_HUD_EVENT = PySide6.QtCore.QEvent.Type(PySide6.QtCore.QEvent.registerEventType(-1))
+HIDE_RULES_EVENT = PySide6.QtCore.QEvent.Type(PySide6.QtCore.QEvent.registerEventType(-1))
+SHOW_RULES_EVENT = PySide6.QtCore.QEvent.Type(PySide6.QtCore.QEvent.registerEventType(-1))
+SEND_COMMAND_EVENT = PySide6.QtCore.QEvent.Type(PySide6.QtCore.QEvent.registerEventType(-1))
 
 
-class RPCEvent(PySide2.QtCore.QEvent):
+class RPCEvent(PySide6.QtCore.QEvent):
 
     def __init__(self, type, text):
-        PySide2.QtCore.QEvent.__init__(self, type)
+        PySide6.QtCore.QEvent.__init__(self, type)
         self._text = text
 
     @property
@@ -52,29 +52,29 @@ class RulesWindow(QWidget):
     _MARGIN = 30
 
     def __init__(self, text):
-        QWidget.__init__(self, f=(PySide2.QtCore.Qt.WindowStaysOnTopHint))
+        QWidget.__init__(self, f=(PySide6.QtCore.Qt.WindowStaysOnTopHint))
         x = dragonfly.monitors[0].rectangle.dx - (RulesWindow._WIDTH + RulesWindow._MARGIN)
         y = 300
         dx = RulesWindow._WIDTH
         dy = dragonfly.monitors[0].rectangle.dy - (y + 2 * RulesWindow._MARGIN)
         self.setGeometry(x, y, dx, dy)
         self.setWindowTitle("Active Rules")
-        rules_tree = PySide2.QtGui.QStandardItemModel()
+        rules_tree = PySide6.QtGui.QStandardItemModel()
         rules_tree.setColumnCount(2)
         rules_tree.setHorizontalHeaderLabels(['phrase', 'action'])
         rules_dict = json.loads(text)
         rules = rules_tree.invisibleRootItem()
         for g in rules_dict:
-            gram = PySide2.QtGui.QStandardItem(g["name"]) if len(g["rules"]) > 1 else None
+            gram = PySide6.QtGui.QStandardItem(g["name"]) if len(g["rules"]) > 1 else None
             for r in g["rules"]:
-                rule = PySide2.QtGui.QStandardItem(r["name"])
+                rule = PySide6.QtGui.QStandardItem(r["name"])
                 rule.setRowCount(len(r["specs"]))
                 rule.setColumnCount(2)
                 row = 0
                 for s in r["specs"]:
                     phrase, _, action = s.partition('::')
-                    rule.setChild(row, 0, PySide2.QtGui.QStandardItem(phrase))
-                    rule.setChild(row, 1, PySide2.QtGui.QStandardItem(action))
+                    rule.setChild(row, 0, PySide6.QtGui.QStandardItem(phrase))
+                    rule.setChild(row, 1, PySide6.QtGui.QStandardItem(action))
                     row += 1
                 if gram is None:
                     rules.appendRow(rule)
@@ -97,7 +97,7 @@ class HUDWindow(QMainWindow):
     _MARGIN = 30
 
     def __init__(self, server):
-        QMainWindow.__init__(self, flags=(PySide2.QtCore.Qt.WindowStaysOnTopHint))
+        QMainWindow.__init__(self, flags=(PySide6.QtCore.Qt.WindowStaysOnTopHint))
         x = dragonfly.monitors[0].rectangle.dx - (HUDWindow._WIDTH + HUDWindow._MARGIN)
         y = HUDWindow._MARGIN
         dx = HUDWindow._WIDTH
@@ -137,7 +137,7 @@ class HUDWindow(QMainWindow):
                     # self.output.append('<br>')
                     self.output.append(formatted_text)
                 cursor = self.output.textCursor()
-                cursor.movePosition(PySide2.QtGui.QTextCursor.End)
+                cursor.movePosition(PySide6.QtGui.QTextCursor.End)
                 self.output.setTextCursor(cursor)
                 self.output.ensureCursorVisible()
                 self.commands_count += 1
@@ -176,33 +176,33 @@ class HUDWindow(QMainWindow):
 
 
     def xmlrpc_clear(self):
-        PySide2.QtCore.QCoreApplication.postEvent(self, PySide2.QtCore.QEvent(CLEAR_HUD_EVENT))
+        PySide6.QtCore.QCoreApplication.postEvent(self, PySide6.QtCore.QEvent(CLEAR_HUD_EVENT))
         return 0
 
     def xmlrpc_ping(self):
         return 0
 
     def xmlrpc_hide_hud(self):
-        PySide2.QtCore.QCoreApplication.postEvent(self, PySide2.QtCore.QEvent(HIDE_HUD_EVENT))
+        PySide6.QtCore.QCoreApplication.postEvent(self, PySide6.QtCore.QEvent(HIDE_HUD_EVENT))
         return 0
 
     def xmlrpc_show_hud(self):
-        PySide2.QtCore.QCoreApplication.postEvent(self, PySide2.QtCore.QEvent(SHOW_HUD_EVENT))
+        PySide6.QtCore.QCoreApplication.postEvent(self, PySide6.QtCore.QEvent(SHOW_HUD_EVENT))
         return 0
 
     def xmlrpc_hide_rules(self):
-        PySide2.QtCore.QCoreApplication.postEvent(self, PySide2.QtCore.QEvent(HIDE_RULES_EVENT))
+        PySide6.QtCore.QCoreApplication.postEvent(self, PySide6.QtCore.QEvent(HIDE_RULES_EVENT))
         return 0
 
     def xmlrpc_kill(self):
         QApplication.quit()
 
     def xmlrpc_send(self, text):
-        PySide2.QtCore.QCoreApplication.postEvent(self, RPCEvent(SEND_COMMAND_EVENT, text))
+        PySide6.QtCore.QCoreApplication.postEvent(self, RPCEvent(SEND_COMMAND_EVENT, text))
         return len(text)
 
     def xmlrpc_show_rules(self, text):
-        PySide2.QtCore.QCoreApplication.postEvent(self, RPCEvent(SHOW_RULES_EVENT, text))
+        PySide6.QtCore.QCoreApplication.postEvent(self, RPCEvent(SHOW_RULES_EVENT, text))
         return len(text)
 
 

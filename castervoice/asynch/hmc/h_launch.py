@@ -52,14 +52,14 @@ def _get_title(hmc_type):
 
 
 def main():
-    import PySide2.QtWidgets
+    import PySide6.QtWidgets
     from castervoice.asynch.hmc.homunculus import Homunculus
     from castervoice.lib.merge.communication import Communicator
     server_address = (Communicator.LOCALHOST, Communicator().com_registry["hmc"])
     # Enabled by default logging causes RPC to malfunction when the GUI runs on
     # pythonw.  Explicitly disable logging for the XML server.
     server = SimpleXMLRPCServer(server_address, logRequests=False, allow_none=True)
-    app = PySide2.QtWidgets.QApplication(sys.argv)
+    app = PySide6.QtWidgets.QApplication(sys.argv)
     window = Homunculus(server, sys.argv)
     window.show()
     exit_code = app.exec_()

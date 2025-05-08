@@ -14,20 +14,20 @@ finally:
     from castervoice.lib import settings
     from castervoice.lib.merge.communication import Communicator
 
-from PySide2 import QtCore
-from PySide2.QtGui import QPalette
-from PySide2.QtWidgets import QApplication
-from PySide2.QtWidgets import QDialogButtonBox
-from PySide2.QtWidgets import QCheckBox
-from PySide2.QtWidgets import QDialog
-from PySide2.QtWidgets import QFormLayout
-from PySide2.QtWidgets import QGroupBox
-from PySide2.QtWidgets import QLabel
-from PySide2.QtWidgets import QLineEdit
-from PySide2.QtWidgets import QScrollArea
-from PySide2.QtWidgets import QTabWidget
-from PySide2.QtWidgets import QVBoxLayout
-from PySide2.QtWidgets import QWidget
+from PySide6 import QtCore
+from PySide6.QtGui import QPalette
+from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QDialogButtonBox
+from PySide6.QtWidgets import QCheckBox
+from PySide6.QtWidgets import QDialog
+from PySide6.QtWidgets import QFormLayout
+from PySide6.QtWidgets import QGroupBox
+from PySide6.QtWidgets import QLabel
+from PySide6.QtWidgets import QLineEdit
+from PySide6.QtWidgets import QScrollArea
+from PySide6.QtWidgets import QTabWidget
+from PySide6.QtWidgets import QVBoxLayout
+from PySide6.QtWidgets import QWidget
 
 
 
