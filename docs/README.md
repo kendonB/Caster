@@ -57,7 +57,7 @@
 
 - Supported [Applications](https://caster.readthedocs.io/en/latest/readthedocs/Caster_Commands/Application_Commands_Quick_Reference/)
 
-  - IDEs/Editors: Microsoft Visual C++, Visual Studio, Eclipse, Jetbrains IDEs, Emacs, Sublime, Atom, Visual Studio Code, Notepad++, FlashDevelop, Sql Developer, SQL Server Management Studio
+  - IDEs/Editors: Microsoft Visual C++, Visual Studio, Eclipse, Jetbrains IDEs, Emacs, Sublime, Atom, Visual Studio Code (including Cursor), Notepad++, FlashDevelop, Sql Developer, SQL Server Management Studio
   - Development Tools: Command Prompt, GitBash, KDiff3
   - Statistics: RStudio
   - Word Processor: lyx, Microsoft Word, Typora
