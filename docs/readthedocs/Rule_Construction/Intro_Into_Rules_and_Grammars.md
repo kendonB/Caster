@@ -12,7 +12,7 @@ In general a `grammar` is a collection of rules that are related to each other. 
 
 Common Examples of different context:
 
-- **Global** the rules are available everywhere all the time on the computer. Collectively they are a global grammars.
+- **Global** the rules are available everywhere all the time on the computer. Collectively they form a global grammar.
 - **Application** specific rules are only available to a specific application or set of applications. For instance the Firefox application might have a rule that allows you to switch between tabs by voice. Through a Firefox extension you may have a separate rule that controls the extension. Collectively both rules are the Firefox grammar because they share the same context.
 
 This seems very complex, by and large you'll be working with `rules` as Caster creates and manages the grammars for you.
