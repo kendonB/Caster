@@ -4,7 +4,7 @@ The beginning of this guide demonstrates how to get started making basic non-CCR
 
 Instead of creating an entirely new rule and file for each example we are going to reuse `caster_example_rule.py` from `Your First Rule` part of the documentation in your Caster user directory. Normally we create a new class rule and file you would create.
 
-For each example in this document you can copy and paste the the code into `caster_example_rule.py` replacing its entire contents and save the file. Then those commands will become available. This is possible because we are utilizing the same class `MyRule` rule.
+For each example in this document you can copy and paste the code into `caster_example_rule.py` replacing its entire contents and save the file. Then those commands will become available. This is possible because we are utilizing the same class `MyRule` rule.
 
 ## A simple Rule
 
