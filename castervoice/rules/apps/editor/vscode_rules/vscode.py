@@ -149,7 +149,7 @@ class VSCodeCcrRule(MergeRule):
 
 
 def get_rule():
-    details = RuleDetails(executable="code",
+    details = RuleDetails(executable=["code", "cursor"],
                           title="Visual Studio Code",
                           ccrtype=CCRType.APP)
     return VSCodeCcrRule, details

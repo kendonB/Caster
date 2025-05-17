@@ -40,7 +40,7 @@ Classic Install Location: `castervoice\rules\apps'` in Caster source code.
 - [Typora](#typora) - tie poor a
 - [Unity](#unity) - unity
 - [Visual Studio](#visual-studio) - visual studio
-- [Visual Studio Code](#visual-studio-code) Visual Studio Code CCR/Visual Studio Code
+- [Visual Studio Code](#visual-studio-code) Visual Studio Code CCR/Visual Studio Code (Cursor compatible)
 - [Webex Teams](#webex-teams) - webex teams
 
 <!-- /TOC -->
@@ -655,7 +655,7 @@ These commands are for Windows/Linux and creating a separate command ruleset for
 | `collapse to definitions`          | `quick launch`               | `undo (checkout / pending changes)` |
 | `comment block`                    |                              |                                     |
 
-## Visual Studio Code
+## Visual Studio Code / Cursor
 
 ## CCR (Continuous Command Recognition)
 

@@ -308,6 +308,6 @@ class VSCodeNonCcrRule(MappingRule):
 
 def get_rule():
     details = RuleDetails(name="Visual Studio Code",
-                          executable="code",
+                          executable=["code", "cursor"],
                           title="Visual Studio Code")
     return VSCodeNonCcrRule, details
