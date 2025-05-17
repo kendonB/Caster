@@ -16,7 +16,7 @@ supporturl = (
 class RunPostInstall:
     def __init__(self):
         # Kicks off the post install script
-        if self._setup() is not "CI":  # Do not display command prompt if running continuous integration.
+        if self._setup() != "CI":  # Do not display command prompt if running continuous integration.
             self._display()
 
     def _copy_log(self):
@@ -39,13 +39,13 @@ class RunPostInstall:
         directory, engine = self._find_directory()
         if os.path.isdir(directory) and not directory == os.getcwd():
             try:
-                if engine is "dns":
+                if engine == "dns":
                     shutil.copy("_caster.py", directory)
                     log.warning(
                         "\nCaster: NatLink found.\n"
                         "Defaulting to Dragon NaturallySpeaking Engine\n"
                         "Caster will automatically start with Dragon NaturallySpeaking\n")
-                if engine is "wrs":
+                if engine == "wrs":
                     shutil.copy("_caster.py", os.path.join(directory, "start_caster.py"))
                     log.warning(
                         "\nCaster: NatLink not found.\n"
@@ -56,7 +56,7 @@ class RunPostInstall:
                             + "\nManually uninstall Caster `pip uninstall castervoice -y`\n" + supporturl)
                 self._copy_log()
         else:  # Manual error handling For dir invalid path or copying `_caster.py` to same directory.
-            if engine is "dns":
+            if engine == "dns":
                 log.warning(
                     "Source and destination for copying `_caster.py` is the same directory or directory path not valid."
                     "\nNatlinkStatus function may have failed to obtain Natlink user directory\n"
