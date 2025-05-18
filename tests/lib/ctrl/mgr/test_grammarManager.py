@@ -17,6 +17,7 @@ class TestGrammarManager(SettingsEnabledTestCase):
     _MOCK_PATH_TRANSFORMERS_CONFIG = "/mock/transformers.file"
     _MOCK_PATH_HOOKS_CONFIG = "/mock/transformers.file"
     _MOCK_PATH_COMPANION_CONFIG = "/mock/companions.file"
+    _MOCK_PATH_CMD_OVERRIDES = "/mock/cmd_overrides.file"
 
     def _setup_config_file(self, utils_module, settings_path, file_path, data):
         self._set_setting(settings_path, file_path)
@@ -90,6 +91,10 @@ class TestGrammarManager(SettingsEnabledTestCase):
         self._setup_config_file(utilities,
                                 ["paths", "COMPANION_CONFIG_PATH"],
                                 TestGrammarManager._MOCK_PATH_COMPANION_CONFIG,
+                                {})
+        self._setup_config_file(utilities,
+                                ["paths", "COMMAND_OVERRIDES_PATH"],
+                                TestGrammarManager._MOCK_PATH_CMD_OVERRIDES,
                                 {})
         self._set_setting(["miscellaneous", "max_ccr_repetitions"], 2)
         self._set_setting(["miscellaneous", "ccr_on"], True)
@@ -300,3 +305,20 @@ class TestGrammarManager(SettingsEnabledTestCase):
 
         # simulate a spoken "enable" command from the GrammarActivator:
         self._gm._change_rule_enabled("Python", False)
+
+    def test_command_override_applied(self):
+        from castervoice.lib import utilities
+        from castervoice.rules.core.alphabet_rules import alphabet
+
+        override = {
+            "Alphabet": {"enabled": True, "spec": "alpha speak"}
+        }
+        utilities.save_toml_file(override,
+                                TestGrammarManager._MOCK_PATH_CMD_OVERRIDES)
+        self._gm._command_overrides.load()
+        self._setup_rules_config_file(loadable_true=["Alphabet"], enabled=["Alphabet"])
+
+        rule = alphabet.get_rule()
+        self._initialize(FullContentSet([rule], [], []))
+        trigger = self._gm._activator._class_name_to_trigger["Alphabet"]
+        self.assertEqual("alpha speak", trigger)

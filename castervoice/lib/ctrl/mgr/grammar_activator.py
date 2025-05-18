@@ -25,12 +25,12 @@ class GrammarActivator(object):
         """
         self._activation_fn = activation_fn
 
-    def register_rule(self, managed_rule):
+    def register_rule(self, managed_rule, override_spec=None):
         """
         register or re-register a rule;
         the "trigger" is what the rule is called when you say "enabled X" or "disable X"
         """
-        trigger = self._get_trigger(managed_rule)
+        trigger = override_spec if override_spec else self._get_trigger(managed_rule)
         self._class_name_to_trigger[managed_rule.get_rule_class_name()] = trigger
 
     def _get_trigger(self, managed_rule):
