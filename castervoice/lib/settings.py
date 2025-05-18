@@ -297,6 +297,9 @@ def _get_defaults():
             "COMPANION_CONFIG_PATH": str(
                 Path(_USER_DIR).joinpath("settings/companion_config.toml")
             ),
+            "COMMAND_OVERRIDES_PATH": str(
+                Path(_USER_DIR).joinpath("settings/command_overrides.toml")
+            ),
             "DLL_PATH": str(Path(_BASE_PATH).joinpath("lib/dll/")),
             "GDEF_FILE": str(
                 Path(_USER_DIR).joinpath("caster_user_content/transformers/words.txt")

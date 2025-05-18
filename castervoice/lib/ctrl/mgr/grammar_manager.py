@@ -11,6 +11,7 @@ from castervoice.lib.ctrl.mgr.loading.load.content_type import ContentType
 from castervoice.lib.ctrl.mgr.managed_rule import ManagedRule
 from castervoice.lib.ctrl.mgr.rule_formatter import _set_rdescripts
 from castervoice.lib.ctrl.mgr.rules_enabled_diff import RulesEnabledDiff
+from castervoice.lib.command_overrides import CommandOverrides
 from castervoice.lib.merge.ccrmerging2.hooks.events.activation_event import RuleActivationEvent
 from castervoice.lib.merge.ccrmerging2.hooks.events.on_error_event import OnErrorEvent
 from castervoice.lib.merge.ccrmerging2.hooks.events.rules_loaded_event import RulesLoadedEvent
@@ -70,6 +71,7 @@ class GrammarManager(object):
         self._transformers_runner = t_runner
         self._companion_config = companion_config
         self._combo_validator = combo_validator
+        self._command_overrides = CommandOverrides()
 
         # rules: (class name : ManagedRule}
         self._managed_rules = {}
@@ -131,8 +133,12 @@ class GrammarManager(object):
         '''
         managed_rule = ManagedRule(rule_class, details)
         self._managed_rules[class_name] = managed_rule
+        spec_override = None
+        if class_name in self._command_overrides and \
+                self._command_overrides.is_enabled(class_name):
+            spec_override = self._command_overrides.get_spec(class_name)
         # set up de/activation command
-        self._activator.register_rule(managed_rule)
+        self._activator.register_rule(managed_rule, spec_override)
         # watch this file for future changes
         if not details.watch_exclusion:
             self._reload_observable.register_watched_file(details.get_filepath())
