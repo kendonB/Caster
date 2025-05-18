@@ -55,7 +55,7 @@ class UserDirUpdater(object):
         dest_path_base.mkdir(parents=True, exist_ok=True)
         if source_path.exists():
             for f in source_path.glob("*"):
-                f.rename(dest_path_base.joinpath(f.stem))
+                f.rename(dest_path_base.joinpath(f.name))
             source_path.rmdir()
 
     def _make_user_content_package(self, package_name):
