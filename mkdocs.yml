@@ -71,6 +71,7 @@ nav:
     - Third-party Integrations:
         - 'Aenea':  readthedocs/Third-party_Integrations/Aenea.md
         - 'Sikuli': readthedocs/Third-party_Integrations/Sikuli.md
+        - 'OpenAI Dictation': readthedocs/Third-party_Integrations/OpenAI.md
     - Contributing: Contributing.md
     - Code of Conduct: CODE_OF_CONDUCT.md
     - License: LICENSE.md

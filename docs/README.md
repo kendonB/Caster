@@ -87,6 +87,7 @@
   - [Sikulix](http://sikulix.com/) - [Setup](https://caster.readthedocs.io/en/latest/readthedocs/Third-party_Integrations/Sikuli/): Automates anything you see on the screen of your desktop computer. - [Demo](https://youtu.be/RFdsD2OgDzk?list=PLV6JPhkq1x8LHu02YefhUU9rXiB2PK8tc&t=512)
   - [Aenea](https://github.com/dictation-toolbox/aenea) - [Setup](https://caster.readthedocs.io/en/latest/readthedocs/Third-party_Integrations/Aenea/): A client-server library for using voice macros from Dragon NaturallySpeaking and Dragonfly on remote/non-windows hosts.
   - [Autohotkey](https://www.autohotkey.com/): A scripting language that allows the automation of various tasks in Windows. Simply install the latest version. If installed, it can speed up some commands by a few seconds - e.g. [checking out or updating a pull request from github](https://caster.readthedocs.io/en/latest/readthedocs/Caster_Commands/Application_Commands_Quick_Reference/#google-chrome).
+  - OpenAI Dictation - [Setup](https://caster.readthedocs.io/en/latest/readthedocs/Third-party_Integrations/OpenAI/): Experimental support for transcribing and refining speech using OpenAI services.
 
 - Caster extends the Dragonfly API for even more powerful commands.
 
