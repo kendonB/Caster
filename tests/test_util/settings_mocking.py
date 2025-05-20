@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from mock import Mock
+from unittest.mock import Mock
 
 from castervoice.lib import settings
 

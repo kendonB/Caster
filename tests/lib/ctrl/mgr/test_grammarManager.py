@@ -1,4 +1,4 @@
-from mock import Mock
+from unittest.mock import Mock
 
 from castervoice.lib.ctrl.mgr.loading.load.initial_content import FullContentSet
 from tests.test_util import settings_mocking

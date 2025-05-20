@@ -1,5 +1,5 @@
 import os
-from mock import Mock
+from unittest.mock import Mock
 from castervoice.lib.ctrl.mgr.loading.load import content_loader
 from castervoice.lib.ctrl.mgr.loading.load.content_request import ContentRequest
 from castervoice.lib.ctrl.mgr.loading.load.content_request_generator import ContentRequestGenerator

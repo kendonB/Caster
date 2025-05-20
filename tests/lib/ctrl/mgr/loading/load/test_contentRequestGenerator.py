@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from mock import Mock
+from unittest.mock import Mock
 
 from castervoice.lib.ctrl.mgr.loading.load.content_request_generator import ContentRequestGenerator
 from castervoice.lib.ctrl.mgr.loading.load.content_type import ContentType
