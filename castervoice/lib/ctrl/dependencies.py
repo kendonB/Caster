@@ -8,10 +8,18 @@ import sys
 import time
 
 try:
-    import pkg_resources  # pylint: disable=import-error
+    import pkg_resources as _pkg_resources  # pylint: disable=import-error
+except ModuleNotFoundError:
+    _pkg_resources = None
+
+if _pkg_resources is not None and all(
+    hasattr(_pkg_resources, attr)
+    for attr in ("require", "DistributionNotFound", "VersionConflict")
+):
+    pkg_resources = _pkg_resources
     DistributionNotFound = pkg_resources.DistributionNotFound
     VersionConflict = pkg_resources.VersionConflict
-except ModuleNotFoundError:
+else:
     from importlib import metadata
 
     try:

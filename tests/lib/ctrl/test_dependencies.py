@@ -1,3 +1,6 @@
+import importlib
+import sys
+import types
 import unittest
 from unittest.mock import mock_open, patch
 
@@ -65,3 +68,15 @@ class TestDependencies(unittest.TestCase):
         require_mock.assert_called_once_with("six")
         out_mock.assert_not_called()
         sleep_mock.assert_not_called()
+
+    def test_import_works_with_incomplete_pkg_resources_module(self):
+        fake_pkg_resources = types.SimpleNamespace(require=lambda _requirement: None)
+        original_module = dependencies
+        try:
+            with patch.dict(sys.modules, {"pkg_resources": fake_pkg_resources}):
+                reloaded = importlib.reload(original_module)
+                self.assertTrue(hasattr(reloaded, "DistributionNotFound"))
+                self.assertTrue(hasattr(reloaded, "VersionConflict"))
+                self.assertTrue(callable(reloaded.pkg_resources.require))
+        finally:
+            importlib.reload(original_module)
