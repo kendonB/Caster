@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+- Added `Install_Caster_WSR.bat` for WSR installs using `uv` and Python 3.12+.
+- Updated WSR Windows installation docs to use `Install_Caster_WSR.bat`.
+- Updated Windows Qt dependency handling for Python 3.12 compatibility (`PySide6` path for supported architectures, no hard `PySide2` requirement on Windows).
+- Updated WSR scripts to launch with the same interpreter used during install (via `castervoice\bin\data\wsr_python_path.txt`).
+- Updated WSR Qt install gating to use Python bitness detection instead of host architecture.
+- Left `Install_Caster_DNS-WSR.bat` in place for DNS/Natlink installs.
+
 ## [0.6.14](https://github.com/dictation-toolbox/Caster/tree/0.6.14) ("2019-12-01")
 
 [Full Changelog](https://github.com/dictation-toolbox/Caster/compare/0.5.11...0.6.14)

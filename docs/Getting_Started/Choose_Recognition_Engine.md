@@ -71,6 +71,9 @@ Disadvantages
 - Free
 
 - Simple to set up with the least dependencies
+- WSR setup uses `Install_Caster_WSR.bat` from the project root. See [Windows Speech Recognition install](../Installation/Windows/Windows_Speech_Recognition.md).
+- `Run_Caster_WSR.bat` uses interpreter metadata from installation so runtime and installed packages stay aligned.
+- For Qt-based UI features (HUD/settings), use a supported Windows x64 Python environment.
 
 - Preinstalled on all supported Windows OS
 

@@ -37,15 +37,19 @@ def dep_missing():
     with open(requirements) as f:
         requirements = f.read().splitlines()
     for dep in requirements:
-        dep = dep.split(">=", 1)[0]
+        dep = dep.strip()
+        if not dep or dep.startswith("#"):
+            continue
         try:
-            pkg_resources.require("{}".format(dep))
+            pkg_resources.require(dep)
         except VersionConflict:
             pass
         except DistributionNotFound:
-            missing_list.append('{0}'.format(dep))
+            # Keep markers for evaluation, but exclude them in pip install guidance.
+            missing_list.append(dep.split(";", 1)[0].strip())
     if missing_list:
-        pippackages = (' '.join(map(str, missing_list)))
+        # Quote each requirement to avoid shell redirection parsing in version specifiers (for example >=).
+        pippackages = " ".join(['"{0}"'.format(dep) for dep in missing_list])
         printer.out("\nCaster: dependencys are missing. Use 'python -m pip install {0}'".format(pippackages))
         time.sleep(10)
 

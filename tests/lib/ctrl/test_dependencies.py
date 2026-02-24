@@ -1,0 +1,67 @@
+import unittest
+from unittest.mock import mock_open, patch
+
+from castervoice.lib.ctrl import dependencies
+
+
+class TestDependencies(unittest.TestCase):
+
+    def test_dep_missing_uses_full_requirement_spec(self):
+        requirements = 'PySide2>=5.14;platform_system!="Windows"\n'
+        with patch("builtins.open", mock_open(read_data=requirements)):
+            with patch("castervoice.lib.ctrl.dependencies.pkg_resources.require") as require_mock:
+                with patch("castervoice.lib.ctrl.dependencies.printer.out") as out_mock:
+                    with patch("castervoice.lib.ctrl.dependencies.time.sleep") as sleep_mock:
+                        dependencies.dep_missing()
+
+        require_mock.assert_called_once_with('PySide2>=5.14;platform_system!="Windows"')
+        out_mock.assert_not_called()
+        sleep_mock.assert_not_called()
+
+    def test_dep_missing_reports_missing_dep_without_marker_in_hint(self):
+        requirements = 'missing_dep>=1.0; platform_system=="Windows"\n'
+        with patch("builtins.open", mock_open(read_data=requirements)):
+            with patch("castervoice.lib.ctrl.dependencies.pkg_resources.require") as require_mock:
+                with patch("castervoice.lib.ctrl.dependencies.printer.out") as out_mock:
+                    with patch("castervoice.lib.ctrl.dependencies.time.sleep") as sleep_mock:
+                        require_mock.side_effect = dependencies.DistributionNotFound("missing_dep", [])
+                        dependencies.dep_missing()
+
+        out_mock.assert_called_once()
+        warning_message = out_mock.call_args[0][0]
+        self.assertIn('python -m pip install "missing_dep>=1.0"', warning_message)
+        self.assertNotIn("platform_system", warning_message)
+        sleep_mock.assert_called_once_with(10)
+
+    def test_dep_missing_quotes_multiple_missing_requirements_in_hint(self):
+        requirements = (
+            'missing_dep>=1.0\n'
+            'other_dep==2.0; platform_system=="Windows"\n'
+        )
+        with patch("builtins.open", mock_open(read_data=requirements)):
+            with patch("castervoice.lib.ctrl.dependencies.pkg_resources.require") as require_mock:
+                with patch("castervoice.lib.ctrl.dependencies.printer.out") as out_mock:
+                    with patch("castervoice.lib.ctrl.dependencies.time.sleep") as sleep_mock:
+                        require_mock.side_effect = [
+                            dependencies.DistributionNotFound("missing_dep", []),
+                            dependencies.DistributionNotFound("other_dep", []),
+                        ]
+                        dependencies.dep_missing()
+
+        out_mock.assert_called_once()
+        warning_message = out_mock.call_args[0][0]
+        self.assertIn('python -m pip install "missing_dep>=1.0" "other_dep==2.0"', warning_message)
+        self.assertNotIn("platform_system", warning_message)
+        sleep_mock.assert_called_once_with(10)
+
+    def test_dep_missing_skips_blank_and_comment_lines(self):
+        requirements = '\n# optional dependency\nsix\n'
+        with patch("builtins.open", mock_open(read_data=requirements)):
+            with patch("castervoice.lib.ctrl.dependencies.pkg_resources.require") as require_mock:
+                with patch("castervoice.lib.ctrl.dependencies.printer.out") as out_mock:
+                    with patch("castervoice.lib.ctrl.dependencies.time.sleep") as sleep_mock:
+                        dependencies.dep_missing()
+
+        require_mock.assert_called_once_with("six")
+        out_mock.assert_not_called()
+        sleep_mock.assert_not_called()

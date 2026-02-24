@@ -8,9 +8,16 @@ Minimal PySide2/PySide6 compatibility helpers.
 try:
     from PySide2 import QtCore, QtGui, QtWidgets  # type: ignore
     QT_API = "PySide2"
-except ImportError:  # pragma: no cover
-    from PySide6 import QtCore, QtGui, QtWidgets  # type: ignore
-    QT_API = "PySide6"
+except ImportError as pyside2_err:  # pragma: no cover
+    try:
+        from PySide6 import QtCore, QtGui, QtWidgets  # type: ignore
+        QT_API = "PySide6"
+    except ImportError as pyside6_err:  # pragma: no cover
+        raise ImportError(
+            "Unable to import Qt bindings (PySide2/PySide6). "
+            "Qt is required for HUD/settings/HMC UI features. "
+            "On Windows x64, install with: uv pip install --system --python 3.12 \"PySide6>=6.6\""
+        ) from pyside6_err
 
 
 def qt_attr(root, *paths):
