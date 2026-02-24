@@ -7,8 +7,62 @@ import os
 import sys
 import time
 
-import pkg_resources  # pylint: disable=import-error
-from pkg_resources import DistributionNotFound, VersionConflict  # pylint: disable=import-error
+try:
+    import pkg_resources  # pylint: disable=import-error
+    DistributionNotFound = pkg_resources.DistributionNotFound
+    VersionConflict = pkg_resources.VersionConflict
+except ModuleNotFoundError:
+    from importlib import metadata
+
+    try:
+        from packaging.requirements import Requirement
+        from packaging.version import InvalidVersion, Version
+    except ModuleNotFoundError:  # pragma: no cover - fallback when packaging isn't installed directly
+        from pip._vendor.packaging.requirements import Requirement  # pylint: disable=import-error
+        from pip._vendor.packaging.version import InvalidVersion, Version  # pylint: disable=import-error
+
+    class DistributionNotFound(Exception):
+        """Raised when a required distribution is not installed."""
+
+    class VersionConflict(Exception):
+        """Raised when an installed distribution does not satisfy the requested version."""
+
+        def __init__(self, dist, req):
+            self.dist = dist
+            self.req = req
+            super().__init__("{0} does not satisfy {1}".format(dist, req))
+
+    def _installed_version(distribution_name):
+        for candidate in (
+            distribution_name,
+            distribution_name.replace("_", "-"),
+            distribution_name.replace("-", "_"),
+        ):
+            try:
+                return metadata.version(candidate)
+            except metadata.PackageNotFoundError:
+                continue
+        raise DistributionNotFound(distribution_name)
+
+    def _require_fallback(requirement_spec):
+        requirement = Requirement(requirement_spec)
+        if requirement.marker and not requirement.marker.evaluate():
+            return
+        installed_version = _installed_version(requirement.name)
+        if requirement.specifier:
+            try:
+                parsed_version = Version(installed_version)
+            except InvalidVersion:
+                parsed_version = installed_version
+            if parsed_version not in requirement.specifier:
+                raise VersionConflict(installed_version, requirement_spec)
+
+    class _PkgResourcesShim:
+        @staticmethod
+        def require(requirement_spec):
+            _require_fallback(requirement_spec)
+
+    pkg_resources = _PkgResourcesShim()
 from castervoice.lib import printer
 
 DARWIN = sys.platform == "darwin"
