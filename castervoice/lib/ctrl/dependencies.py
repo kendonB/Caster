@@ -3,8 +3,12 @@ Created on Oct 7, 2015
 
 @author: synkarius
 '''
-import os, sys, time, pkg_resources
-from pkg_resources import VersionConflict, DistributionNotFound
+import os
+import sys
+import time
+
+import pkg_resources  # pylint: disable=import-error
+from pkg_resources import DistributionNotFound, VersionConflict  # pylint: disable=import-error
 from castervoice.lib import printer
 
 DARWIN = sys.platform == "darwin"
