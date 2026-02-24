@@ -80,3 +80,15 @@ class TestDependencies(unittest.TestCase):
                 self.assertTrue(callable(reloaded.pkg_resources.require))
         finally:
             importlib.reload(original_module)
+
+    def test_fallback_raises_version_conflict_for_invalid_installed_version(self):
+        fake_pkg_resources = types.SimpleNamespace(require=lambda _requirement: None)
+        original_module = dependencies
+        try:
+            with patch.dict(sys.modules, {"pkg_resources": fake_pkg_resources}):
+                reloaded = importlib.reload(original_module)
+                with patch.object(reloaded, "_installed_version", return_value="not_a_pep440_version"):
+                    with self.assertRaises(reloaded.VersionConflict):
+                        reloaded._require_fallback("example_pkg>=1.0")
+        finally:
+            importlib.reload(original_module)

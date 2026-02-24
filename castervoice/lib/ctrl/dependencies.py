@@ -61,7 +61,7 @@ else:
             try:
                 parsed_version = Version(installed_version)
             except InvalidVersion:
-                parsed_version = installed_version
+                raise VersionConflict(installed_version, requirement_spec)
             if parsed_version not in requirement.specifier:
                 raise VersionConflict(installed_version, requirement_spec)
 
