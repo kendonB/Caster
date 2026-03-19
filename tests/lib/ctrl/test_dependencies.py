@@ -92,3 +92,46 @@ class TestDependencies(unittest.TestCase):
                         reloaded._require_fallback("example_pkg>=1.0")
         finally:
             importlib.reload(original_module)
+
+    def test_fallback_checks_requested_extra_dependencies(self):
+        fake_pkg_resources = types.SimpleNamespace(require=lambda _requirement: None)
+        original_module = dependencies
+        try:
+            with patch.dict(sys.modules, {"pkg_resources": fake_pkg_resources}):
+                reloaded = importlib.reload(original_module)
+
+                def fake_distribution(name):
+                    if name == "dragonfly2":
+                        return types.SimpleNamespace(
+                            version="0.34.0",
+                            requires=['kaldi-active-grammar; extra == "kaldi"'],
+                        )
+                    raise reloaded.metadata.PackageNotFoundError
+
+                with patch.object(reloaded.metadata, "distribution", side_effect=fake_distribution):
+                    with self.assertRaises(reloaded.DistributionNotFound):
+                        reloaded._require_fallback("dragonfly2[kaldi]>=0.34.0")
+        finally:
+            importlib.reload(original_module)
+
+    def test_fallback_accepts_installed_requested_extra_dependencies(self):
+        fake_pkg_resources = types.SimpleNamespace(require=lambda _requirement: None)
+        original_module = dependencies
+        try:
+            with patch.dict(sys.modules, {"pkg_resources": fake_pkg_resources}):
+                reloaded = importlib.reload(original_module)
+
+                def fake_distribution(name):
+                    if name == "dragonfly2":
+                        return types.SimpleNamespace(
+                            version="0.34.0",
+                            requires=['kaldi-active-grammar; extra == "kaldi"'],
+                        )
+                    if name == "kaldi-active-grammar":
+                        return types.SimpleNamespace(version="1.0", requires=[])
+                    raise reloaded.metadata.PackageNotFoundError
+
+                with patch.object(reloaded.metadata, "distribution", side_effect=fake_distribution):
+                    reloaded._require_fallback("dragonfly2[kaldi]>=0.34.0")
+        finally:
+            importlib.reload(original_module)

@@ -23,10 +23,14 @@ else:
     from importlib import metadata
 
     try:
+        from packaging.markers import default_environment
         from packaging.requirements import Requirement
+        from packaging.utils import canonicalize_name
         from packaging.version import InvalidVersion, Version
     except ModuleNotFoundError:  # pragma: no cover - fallback when packaging isn't installed directly
+        from pip._vendor.packaging.markers import default_environment  # pylint: disable=import-error
         from pip._vendor.packaging.requirements import Requirement  # pylint: disable=import-error
+        from pip._vendor.packaging.utils import canonicalize_name  # pylint: disable=import-error
         from pip._vendor.packaging.version import InvalidVersion, Version  # pylint: disable=import-error
 
     class DistributionNotFound(Exception):
@@ -40,22 +44,37 @@ else:
             self.req = req
             super().__init__("{0} does not satisfy {1}".format(dist, req))
 
-    def _installed_version(distribution_name):
+    def _installed_distribution(distribution_name):
         for candidate in (
             distribution_name,
             distribution_name.replace("_", "-"),
             distribution_name.replace("-", "_"),
         ):
             try:
-                return metadata.version(candidate)
+                return metadata.distribution(candidate)
             except metadata.PackageNotFoundError:
                 continue
         raise DistributionNotFound(distribution_name)
 
-    def _require_fallback(requirement_spec):
+    def _installed_version(distribution_name):
+        return _installed_distribution(distribution_name).version
+
+    def _require_fallback(requirement_spec, marker_environment=None, visited=None):
         requirement = Requirement(requirement_spec)
-        if requirement.marker and not requirement.marker.evaluate():
+        marker_environment = dict(marker_environment or default_environment())
+        if requirement.marker and not requirement.marker.evaluate(marker_environment):
             return
+        visited = visited if visited is not None else set()
+        visited_key = (
+            canonicalize_name(requirement.name),
+            str(requirement.specifier),
+            tuple(sorted(requirement.extras)),
+            str(requirement.marker) if requirement.marker else None,
+            marker_environment.get("extra"),
+        )
+        if visited_key in visited:
+            return
+        visited.add(visited_key)
         installed_version = _installed_version(requirement.name)
         if requirement.specifier:
             try:
@@ -64,6 +83,17 @@ else:
                 raise VersionConflict(installed_version, requirement_spec)
             if parsed_version not in requirement.specifier:
                 raise VersionConflict(installed_version, requirement_spec)
+        if not requirement.extras:
+            return
+        distribution = _installed_distribution(requirement.name)
+        for extra in requirement.extras:
+            extra_environment = dict(marker_environment)
+            extra_environment["extra"] = extra
+            for child_spec in distribution.requires or []:
+                child_requirement = Requirement(child_spec)
+                if child_requirement.marker and not child_requirement.marker.evaluate(extra_environment):
+                    continue
+                _require_fallback(child_spec, extra_environment, visited)
 
     class _PkgResourcesShim:
         @staticmethod
