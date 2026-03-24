@@ -1,10 +1,22 @@
-from dragonfly import MappingRule, Function, Repeat, ShortIntegerRef
+from dragonfly import DictListRef, Function, MappingRule, Repeat, Repetition, ShortIntegerRef
 
 from castervoice.lib import utilities
 from castervoice.lib import virtual_desktops
 from castervoice.lib.actions import Key
 from castervoice.lib.ctrl.mgr.rule_details import RuleDetails
 from castervoice.lib.merge.state.short import R
+
+try:  # Try first loading from caster user directory
+    from navigation_rules.window_mgmt_rule_support import (  # pylint: disable=import-error
+        debug_window_switching, open_windows_dictlist, switch_window, timerinstance,
+    )
+except ImportError:
+    from castervoice.rules.core.navigation_rules.window_mgmt_rule_support import (
+        debug_window_switching,
+        open_windows_dictlist,
+        switch_window,
+        timerinstance,
+    )
 
 
 class WindowManagementRule(MappingRule):
@@ -17,6 +29,10 @@ class WindowManagementRule(MappingRule):
             R(Function(utilities.restore_window)),
         'window close':
             R(Function(utilities.close_window)),
+        "window switch <windows>":
+            R(Function(switch_window), rdescript=""),
+        "window switch show":
+            R(Function(debug_window_switching)),
 
         # Workspace management
         "show work [spaces]":
@@ -42,9 +58,11 @@ class WindowManagementRule(MappingRule):
 
     extras = [
         ShortIntegerRef("n", 1, 20, default=1),
+        Repetition(name="windows", min=1, max=5,
+                   child=DictListRef("window_by_keyword", open_windows_dictlist)),
     ]
 
-
 def get_rule():
+    timerinstance.set()
     details = RuleDetails(name="window management rule")
     return WindowManagementRule, details
