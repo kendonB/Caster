@@ -62,10 +62,7 @@ class WindowManagementRule(MappingRule):
                    child=DictListRef("window_by_keyword", open_windows_dictlist)),
     ]
 
-
-timerinstance.set()
-
-
 def get_rule():
+    timerinstance.set()
     details = RuleDetails(name="window management rule")
     return WindowManagementRule, details

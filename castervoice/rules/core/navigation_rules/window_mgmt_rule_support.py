@@ -68,8 +68,6 @@ def refresh_open_windows_dictlist():
             else:
                 window_options[word] = [window]
 
-    window_options = {k: v for k,
-                      v in six.iteritems(window_options) if v is not None}
     open_windows_dictlist.set(window_options)
 
 
@@ -145,5 +143,15 @@ class Timer:
             self.timer = get_engine().create_timer(refresh_open_windows_dictlist, 2)
             self.timer.start()
 
+    def stop(self):
+        if self.timer is not None:
+            self.timer.stop()
+            self.timer = None
 
+
+_previous_timerinstance = globals().get("timerinstance")
+if _previous_timerinstance is not None:
+    _previous_timer = getattr(_previous_timerinstance, "timer", None)
+    if _previous_timer is not None:
+        _previous_timer.stop()
 timerinstance = Timer()
