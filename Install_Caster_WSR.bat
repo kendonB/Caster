@@ -9,6 +9,7 @@ set "python_request=3.12"
 set "installer_requirements=%currentpath%requirements-windows-installer.txt"
 set "dragonfly_source_probe=%currentpath%castervoice\lib\kaldi_wheel.py"
 set "local_dragonfly_source_url="
+set "existing_python_version="
 
 echo Installation path: %currentpath%
 echo Installing Caster dependencies for WSR using the local uv virtualenv.
@@ -20,13 +21,29 @@ if errorlevel 1 (
     exit /b 1
 )
 
+if exist "%runtime_python%" (
+    set "python_version_file=%TEMP%\caster_python_version_%RANDOM%.txt"
+    "%runtime_python%" -c "import sys; print('{0}.{1}'.format(sys.version_info.major, sys.version_info.minor))" > "%python_version_file%"
+    if not errorlevel 1 set /p existing_python_version=<"%python_version_file%"
+    if exist "%python_version_file%" del /q "%python_version_file%" >nul 2>nul
+)
+
+if "%existing_python_version%"=="%python_request%" goto :venv_ready
+
 echo Creating or updating local virtualenv at %venv_dir% with uv-managed Python %python_request%...
 uv venv --allow-existing --managed-python --python "%python_request%" "%venv_dir%"
 if errorlevel 1 (
     echo ERROR: Unable to create the local .venv with uv-managed Python 3.12.
+    echo If .venv is already in use, close running Caster, HUD, settings, and Homunculus processes and retry.
     echo Run: uv python install 3.12
     exit /b 2
 )
+goto :venv_created
+
+:venv_ready
+echo Reusing existing local virtualenv at %venv_dir% with Python %existing_python_version%...
+
+:venv_created
 
 if not exist "%runtime_python%" (
     echo ERROR: Failed to resolve the Python interpreter in the local .venv.
