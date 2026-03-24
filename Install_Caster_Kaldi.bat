@@ -259,25 +259,25 @@ if "%py_bits%"=="32" goto :skip_qt_32
 goto :skip_qt_other
 
 :install_qt
-echo Installing Qt bindings for Kaldi UI features...
+echo Installing Qt bindings for Caster HUD/settings/HMC features...
 uv pip install --python "%runtime_python%" --only-binary=:all: "PySide6>=6.6"
 if errorlevel 1 goto :qt_install_failed
 goto :after_qt
 
 :qt_install_failed
-echo WARNING: Failed while installing PySide6 for Qt-based UI features.
-echo WARNING: Continuing install without Qt-based UI features.
+echo WARNING: Failed while installing PySide6 for Caster HUD/settings/HMC features.
+echo WARNING: Continuing install without those Qt-based UI features.
 cmd /c exit /b 0
 goto :after_qt
 
 :skip_qt_32
 echo NOTICE: Skipping Qt dependency for detected 32-bit Python.
-echo NOTICE: HUD and settings-window features that require Qt may be unavailable.
+echo NOTICE: HUD, settings-window, and HMC features that require Qt may be unavailable.
 goto :after_qt
 
 :skip_qt_other
 echo NOTICE: Skipping Qt dependency because Python bitness "%py_bits%" is not supported.
-echo NOTICE: HUD and settings-window features that require Qt may be unavailable.
+echo NOTICE: HUD, settings-window, and HMC features that require Qt may be unavailable.
 
 :after_qt
 
@@ -326,7 +326,7 @@ if "%kaldi_model_status%"=="installed" echo Kaldi model directory: %repo_root%\k
 if "%kaldi_model_status%"=="skipped" echo Kaldi model download skipped. Run Install_Caster_Kaldi.bat later if you want the guided model download.
 if "%kaldi_model_status%"=="failed" echo Kaldi model install failed. Download a model later or rerun Install_Caster_Kaldi.bat.
 if "%kaldi_model_status%"=="helper-missing" echo Kaldi model helper is unavailable. Download a model manually from the upstream releases page.
-if not "%qt_arch_supported%"=="1" echo NOTE: Qt-based UI features require a supported 64-bit Python architecture.
+if not "%qt_arch_supported%"=="1" echo NOTE: Caster HUD/settings/HMC features require a supported 64-bit Python architecture.
 if not "%kaldi_model_status%"=="installed" echo See Caster Kaldi install instructions on ReadTheDocs.
 echo Next step: run Run_Caster_Kaldi.bat
 pause 1
