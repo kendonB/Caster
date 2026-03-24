@@ -18,6 +18,7 @@ from castervoice.lib.ctrl.updatecheck import UpdateChecker
 from castervoice.asynch import hud_support
 
 printer.out("@ - Starting {} with `{}` Engine -\n".format(settings.SOFTWARE_NAME, get_engine().name))
+settings.report_user_dir()
 
 DependencyMan().initialize()  # requires nothing
 settings.initialize()

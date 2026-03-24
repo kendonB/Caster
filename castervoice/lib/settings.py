@@ -42,6 +42,7 @@ SYSTEM_INFORMATION = None
 WSR = False
 _BASE_PATH = None
 _USER_DIR = None
+_USER_DIR_REPORTED = False
 _SETTINGS_PATH = None
 
 
@@ -81,6 +82,23 @@ def _get_platform_information():
 
 def get_filename():
     return _SETTINGS_PATH
+
+
+def detected_user_dir():
+    configured_user_dir = os.getenv("CASTER_USER_DIR")
+    if configured_user_dir is not None:
+        return configured_user_dir
+    return user_data_dir(appname="caster", appauthor=False)
+
+
+def report_user_dir():
+    global _USER_DIR, _USER_DIR_REPORTED
+    if _USER_DIR is None:
+        _USER_DIR = detected_user_dir()
+    if not _USER_DIR_REPORTED:
+        printer.out("Caster User Directory: {}".format(_USER_DIR))
+        _USER_DIR_REPORTED = True
+    return _USER_DIR
 
 
 def runtime_hidden_console_binary():
@@ -493,10 +511,7 @@ def initialize():
     # calculate prerequisites
     SYSTEM_INFORMATION = _get_platform_information()
     _BASE_PATH = str(Path(__file__).resolve().parent.parent)
-    if os.getenv("CASTER_USER_DIR") is not None:
-        _USER_DIR = os.getenv("CASTER_USER_DIR")
-    else:
-        _USER_DIR = user_data_dir(appname="caster", appauthor=False)
+    _USER_DIR = detected_user_dir()
     _SETTINGS_PATH = str(Path(_USER_DIR).joinpath("settings/settings.toml"))
 
     # Kick everything off.
@@ -510,4 +525,4 @@ def initialize():
     if _debugger_path not in sys.path and os.path.isdir(_debugger_path):
         sys.path.append(_debugger_path)
 
-    printer.out("Caster User Directory: {}".format(_USER_DIR))
+    report_user_dir()
