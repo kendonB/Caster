@@ -16,7 +16,8 @@ except ImportError as pyside2_err:  # pragma: no cover
         raise ImportError(
             "Unable to import Qt bindings (PySide2/PySide6). "
             "Qt is required for HUD/settings/HMC UI features. "
-            "On Windows x64, install with: uv pip install --system --python 3.12 \"PySide6>=6.6\""
+            "On Windows x64, rerun the Caster installer or install with: "
+            "uv pip install --python .venv\\Scripts\\python.exe \"PySide6>=6.6\""
         ) from pyside6_err
 
 

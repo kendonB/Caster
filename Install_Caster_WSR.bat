@@ -2,11 +2,16 @@
 
 SetLocal DisableDelayedExpansion
 set "currentpath=%~dp0"
-set "wsr_python_metadata=%currentpath%castervoice\bin\data\wsr_python_path.txt"
-set "wsr_python_request=>=3.12"
+set "wsr_legacy_python_metadata=%currentpath%castervoice\bin\data\wsr_python_path.txt"
+set "venv_dir=%currentpath%.venv"
+set "runtime_python=%venv_dir%\Scripts\python.exe"
+set "python_request=3.12"
+set "installer_requirements=%currentpath%requirements-windows-installer.txt"
+set "dragonfly_source_probe=%currentpath%castervoice\lib\kaldi_wheel.py"
+set "local_dragonfly_source_url="
 
 echo Installation path: %currentpath%
-echo Installing Caster dependencies for WSR using uv and Python 3.12+.
+echo Installing Caster dependencies for WSR using the local uv virtualenv.
 
 where uv >nul 2>nul
 if errorlevel 1 (
@@ -15,40 +20,77 @@ if errorlevel 1 (
     exit /b 1
 )
 
-echo Validating Python 3.12+ availability through uv...
-uv run --python "%wsr_python_request%" -- python --version
+echo Creating or updating local virtualenv at %venv_dir% with uv-managed Python %python_request%...
+uv venv --allow-existing --managed-python --python "%python_request%" "%venv_dir%"
 if errorlevel 1 (
-    echo ERROR: Unable to use Python 3.12+ with uv.
-    echo Install Python 3.12+ or run: uv python install 3.12+
+    echo ERROR: Unable to create the local .venv with uv-managed Python 3.12.
+    echo Run: uv python install 3.12
     exit /b 2
 )
 
-for /f "usebackq delims=" %%i in (`uv run --python "%wsr_python_request%" -- python -c "import sys; print(sys.executable)"`) do set "wsr_python=%%i"
-if not defined wsr_python (
-    echo ERROR: Failed to resolve the Python interpreter path used for WSR.
+if not exist "%runtime_python%" (
+    echo ERROR: Failed to resolve the Python interpreter in the local .venv.
+    echo Expected: %runtime_python%
     exit /b 6
 )
-if exist "%wsr_python%" goto :wsr_python_ready
-echo ERROR: Resolved WSR Python interpreter does not exist: %wsr_python%
-exit /b 6
-
-:wsr_python_ready
 
 echo Upgrading pip for WSR interpreter...
-uv pip install --system --python "%wsr_python%" --upgrade pip
+uv pip install --python "%runtime_python%" --upgrade pip
 if errorlevel 1 (
     echo ERROR: Failed while upgrading pip for WSR interpreter.
     exit /b 3
 )
 
-echo Installing Caster dependencies for WSR...
-uv pip install --system --python "%wsr_python%" -r "%currentpath%requirements.txt"
-if errorlevel 1 (
-    echo ERROR: Failed while installing dependencies from requirements.txt.
+if not exist "%installer_requirements%" (
+    echo ERROR: Installer requirements file not found at %installer_requirements%.
     exit /b 4
 )
 
-for /f "usebackq delims=" %%i in (`uv run --python "%wsr_python%" -- python -c "import struct; print(8*struct.calcsize('P'))"`) do set "py_bits=%%i"
+echo Installing Caster dependencies for WSR...
+uv pip install --python "%runtime_python%" -r "%installer_requirements%"
+if errorlevel 1 (
+    echo ERROR: Failed while installing dependencies from %installer_requirements%.
+    exit /b 4
+)
+
+if not exist "%dragonfly_source_probe%" (
+    echo ERROR: Dragonfly source detection helper not found at %dragonfly_source_probe%.
+    exit /b 4
+)
+
+set "local_dragonfly_probe=%TEMP%\caster_local_dragonfly_%RANDOM%.txt"
+"%runtime_python%" "%dragonfly_source_probe%" --detect-local-source-dragonfly > "%local_dragonfly_probe%"
+if errorlevel 1 (
+    if exist "%local_dragonfly_probe%" del /q "%local_dragonfly_probe%" >nul 2>nul
+    echo ERROR: Failed while checking for a local dragonfly source install.
+    exit /b 4
+)
+for /f "usebackq tokens=1,* delims==" %%A in ("%local_dragonfly_probe%") do (
+    if /i "%%A"=="local_dragonfly_source_url" set "local_dragonfly_source_url=%%B"
+)
+if exist "%local_dragonfly_probe%" del /q "%local_dragonfly_probe%" >nul 2>nul
+
+if defined local_dragonfly_source_url (
+    echo WARNING: Local dragonfly source install detected in %venv_dir%.
+    echo WARNING: Leaving it unchanged instead of installing dragonfly2.
+) else (
+    echo Installing Dragonfly runtime dependency...
+    uv pip install --python "%runtime_python%" "dragonfly2>=0.34.0"
+    if errorlevel 1 (
+        echo ERROR: Failed while installing dragonfly2.
+        exit /b 4
+    )
+)
+
+set "py_bits_file=%TEMP%\caster_py_bits_%RANDOM%.txt"
+"%runtime_python%" -c "import struct; print(8*struct.calcsize('P'))" > "%py_bits_file%"
+if errorlevel 1 (
+    if exist "%py_bits_file%" del /q "%py_bits_file%" >nul 2>nul
+    echo ERROR: Failed to determine Python bitness for Qt dependency installation.
+    exit /b 7
+)
+set /p py_bits=<"%py_bits_file%"
+if exist "%py_bits_file%" del /q "%py_bits_file%" >nul 2>nul
 if not defined py_bits (
     echo ERROR: Failed to determine Python bitness for Qt dependency installation.
     exit /b 7
@@ -60,7 +102,7 @@ goto :skip_qt_other
 
 :install_qt
 echo Installing Qt bindings for WSR UI features...
-uv pip install --system --python "%wsr_python%" --only-binary=:all: "PySide6>=6.6"
+uv pip install --python "%runtime_python%" --only-binary=:all: "PySide6>=6.6"
 if errorlevel 1 goto :qt_install_failed
 goto :after_qt
 
@@ -81,30 +123,15 @@ echo NOTICE: HUD and settings-window features that require Qt may be unavailable
 
 :after_qt
 
-for %%d in ("%wsr_python_metadata%") do set "wsr_python_metadata_dir=%%~dpd"
-if exist "%wsr_python_metadata_dir%" goto :wsr_metadata_dir_ready
-mkdir "%wsr_python_metadata_dir%"
-if errorlevel 1 goto :wsr_metadata_dir_create_failed
-
-:wsr_metadata_dir_ready
-"%wsr_python%" -c "import os, pathlib; pathlib.Path(os.environ['wsr_python_metadata']).write_text(os.environ['wsr_python'] + '\n', encoding='utf-8')"
-if errorlevel 1 goto :wsr_metadata_write_failed
+if exist "%wsr_legacy_python_metadata%" del /q "%wsr_legacy_python_metadata%" >nul 2>nul
 goto :install_complete
-
-:wsr_metadata_dir_create_failed
-echo ERROR: Failed to create metadata directory: %wsr_python_metadata_dir%
-exit /b 6
-
-:wsr_metadata_write_failed
-echo ERROR: Failed to write WSR interpreter metadata: %wsr_python_metadata%
-exit /b 6
 
 :install_complete
 
 echo.
 echo WSR dependency installation completed successfully.
-echo WSR runtime interpreter: %wsr_python%
-echo WSR interpreter metadata: %wsr_python_metadata%
+echo WSR virtualenv: %venv_dir%
+echo WSR runtime interpreter: %runtime_python%
 echo NOTE: Qt-based UI features require a supported 64-bit Python architecture.
 echo Next step: run Run_Caster_WSR.bat
 pause 1

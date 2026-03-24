@@ -1,4 +1,5 @@
 from unittest import TestCase
+from unittest import mock
 
 from castervoice.lib.ctrl.mgr.engine_manager import EngineModesManager
 
@@ -9,7 +10,16 @@ class mockExclusiveManager():
 
 
 class TestEngineModesManager(TestCase):
-    _manager = EngineModesManager(mockExclusiveManager())
+    def setUp(self):
+        engine = mock.Mock()
+        engine.name = "text"
+        engine_patcher = mock.patch(
+            "castervoice.lib.ctrl.mgr.engine_manager.get_current_engine",
+            return_value=engine,
+        )
+        engine_patcher.start()
+        self.addCleanup(engine_patcher.stop)
+        self._manager = EngineModesManager(mockExclusiveManager())
 
     def test_set_engine_mode(self):
         self._manager.set_engine_mode(mode="numbers", state=True)

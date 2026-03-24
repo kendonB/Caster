@@ -6,113 +6,107 @@ Created on Oct 7, 2015
 import os
 import sys
 import time
+from importlib import metadata
+from importlib.metadata import PackageNotFoundError, version
 
 try:
-    import pkg_resources as _pkg_resources  # pylint: disable=import-error
-except ModuleNotFoundError:
-    _pkg_resources = None
+    from packaging.markers import default_environment
+    from packaging.requirements import Requirement
+    from packaging.utils import canonicalize_name
+    from packaging.version import InvalidVersion, Version
+except ModuleNotFoundError:  # pragma: no cover - fallback when packaging isn't installed directly
+    from pip._vendor.packaging.markers import default_environment  # pylint: disable=import-error
+    from pip._vendor.packaging.requirements import Requirement  # pylint: disable=import-error
+    from pip._vendor.packaging.utils import canonicalize_name  # pylint: disable=import-error
+    from pip._vendor.packaging.version import InvalidVersion, Version  # pylint: disable=import-error
 
-if _pkg_resources is not None and all(
-    hasattr(_pkg_resources, attr)
-    for attr in ("require", "DistributionNotFound", "VersionConflict")
-):
-    pkg_resources = _pkg_resources
-    DistributionNotFound = pkg_resources.DistributionNotFound
-    VersionConflict = pkg_resources.VersionConflict
-else:
-    from importlib import metadata
-
-    try:
-        from packaging.markers import default_environment
-        from packaging.requirements import Requirement
-        from packaging.utils import canonicalize_name
-        from packaging.version import InvalidVersion, Version
-    except ModuleNotFoundError:  # pragma: no cover - fallback when packaging isn't installed directly
-        from pip._vendor.packaging.markers import default_environment  # pylint: disable=import-error
-        from pip._vendor.packaging.requirements import Requirement  # pylint: disable=import-error
-        from pip._vendor.packaging.utils import canonicalize_name  # pylint: disable=import-error
-        from pip._vendor.packaging.version import InvalidVersion, Version  # pylint: disable=import-error
-
-    class DistributionNotFound(Exception):
-        """Raised when a required distribution is not installed."""
-
-    class VersionConflict(Exception):
-        """Raised when an installed distribution does not satisfy the requested version."""
-
-        def __init__(self, dist, req):
-            self.dist = dist
-            self.req = req
-            super().__init__("{0} does not satisfy {1}".format(dist, req))
-
-    def _installed_distribution(distribution_name):
-        for candidate in (
-            distribution_name,
-            distribution_name.replace("_", "-"),
-            distribution_name.replace("-", "_"),
-        ):
-            try:
-                return metadata.distribution(candidate)
-            except metadata.PackageNotFoundError:
-                continue
-        raise DistributionNotFound(distribution_name)
-
-    def _installed_version(distribution_name):
-        return _installed_distribution(distribution_name).version
-
-    def _require_fallback(requirement_spec, marker_environment=None, visited=None):
-        requirement = Requirement(requirement_spec)
-        marker_environment = dict(marker_environment or default_environment())
-        if requirement.marker and not requirement.marker.evaluate(marker_environment):
-            return
-        visited = visited if visited is not None else set()
-        visited_key = (
-            canonicalize_name(requirement.name),
-            str(requirement.specifier),
-            tuple(sorted(requirement.extras)),
-            str(requirement.marker) if requirement.marker else None,
-            marker_environment.get("extra"),
-        )
-        if visited_key in visited:
-            return
-        visited.add(visited_key)
-        installed_version = _installed_version(requirement.name)
-        if requirement.specifier:
-            try:
-                parsed_version = Version(installed_version)
-            except InvalidVersion:
-                raise VersionConflict(installed_version, requirement_spec)
-            if parsed_version not in requirement.specifier:
-                raise VersionConflict(installed_version, requirement_spec)
-        if not requirement.extras:
-            return
-        distribution = _installed_distribution(requirement.name)
-        for extra in requirement.extras:
-            extra_environment = dict(marker_environment)
-            extra_environment["extra"] = extra
-            for child_spec in distribution.requires or []:
-                child_requirement = Requirement(child_spec)
-                if child_requirement.marker and not child_requirement.marker.evaluate(extra_environment):
-                    continue
-                _require_fallback(child_spec, extra_environment, visited)
-
-    class _PkgResourcesShim:
-        @staticmethod
-        def require(requirement_spec):
-            _require_fallback(requirement_spec)
-
-    pkg_resources = _PkgResourcesShim()
 from castervoice.lib import printer
 
 DARWIN = sys.platform == "darwin"
 LINUX = sys.platform == "linux"
+DIST_ALIAS_MAP = {
+    "dragonfly2": ("dragonfly2", "dragonfly"),
+    "dragonfly": ("dragonfly", "dragonfly2"),
+}
+
+
+def _installed_distribution(distribution_name):
+    candidates = []
+    primary_names = DIST_ALIAS_MAP.get(canonicalize_name(distribution_name), (distribution_name,))
+    for primary_name in primary_names:
+        candidates.extend((
+            primary_name,
+            primary_name.replace("_", "-"),
+            primary_name.replace("-", "_"),
+            canonicalize_name(primary_name),
+        ))
+    seen = set()
+    for candidate in candidates:
+        if candidate in seen:
+            continue
+        seen.add(candidate)
+        try:
+            return metadata.distribution(candidate)
+        except PackageNotFoundError:
+            continue
+    raise PackageNotFoundError(distribution_name)
+
+
+def _requirement_is_installed(requirement_spec, marker_environment=None, visited=None):
+    requirement = Requirement(requirement_spec)
+    marker_environment = dict(marker_environment or default_environment())
+    if requirement.marker and not requirement.marker.evaluate(marker_environment):
+        return True
+
+    visited = visited if visited is not None else set()
+    visited_key = (
+        canonicalize_name(requirement.name),
+        str(requirement.specifier),
+        tuple(sorted(requirement.extras)),
+        str(requirement.marker) if requirement.marker else None,
+        marker_environment.get("extra"),
+    )
+    if visited_key in visited:
+        return True
+    visited.add(visited_key)
+
+    try:
+        distribution = _installed_distribution(requirement.name)
+    except PackageNotFoundError:
+        return False
+
+    if requirement.specifier:
+        try:
+            installed_version = Version(distribution.version)
+        except InvalidVersion:
+            return False
+        if installed_version not in requirement.specifier:
+            return False
+
+    for child_spec in distribution.requires or []:
+        if not _requirement_is_installed(child_spec, marker_environment, visited):
+            return False
+
+    for extra in requirement.extras:
+        extra_environment = dict(marker_environment)
+        extra_environment["extra"] = extra
+        for child_spec in distribution.requires or []:
+            if not _requirement_is_installed(child_spec, extra_environment, visited):
+                return False
+
+    return True
+
+
+def _install_hint(requirement_spec):
+    requirement = Requirement(requirement_spec)
+    extras = "[{0}]".format(",".join(sorted(requirement.extras))) if requirement.extras else ""
+    return "{0}{1}{2}".format(requirement.name, extras, requirement.specifier)
 
 def install_type():
     # Checks if Caster install is Classic or PIP.
     try:
-        pkg_resources.require("castervoice")
-    except VersionConflict:
-        pass
-    except DistributionNotFound:
+        version("castervoice")
+    except PackageNotFoundError:
         return "classic"
     return "pip"
 
@@ -136,13 +130,8 @@ def dep_missing():
         dep = dep.strip()
         if not dep or dep.startswith("#"):
             continue
-        try:
-            pkg_resources.require(dep)
-        except VersionConflict:
-            pass
-        except DistributionNotFound:
-            # Keep markers for evaluation, but exclude them in pip install guidance.
-            missing_list.append(dep.split(";", 1)[0].strip())
+        if not _requirement_is_installed(dep):
+            missing_list.append(_install_hint(dep))
     if missing_list:
         # Quote each requirement to avoid shell redirection parsing in version specifiers (for example >=).
         pippackages = " ".join(['"{0}"'.format(dep) for dep in missing_list])
@@ -160,18 +149,20 @@ def dep_min_version():
     for dep in listdependency:
         package = dep[0]
         operator = dep[1]
-        version = dep[2]
+        req_version = dep[2]
         issue_url = dep[3]
         try:
-            pkg_resources.require('{0} {1} {2}'.format(package, operator, version))
-        except VersionConflict as e:
-            if operator == ">=":
+            installed = Version(_installed_distribution(package).version)
+            required = Version(req_version)
+            if operator == ">=" and installed < required:
                 if issue_url is not None:
-                    printer.out("\nCaster: Requires {0} v{1} or greater.\nIssue reference: {2}".format(package, version, issue_url))
+                    printer.out("\nCaster: Requires {0} v{1} or greater.\nIssue reference: {2}".format(package, req_version, issue_url))
                 printer.out("Update with: 'python -m pip install {} --upgrade' \n".format(package))
-            if operator == "==":
+            elif operator == "==" and installed != required:
                 printer.out("\nCaster: Requires an exact version of {0}.\nIssue reference: {1}".format(package, issue_url))
-                print("Install with: 'python -m pip install {}' \n".format(e.req))
+                printer.out("Install with: 'python -m pip install {0}=={1}' \n".format(package, req_version))
+        except PackageNotFoundError:
+            pass
 
 
 class DependencyMan:

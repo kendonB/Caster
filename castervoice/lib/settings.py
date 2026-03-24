@@ -45,23 +45,33 @@ _USER_DIR = None
 _SETTINGS_PATH = None
 
 
+def _hidden_console_binary_for(executable):
+    executable_path = Path(executable)
+    if sys.platform != "win32":
+        return str(executable_path)
+    if executable_path.name.lower() == "pythonw.exe":
+        return str(executable_path)
+    hidden_console_binary = executable_path.with_name("pythonw.exe")
+    if hidden_console_binary.is_file():
+        return str(hidden_console_binary)
+    return str(executable_path)
+
+
 def _get_platform_information():
     """Return a dictionary containing platform-specific information."""
     import sysconfig
     system_information = {"platform": sysconfig.get_platform()}
     system_information.update({"python version": sys.version_info})
     binary_path = str(Path(sys.exec_prefix).joinpath(sys.exec_prefix).joinpath("bin"))
-    hidden_console_binary = str(Path(sys.executable))
     main_binary = str(Path(sys.executable))
     if sys.platform == "win32":
         if sys.prefix == sys.base_prefix:
             main_binary = str(Path(sys.exec_prefix).joinpath("python.exe"))
-            hidden_console_binary = str(Path(sys.exec_prefix).joinpath("pythonw.exe"))
         else:
             # Virtual environment detected
             # TODO: MacOS and Linux?
             main_binary = str(Path(sys.prefix) / "Scripts" / "python.exe")
-            hidden_console_binary = str(Path(sys.prefix) / "Scripts" / "pythonw.exe")
+    hidden_console_binary = _hidden_console_binary_for(main_binary)
     system_information.update({"binary path": binary_path})
     system_information.update({"main binary": main_binary})
     system_information.update({"hidden console binary": hidden_console_binary})
@@ -71,6 +81,18 @@ def _get_platform_information():
 
 def get_filename():
     return _SETTINGS_PATH
+
+
+def runtime_hidden_console_binary():
+    runtime_binary = ""
+    if SYSTEM_INFORMATION is not None:
+        runtime_binary = SYSTEM_INFORMATION.get("hidden console binary", "")
+    if runtime_binary and os.path.isfile(runtime_binary):
+        return runtime_binary
+    configured_binary = settings(["paths", "PYTHONW"], "")
+    if configured_binary and os.path.isfile(configured_binary):
+        return configured_binary
+    return _hidden_console_binary_for(sys.executable)
 
 
 def _validate_engine_path():
