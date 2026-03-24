@@ -10,6 +10,7 @@ from unittest.mock import patch
 from castervoice.lib.kaldi_model import MODEL_DIR_NAME
 from castervoice.lib.kaldi_model import MODEL_METADATA_NAME
 from castervoice.lib.kaldi_model import USER_LEXICON_NAME
+from castervoice.lib.kaldi_model import download_to_path
 from castervoice.lib.kaldi_model import install_model_archive
 from castervoice.lib.kaldi_model import parse_models_markdown
 from castervoice.lib.kaldi_model import select_latest_models_by_tier
@@ -17,8 +18,9 @@ from castervoice.lib.kaldi_model import select_latest_models_by_tier
 
 class _FakeResponse:
 
-    def __init__(self, payload):
+    def __init__(self, payload, headers=None):
         self._buffer = io.BytesIO(payload)
+        self.headers = headers or {}
 
     def __enter__(self):
         return self
@@ -106,3 +108,43 @@ class TestKaldiModel(unittest.TestCase):
                 tmp_user_root.rmdir()
             except OSError:
                 pass
+
+    def test_download_to_path_emits_progress_bar_when_content_length_is_known(self):
+        destination = Path("tmp_kaldi_model_progress.bin")
+        progress_output = io.StringIO()
+        payload = b"x" * 32
+
+        try:
+            download_to_path(
+                "https://example.invalid/kaldi_model.zip",
+                destination,
+                urlopen_fn=lambda request, timeout=60: _FakeResponse(payload, headers={"Content-Length": str(len(payload))}),
+                progress_stream=progress_output,
+            )
+            self.assertEqual(payload, destination.read_bytes())
+            self.assertIn("[", progress_output.getvalue())
+            self.assertIn("100%", progress_output.getvalue())
+            self.assertIn("32 B/32 B", progress_output.getvalue())
+            self.assertTrue(progress_output.getvalue().endswith("\n"))
+        finally:
+            if destination.exists():
+                destination.unlink()
+
+    def test_download_to_path_emits_downloaded_bytes_when_content_length_is_unknown(self):
+        destination = Path("tmp_kaldi_model_progress_unknown.bin")
+        progress_output = io.StringIO()
+        payload = b"x" * (2 * 1024 * 1024)
+
+        try:
+            download_to_path(
+                "https://example.invalid/kaldi_model.zip",
+                destination,
+                urlopen_fn=lambda request, timeout=60: _FakeResponse(payload),
+                progress_stream=progress_output,
+            )
+            self.assertEqual(payload, destination.read_bytes())
+            self.assertIn("Downloaded 2.0 MB", progress_output.getvalue())
+            self.assertTrue(progress_output.getvalue().endswith("\n"))
+        finally:
+            if destination.exists():
+                destination.unlink()

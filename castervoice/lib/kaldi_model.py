@@ -15,6 +15,8 @@ MODELS_MD_URL = "https://raw.githubusercontent.com/daanzu/kaldi-active-grammar/m
 MODEL_DIR_NAME = "kaldi_model"
 MODEL_METADATA_NAME = ".caster-model.json"
 USER_LEXICON_NAME = "user_lexicon.txt"
+DOWNLOAD_CHUNK_SIZE = 1024 * 1024
+PROGRESS_BAR_WIDTH = 30
 
 TIER_LABELS = {
     "medium": "Balanced (Recommended)",
@@ -25,6 +27,54 @@ TIER_LABELS = {
 
 class ModelResolutionError(RuntimeError):
     pass
+
+
+def format_byte_count(byte_count):
+    units = ("B", "KB", "MB", "GB", "TB")
+    size = float(byte_count)
+    for unit in units:
+        if unit == "B":
+            if size < 1024:
+                return "{0:.0f} {1}".format(size, unit)
+        else:
+            if size < 1024 or unit == units[-1]:
+                return "{0:.1f} {1}".format(size, unit)
+        size /= 1024.0
+    return "{0:.1f} TB".format(size)
+
+
+def response_content_length(response):
+    headers = getattr(response, "headers", None)
+    if headers is None:
+        return None
+    content_length = headers.get("Content-Length")
+    if not content_length:
+        return None
+    try:
+        return int(content_length)
+    except (TypeError, ValueError):
+        return None
+
+
+def emit_download_progress(downloaded_bytes, total_bytes, output_stream):
+    if output_stream is None:
+        return
+
+    if total_bytes:
+        progress = min(downloaded_bytes / float(total_bytes), 1.0)
+        filled = int(PROGRESS_BAR_WIDTH * progress)
+        bar = "#" * filled + "-" * (PROGRESS_BAR_WIDTH - filled)
+        line = "\r[{0}] {1:3.0f}% {2}/{3}".format(
+            bar,
+            progress * 100.0,
+            format_byte_count(downloaded_bytes),
+            format_byte_count(total_bytes),
+        )
+    else:
+        line = "\rDownloaded {0}".format(format_byte_count(downloaded_bytes))
+
+    output_stream.write(line)
+    output_stream.flush()
 
 
 def fetch_models_markdown(models_url=MODELS_MD_URL, urlopen_fn=urlopen):
@@ -107,7 +157,7 @@ def prompt_for_choice(model_options, input_fn=input, output_fn=print):
         output_fn("Please choose medium, small, big, or none.")
 
 
-def download_to_path(url, destination, urlopen_fn=urlopen):
+def download_to_path(url, destination, urlopen_fn=urlopen, progress_stream=None):
     request = Request(
         url,
         headers={
@@ -115,11 +165,19 @@ def download_to_path(url, destination, urlopen_fn=urlopen):
         },
     )
     with urlopen_fn(request, timeout=60) as response, destination.open("wb") as output_file:
+        total_bytes = response_content_length(response)
+        downloaded_bytes = 0
+        emit_download_progress(downloaded_bytes, total_bytes, progress_stream)
         while True:
-            chunk = response.read(1024 * 1024)
+            chunk = response.read(DOWNLOAD_CHUNK_SIZE)
             if not chunk:
                 break
             output_file.write(chunk)
+            downloaded_bytes += len(chunk)
+            emit_download_progress(downloaded_bytes, total_bytes, progress_stream)
+        if progress_stream is not None:
+            progress_stream.write("\n")
+            progress_stream.flush()
 
 
 def find_model_directory(extract_root):
@@ -151,7 +209,7 @@ def write_model_metadata(target_dir, model):
     metadata_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
 
 
-def install_model_archive(model, repo_root, urlopen_fn=urlopen, temp_dir_parent=None):
+def install_model_archive(model, repo_root, urlopen_fn=urlopen, temp_dir_parent=None, progress_stream=None):
     repo_root = Path(repo_root)
     target_dir = repo_root / MODEL_DIR_NAME
     existing_lexicon = None
@@ -165,7 +223,7 @@ def install_model_archive(model, repo_root, urlopen_fn=urlopen, temp_dir_parent=
         extract_root = temp_dir / "extract"
         extract_root.mkdir()
 
-        download_to_path(model["url"], archive_path, urlopen_fn=urlopen_fn)
+        download_to_path(model["url"], archive_path, urlopen_fn=urlopen_fn, progress_stream=progress_stream)
         with zipfile.ZipFile(archive_path) as archive:
             archive.extractall(extract_root)
 
@@ -220,7 +278,7 @@ def main(argv=None):
 
         model = model_options[choice]
         print("Downloading {0}: {1} ({2})".format(TIER_LABELS.get(choice, choice), model["name"], model["size"]))
-        target_dir = install_model_archive(model, args.repo_root)
+        target_dir = install_model_archive(model, args.repo_root, progress_stream=sys.stdout)
         print("Installed Kaldi model to {0}".format(target_dir))
         return 0
     except Exception as exc:
