@@ -5,12 +5,17 @@ SetLocal DisableDelayedExpansion
 set "currentpath=%~dp0"
 set "runtime_python=%currentpath%.venv\Scripts\python.exe"
 set "nltk_data_dir=%currentpath%.venv\nltk_data"
+set "user_dir_probe_file=%TEMP%\caster-user-dir-%RANDOM%%RANDOM%.txt"
 
 TITLE Caster: Status Window
 if not exist "%runtime_python%" goto :missing_runtime_python
 
 set "caster_user_dir="
-for /f "usebackq delims=" %%I in (`"%runtime_python%" -c "from castervoice.lib.settings import detected_user_dir; print(detected_user_dir())" 2^>nul`) do if not defined caster_user_dir set "caster_user_dir=%%I"
+"%runtime_python%" -c "from castervoice.lib.settings import detected_user_dir; print(detected_user_dir())" > "%user_dir_probe_file%" 2>nul
+if exist "%user_dir_probe_file%" (
+    set /p "caster_user_dir="<"%user_dir_probe_file%"
+    del "%user_dir_probe_file%" >nul 2>nul
+)
 
 echo Using Kaldi interpreter: %runtime_python%
 if defined caster_user_dir echo Detected Caster user directory: %caster_user_dir%
