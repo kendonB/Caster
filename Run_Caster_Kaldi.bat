@@ -9,7 +9,11 @@ set "nltk_data_dir=%currentpath%.venv\nltk_data"
 TITLE Caster: Status Window
 if not exist "%runtime_python%" goto :missing_runtime_python
 
+set "caster_user_dir="
+for /f "usebackq delims=" %%I in (`"%runtime_python%" -c "from castervoice.lib.settings import detected_user_dir; print(detected_user_dir())" 2^>nul`) do if not defined caster_user_dir set "caster_user_dir=%%I"
+
 echo Using Kaldi interpreter: %runtime_python%
+if defined caster_user_dir echo Detected Caster user directory: %caster_user_dir%
 if exist "%nltk_data_dir%" (
     set "NLTK_DATA=%nltk_data_dir%"
     echo Using Kaldi pronunciation data: %nltk_data_dir%
