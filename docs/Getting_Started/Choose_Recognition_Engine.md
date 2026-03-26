@@ -75,9 +75,6 @@ Disadvantages
 - Free
 
 - Simple to set up with the least dependencies
-- WSR setup uses `Install_Caster_WSR.bat` from the project root. See [Windows Speech Recognition install](../Installation/Windows/Windows_Speech_Recognition.md).
-- `Install_Caster_WSR.bat` creates or updates the repo-local `.venv` with uv-managed CPython `3.12`, and `Run_Caster_WSR.bat` always launches with `.venv\Scripts\python.exe`.
-- For Qt-based UI features (HUD/settings), use the installer-created uv-managed Windows x64 `.venv`.
 
 - Preinstalled on all supported Windows OS
 
