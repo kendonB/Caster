@@ -21,6 +21,8 @@ After installing Dragon, you can configure the DNS settings based on your prefer
 1. Download Caster from the [master branch](https://github.com/dictation-toolbox/Caster/archive/master.zip).
 2. Extract the files. You can put it anywhere but it is common to use `%USERPROFILE%\Documents\Caster-master`. The `Caster-master` could be renamed to `Caster`.
 3. Install dependencies and set up Natlink by running `Caster-master/Install_Caster_DNS-WSR.bat`.
+   - If you are using Windows Speech Recognition (WSR) instead of DNS/Natlink, use `Install_Caster_WSR.bat` and follow the [WSR install guide](./Windows_Speech_Recognition.md).
+   - DNS/Natlink installation flow is unchanged in this release.
 4. *Optional Step* for Caster's`Legion` MouseGrid - Legion Feature available on Windows 10 and above
     - The Legion MouseGrid requires [Microsoft Visual C++ Redistributable Packages for Visual Studio 2015, 2017 and 2019 (x86).](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist) 
 

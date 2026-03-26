@@ -15,6 +15,7 @@ include castervoice/asynch/sikuli/server/xmlrpc_server.sikuli/xmlrpc_server.html
 include castervoice/asynch/sikuli/server/xmlrpc_server.sikuli/xmlrpc_server.py
 include castervoice/lib/github_automation.ahk
 include requirements.txt
+include requirements-windows-installer.txt
 include requirements-dev.txt
 include requirements-mac-linux.txt
 include post_setup.py

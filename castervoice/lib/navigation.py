@@ -73,25 +73,25 @@ class Grid:
             ls.scan(bbox, rough)
             tscan = ls.get_update()
             args = [
-                settings.settings(["paths", "PYTHONW"]),
+                settings.runtime_hidden_console_binary(),
                 settings.settings(["paths", "LEGION_PATH"]), "-t", tscan[0], "-m",
                 str(monitor)
             ]
         elif mode == "rainbow":
             args = [
-                settings.settings(["paths", "PYTHONW"]),
+                settings.runtime_hidden_console_binary(),
                 settings.settings(["paths", "RAINBOW_PATH"]), "-g", "r", "-m",
                 str(monitor)
             ]
         elif mode == "douglas":
             args = [
-                settings.settings(["paths", "PYTHONW"]),
+                settings.runtime_hidden_console_binary(),
                 settings.settings(["paths", "DOUGLAS_PATH"]), "-g", "d", "-m",
                 str(monitor)
             ]
         elif mode == "sudoku":
             args = [
-                settings.settings(["paths", "PYTHONW"]),
+                settings.runtime_hidden_console_binary(),
                 settings.settings(["paths", "SUDOKU_PATH"]), "-g", "s", "-m",
                 str(monitor)
             ]

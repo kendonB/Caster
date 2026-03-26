@@ -1,9 +1,36 @@
 @echo off
-echo Running Kaldi from Dragonfly CLI
+echo Running Kaldi from Dragonfly CLI.
 
-set currentpath=%~dp0
+SetLocal DisableDelayedExpansion
+set "currentpath=%~dp0"
+set "runtime_python=%currentpath%.venv\Scripts\python.exe"
+set "nltk_data_dir=%currentpath%.venv\nltk_data"
+set "user_dir_probe_file=%TEMP%\caster-user-dir-%RANDOM%%RANDOM%.txt"
 
 TITLE Caster: Status Window
-py -m dragonfly load _*.py --engine kaldi --no-recobs-messages --engine-options "model_dir=kaldi_model, vad_padding_end_ms=300"
+if not exist "%runtime_python%" goto :missing_runtime_python
 
+set "caster_user_dir=%CASTER_USER_DIR%"
+if not defined caster_user_dir (
+    "%runtime_python%" -c "from appdirs import user_data_dir; print(user_data_dir(appname='caster', appauthor=False))" > "%user_dir_probe_file%" 2>nul
+    if exist "%user_dir_probe_file%" (
+        set /p "caster_user_dir="<"%user_dir_probe_file%"
+        del "%user_dir_probe_file%" >nul 2>nul
+    )
+)
+
+echo Using Kaldi interpreter: %runtime_python%
+if defined caster_user_dir echo Detected Caster user directory: %caster_user_dir%
+if exist "%nltk_data_dir%" (
+    set "NLTK_DATA=%nltk_data_dir%"
+    echo Using Kaldi pronunciation data: %nltk_data_dir%
+)
+"%runtime_python%" -m dragonfly load _*.py --engine kaldi --no-recobs-messages --engine-options "model_dir=kaldi_model, vad_padding_end_ms=300"
+goto :after_run
+
+:missing_runtime_python
+echo ERROR: Local Caster virtualenv is missing: %runtime_python%
+echo Run Install_Caster_Kaldi.bat first to create .venv and install dependencies.
+
+:after_run
 pause 1

@@ -4,6 +4,10 @@ Created on Jun 29, 2014
 '''
 import logging
 import importlib
+from castervoice.lib.inspect_compat import ensure_getargspec
+
+ensure_getargspec()
+
 from dragonfly import get_engine, get_current_engine
 from castervoice.lib import control
 from castervoice.lib import settings
@@ -14,6 +18,7 @@ from castervoice.lib.ctrl.updatecheck import UpdateChecker
 from castervoice.asynch import hud_support
 
 printer.out("@ - Starting {} with `{}` Engine -\n".format(settings.SOFTWARE_NAME, get_engine().name))
+settings.report_user_dir()
 
 DependencyMan().initialize()  # requires nothing
 settings.initialize()
