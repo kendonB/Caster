@@ -4,7 +4,6 @@ Created on Jun 29, 2014
 '''
 import logging
 import importlib
-
 from dragonfly import get_engine, get_current_engine
 from castervoice.lib import control
 from castervoice.lib import settings
