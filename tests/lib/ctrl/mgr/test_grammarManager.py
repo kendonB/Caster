@@ -1,3 +1,5 @@
+import logging
+
 from mock import Mock
 
 from castervoice.lib.ctrl.mgr.loading.load.initial_content import FullContentSet
@@ -44,6 +46,12 @@ class TestGrammarManager(SettingsEnabledTestCase):
         [self._hooks_runner.add_hook(h) for h in content.hooks]
         self._gm.load_activation_grammars()
         self._gm.initialize()
+
+    def _engine_loading_message(self, grammar_name):
+        from castervoice.lib.ctrl.mgr.grammar_manager import GrammarManager
+        record = logging.LogRecord("engine", logging.INFO, "", 0, "Loading grammar {}".format(grammar_name), (), None)
+        GrammarManager._GRAMMAR_LOAD_LOG_FILTER.filter(record)
+        return record.msg
 
     def setUp(self):
         settings_mocking.prevent_initialize()
@@ -149,6 +157,19 @@ class TestGrammarManager(SettingsEnabledTestCase):
         self._initialize(FullContentSet([one_rule], [], []))
         self.assertEqual(2, len(self._gm._grammars_container.non_ccr.keys()))
         self.assertEqual(1, len(self._gm._grammars_container.ccr))
+        grammar_name = self._gm._grammars_container.ccr[0].name
+        self.assertEqual("Loading grammar {}: Currently Alphabet".format(grammar_name),
+                         self._engine_loading_message(grammar_name))
+
+    def test_initialize_one_non_ccr_rule_logs_readable_engine_message(self):
+        from castervoice.rules.apps.microsoft_office import outlook
+        self._setup_rules_config_file(loadable_true=["OutlookRule"], enabled=["OutlookRule"])
+        one_rule = outlook.get_rule()
+        self._initialize(FullContentSet([one_rule], [], []))
+
+        grammar_name = self._gm._grammars_container.non_ccr["OutlookRule"].name
+        self.assertEqual("Loading grammar {}: OutlookRule (outlook)".format(grammar_name),
+                         self._engine_loading_message(grammar_name))
 
     def test_initialize_two_compatible_global_mergerules(self):
         from castervoice.rules.core.alphabet_rules import alphabet

@@ -1,4 +1,6 @@
+import logging
 import os
+import re
 import traceback
 
 from dragonfly import Grammar
@@ -19,6 +21,9 @@ from castervoice.lib.util.ordered_set import OrderedSet
 
 
 class GrammarManager(object):
+    _ENGINE_LOGGER = logging.getLogger("engine")
+    _GRAMMAR_DISPLAY_NAMES = {}
+    _GRAMMAR_LOAD_LOG_FILTER = None
 
     def __init__(self, config,
                  merger,
@@ -70,6 +75,9 @@ class GrammarManager(object):
         self._transformers_runner = t_runner
         self._companion_config = companion_config
         self._combo_validator = combo_validator
+        if GrammarManager._GRAMMAR_LOAD_LOG_FILTER is None:
+            GrammarManager._GRAMMAR_LOAD_LOG_FILTER = _GrammarLoadMessageFilter()
+            GrammarManager._ENGINE_LOGGER.addFilter(GrammarManager._GRAMMAR_LOAD_LOG_FILTER)
 
         # rules: (class name : ManagedRule}
         self._managed_rules = {}
@@ -253,11 +261,10 @@ class GrammarManager(object):
         sorter = ConfigBasedRuleSetSorter(enabled_rcns)
         merge_result = self._merger.merge_rules(active_ccr_mrs, sorter)
         grammars = []
-        for rule_and_context in merge_result.ccr_rules_and_contexts:
-            rule = rule_and_context[0]
-            context = rule_and_context[1]
-            grammar = Grammar(name="ccr-" + GrammarManager._get_next_id(), context=context)
-            grammar.add_rule(rule)
+        for rule_load_spec in merge_result.ccr_rules_and_contexts:
+            grammar = Grammar(name="ccr-" + GrammarManager._get_next_id(), context=rule_load_spec.context)
+            GrammarManager._register_grammar_display_name(grammar.name, "Currently {}".format(rule_load_spec.display_name))
+            grammar.add_rule(rule_load_spec.rule)
             grammars.append(grammar)
         self._grammars_container.set_ccr(grammars)
         for grammar in grammars:
@@ -274,6 +281,8 @@ class GrammarManager(object):
         rcn = managed_rule.get_rule_class_name()
         if enabled:
             grammar = self._mapping_rule_maker.create_non_ccr_grammar(managed_rule)
+            GrammarManager._register_grammar_display_name(grammar.name,
+                                                          GrammarManager._build_grammar_display_name(managed_rule))
             self._grammars_container.set_non_ccr(rcn, grammar)
             grammar.load()
             return RulesEnabledDiff([rcn], frozenset())
@@ -392,3 +401,38 @@ class GrammarManager(object):
             GrammarManager._get_next_id.id = 0
         GrammarManager._get_next_id.id += 1
         return str(GrammarManager._get_next_id.id)
+
+    @classmethod
+    def _register_grammar_display_name(cls, grammar_name, display_name):
+        cls._GRAMMAR_DISPLAY_NAMES[grammar_name] = display_name
+
+    @classmethod
+    def _augment_engine_loading_message(cls, message):
+        match = _GrammarLoadMessageFilter.GRAMMAR_LOAD_PATTERN.search(message)
+        if match is None:
+            return message
+        grammar_name = match.group("grammar_name")
+        display_name = cls._GRAMMAR_DISPLAY_NAMES.get(grammar_name)
+        if display_name is None:
+            return message
+        return "{}{}: {}{}".format(message[:match.start("grammar_name")],
+                                   grammar_name,
+                                   display_name,
+                                   match.group("suffix"))
+
+    @staticmethod
+    def _build_grammar_display_name(managed_rule):
+        class_name = managed_rule.get_rule_class_name()
+        spoken_name = managed_rule.get_details().name
+        if spoken_name is not None and spoken_name != class_name:
+            return "{} ({})".format(class_name, spoken_name)
+        return class_name
+
+
+class _GrammarLoadMessageFilter(logging.Filter):
+    GRAMMAR_LOAD_PATTERN = re.compile(r"(?P<prefix>.*\b[Ll]oading grammar )(?P<grammar_name>\S+)(?P<suffix>\.?)$")
+
+    def filter(self, record):
+        record.msg = GrammarManager._augment_engine_loading_message(record.getMessage())
+        record.args = ()
+        return True
