@@ -64,6 +64,7 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         context = result.ccr_rules_and_contexts[0][1]
         self.assertEqual("RepeatRule", repeat_rule.__class__.__name__)
         self.assertIsInstance(context, FuncContext)
+        self.assertEqual("Navigation", result.ccr_rules_and_contexts[0].display_name)
 
     def test_merge_two(self):
         """
@@ -93,6 +94,7 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         rule = self._extract_merged_rule_from_repeatrule(result.ccr_rules_and_contexts)
         self.assertIn("two exclusive", rule._mapping)
         self.assertNotIn("one exclusive", rule._mapping)
+        self.assertEqual("FakeRuleTwo", result.ccr_rules_and_contexts[0].display_name)
 
     def test_merge_one_context_one_no_context(self):
         """
@@ -151,6 +153,9 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         self.assertIsInstance(context_1, FuncContext)
         self.assertIsInstance(context_2, AppContext)
         self.assertIsInstance(context_3, AppContext)
+        self.assertEqual("Alphabet", result.ccr_rules_and_contexts[0].display_name)
+        self.assertEqual("Alphabet, EclipseCCR", result.ccr_rules_and_contexts[1].display_name)
+        self.assertEqual("Alphabet, VSCodeCcrRule", result.ccr_rules_and_contexts[2].display_name)
 
         self._evaluate_context_in_every_permutation([context_1, context_2, context_3],
             [True,False,False],

@@ -6,7 +6,7 @@ from dragonfly import FuncContext
 from castervoice.lib.const import CCRType
 from castervoice.lib.context import AppContext
 from castervoice.lib.ctrl.mgr.rules_enabled_diff import RulesEnabledDiff
-from castervoice.lib.merge.ccrmerging2.merge_result import MergeResult
+from castervoice.lib.merge.ccrmerging2.merge_result import MergeResult, CCRRuleLoadSpec
 
 
 class CCRMerger2(object):
@@ -56,12 +56,15 @@ class CCRMerger2(object):
         compat_results = self._compatibility_checker.compatibility_check(sorted_rules)
         # 4: create one merged rule for each context, plus the no-contexts merged rule
         app_crs, non_app_crs = self._separate_app_rules(compat_results, rcns_to_details)
-        merged_rules = self._create_merged_rules(app_crs, non_app_crs)
+        merged_rule_specs = self._create_merged_rule_specs(app_crs, non_app_crs)
         # 5: turn the merged rules into repeat rules
-        repeat_rules = [self._create_repeat_rule(merged_rule) for merged_rule in merged_rules]
         contexts = CCRMerger2._create_contexts(app_crs, rcns_to_details)
-
-        rules_and_contexts = list(zip(repeat_rules, contexts))
+        rules_and_contexts = [
+            CCRRuleLoadSpec(rule=self._create_repeat_rule(rule_spec["rule"]),
+                            context=context,
+                            display_name=rule_spec["display_name"])
+            for rule_spec, context in zip(merged_rule_specs, contexts)
+        ]
         enabled_ordered_rcns = [cr.rule_class_name() for cr in compat_results]
         diff = CCRMerger2._calculate_post_merge_diff(pre_merge_rcns, enabled_ordered_rcns)
         return MergeResult(rules_and_contexts, enabled_ordered_rcns, diff)
@@ -124,16 +127,28 @@ class CCRMerger2(object):
                 non_app_crs.append(cr)
         return app_crs, non_app_crs
 
-    def _create_merged_rules(self, app_crs, non_app_crs):
+    def _create_merged_rule_specs(self, app_crs, non_app_crs):
         merged_rules = []
-        merged_non_app_crs_rule = self._merging_strategy.merge_into_single(non_app_crs)
+        selected_non_app_crs = self._merging_strategy.select_rules_to_merge(non_app_crs)
+        merged_non_app_crs_rule = self._merging_strategy.merge_selected_rules(selected_non_app_crs)
         if merged_non_app_crs_rule is not None:
-            merged_rules.append(merged_non_app_crs_rule)
+            merged_rules.append({
+                "rule": merged_non_app_crs_rule,
+                "display_name": self._build_display_name(selected_non_app_crs)
+            })
         for app_cr in app_crs:
             with_one_app = list(non_app_crs)
             with_one_app.append(app_cr)
-            merged_rules.append(self._merging_strategy.merge_into_single(with_one_app))
+            selected_rules = self._merging_strategy.select_rules_to_merge(with_one_app)
+            merged_rules.append({
+                "rule": self._merging_strategy.merge_selected_rules(selected_rules),
+                "display_name": self._build_display_name(selected_rules)
+            })
         return merged_rules
+
+    @staticmethod
+    def _build_display_name(compat_results):
+        return ", ".join([compat_result.rule_class_name() for compat_result in compat_results])
 
     @staticmethod
     def _create_contexts(app_crs, rcns_to_details):

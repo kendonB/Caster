@@ -1,4 +1,4 @@
-from mock import Mock
+from mock import Mock, patch
 
 from castervoice.lib.ctrl.mgr.loading.load.initial_content import FullContentSet
 from tests.test_util import settings_mocking
@@ -146,9 +146,12 @@ class TestGrammarManager(SettingsEnabledTestCase):
         from castervoice.rules.core.alphabet_rules import alphabet
         self._setup_rules_config_file(loadable_true=["Alphabet"], enabled=["Alphabet"])
         one_rule = alphabet.get_rule()
-        self._initialize(FullContentSet([one_rule], [], []))
+        with patch("castervoice.lib.ctrl.mgr.grammar_manager.printer.out") as printer_out:
+            self._initialize(FullContentSet([one_rule], [], []))
         self.assertEqual(2, len(self._gm._grammars_container.non_ccr.keys()))
         self.assertEqual(1, len(self._gm._grammars_container.ccr))
+        self.assertEqual("Alphabet", self._gm._grammars_container.ccr[0].display_name)
+        self.assertRegex(printer_out.call_args[0][0], r"Loading grammar ccr-\d+: Currently Alphabet")
 
     def test_initialize_two_compatible_global_mergerules(self):
         from castervoice.rules.core.alphabet_rules import alphabet

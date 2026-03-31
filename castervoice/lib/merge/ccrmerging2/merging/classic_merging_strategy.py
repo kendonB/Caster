@@ -6,13 +6,13 @@ class ClassicMergingStrategy(BaseMergingStrategy):
     This strategy KOs any incompatible rules.
     """
 
-    def merge_into_single(self, sorted_checked_rules):
+    def select_rules_to_merge(self, sorted_checked_rules):
         """
-        Merge any rules which aren't KO'd by their peers.
+        Select any rules which aren't KO'd by their peers.
         Done in O(n) for the total number of specs.
 
         :param sorted_checked_rules: list of CompatibilityResult
-        :return: MergeRule
+        :return: list of CompatibilityResult
         """
 
         length = len(sorted_checked_rules)
@@ -25,7 +25,7 @@ class ClassicMergingStrategy(BaseMergingStrategy):
             indices_map[compat_result.rule_class_name()] = index
 
         # rules with higher indices (activated "later") get priority
-        merged_rule = None
+        selected_rules = []
         for index in rule_range:
             compat_result = sorted_checked_rules[index]
             ko = False
@@ -37,8 +37,5 @@ class ClassicMergingStrategy(BaseMergingStrategy):
                     ko = True
                     break
             if not ko:
-                if merged_rule is None:
-                    merged_rule = compat_result.rule()
-                else:
-                    merged_rule = merged_rule.merge(compat_result.rule())
-        return merged_rule
+                selected_rules.append(compat_result)
+        return selected_rules
