@@ -43,6 +43,7 @@ Caster currently supports Kaldi on Microsoft Windows 10 through Windows 11. Cons
 **Note:** Kaldi is a flexible engine which can be configured via engine parameters to customize your experience.
 
 - `Run_Caster_Kaldi.bat` launches `dragonfly` with `--engine kaldi --no-recobs-messages --engine-options "model_dir=kaldi_model, vad_padding_end_ms=300"` using `.\.venv\Scripts\python.exe`.
+- `Run_Caster_Kaldi.bat` also honors `CASTER_KALDI_AUDIO_INPUT_DEVICE` for pinning a specific PortAudio input device and `CASTER_KALDI_ENGINE_OPTIONS` for appending extra engine options without editing the batch file.
 - See the list of Kaldi [engine parameters](https://dragonfly2.readthedocs.io/en/latest/kaldi_engine.html#engine-configuration) for additional configuration options.
 
 ### Update Caster
@@ -78,6 +79,21 @@ Caster currently supports Kaldi on Microsoft Windows 10 through Windows 11. Cons
 - Receive an error about a missing or invalid Kaldi runtime interpreter in `Run_Caster_Kaldi.bat`.
 
    > fix: rerun `Install_Caster_Kaldi.bat` to recreate `.\.venv` with uv-managed Python and restore `.\.venv\Scripts\python.exe`.
+
+- See repeated `no good block received recently, so reconnecting audio` warnings while Kaldi is listening.
+
+   > This means the audio backend is opening a device successfully but not receiving enough valid 10 ms microphone blocks to keep streaming. On Windows this is often the default `MME` input for a Bluetooth headset.
+   >
+   > fix:
+   >
+   > 1. List the PortAudio input devices:
+   >    `.\.venv\Scripts\python.exe -c "from dragonfly.engines.backend_kaldi.engine import KaldiEngine; KaldiEngine.print_mic_list()"`
+   > 2. Pick a more stable device entry for the same microphone, usually `Windows WASAPI`.
+   > 3. Launch Caster with that exact device name, for example in PowerShell:
+   >    `$env:CASTER_KALDI_AUDIO_INPUT_DEVICE = "Headset (Example Device), Windows WASAPI"`
+   >    `.\Run_Caster_Kaldi.bat`
+   >
+   > You can also pass a numeric PortAudio device index instead of the full device name by setting `CASTER_KALDI_AUDIO_INPUT_DEVICE` to that index.
 
 **Known Issues**
 

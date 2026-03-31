@@ -185,7 +185,11 @@ def reboot():
     engine = get_current_engine()
     if engine.name == 'kaldi':
         engine.disconnect()
-        subprocess.Popen([sys.executable, '-m', 'dragonfly', 'load', '_*.py', '--engine', 'kaldi',  '--no-recobs-messages'])
+        kaldi_launcher = Path(settings.SETTINGS["paths"]["BASE_PATH"]).parent / "Run_Caster_Kaldi.bat"
+        if kaldi_launcher.is_file():
+            subprocess.Popen([str(kaldi_launcher)], cwd=str(kaldi_launcher.parent))
+        else:
+            subprocess.Popen([sys.executable, '-m', 'dragonfly', 'load', '_*.py', '--engine', 'kaldi',  '--no-recobs-messages'])
     if engine.name == 'sapi5inproc':
         engine.disconnect()
         subprocess.Popen([sys.executable, '-m', 'dragonfly', 'load', '--engine', 'sapi5inproc', '_*.py', '--no-recobs-messages'])
