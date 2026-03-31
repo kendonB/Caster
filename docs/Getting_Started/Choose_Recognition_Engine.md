@@ -60,7 +60,6 @@ Daanzu's [Kaldi](https://dragonfly2.readthedocs.io/en/latest/kaldi_engine.html) 
 
 - Windows Kaldi setup uses `Install_Caster_Kaldi.bat` from the project root. See [Windows Kaldi install](../Installation/Windows/Kaldi.md).
 - `Install_Caster_Kaldi.bat` creates or updates the repo-local `.venv` with uv-managed CPython `3.12`, and `Run_Caster_Kaldi.bat` always launches with `.venv\Scripts\python.exe`.
-- For Qt-based UI features (HUD/settings), use the installer-created uv-managed Windows x64 `.venv`.
 
 Disadvantages
 

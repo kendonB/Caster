@@ -18,27 +18,6 @@ from castervoice.lib.merge.selfmod.selfmodrule import BaseSelfModifyingRule
 from castervoice.lib.merge.state.short import R
 
 
-def _base_path_dir():
-    configured_base_path = settings.settings(["paths", "BASE_PATH"], "")
-    if configured_base_path:
-        return Path(configured_base_path)
-    return Path(__file__).resolve().parents[3]
-
-
-def _user_dir_path():
-    configured_user_dir = settings.settings(["paths", "USER_DIR"], "")
-    if configured_user_dir:
-        return Path(configured_user_dir)
-    return Path(settings.detected_user_dir())
-
-
-def _bringme_config_path():
-    configured_bringme_path = settings.settings(["paths", "SM_BRINGME_PATH"], "")
-    if configured_bringme_path:
-        return configured_bringme_path
-    return str(_user_dir_path().joinpath("settings", "sm_bringme.toml"))
-
-
 class BringRule(BaseSelfModifyingRule):
     """
     BringRule adds entries to a 2-layered map which can be described as
@@ -55,14 +34,14 @@ class BringRule(BaseSelfModifyingRule):
     _explorer_context = AppContext("explorer.exe") | contexts.DIALOGUE_CONTEXT
     _terminal_context = contexts.TERMINAL_CONTEXT
     # Paths
-    _terminal_path = settings.settings(["paths", "TERMINAL_PATH"], "")
+    _terminal_path = settings.settings(["paths", "TERMINAL_PATH"])
     _explorer_path = str(Path("C:\\Windows\\explorer.exe"))
-    _source_dir = _base_path_dir().parent
-    _user_dir = _user_dir_path()
+    _source_dir = Path(settings.settings(["paths", "BASE_PATH"])).parents[0]
+    _user_dir = settings.settings(["paths", "USER_DIR"])
     _home_dir = Path.home()
 
     def __init__(self, **kwargs):
-        super(BringRule, self).__init__(_bringme_config_path(), **kwargs)
+        super(BringRule, self).__init__(settings.settings(["paths", "SM_BRINGME_PATH"]), **kwargs)
 
     def _initialize(self):
         """

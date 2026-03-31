@@ -19,7 +19,7 @@ def start_hud():
     try:
         hud.ping()
     except Exception:
-        subprocess.Popen([settings.runtime_hidden_console_binary(),
+        subprocess.Popen([settings.SETTINGS["paths"]["PYTHONW"],
                           settings.SETTINGS["paths"]["HUD_PATH"]])
 
 
