@@ -253,14 +253,14 @@ class GrammarManager(object):
         sorter = ConfigBasedRuleSetSorter(enabled_rcns)
         merge_result = self._merger.merge_rules(active_ccr_mrs, sorter)
         grammars = []
-        for rule_and_context in merge_result.ccr_rules_and_contexts:
-            rule = rule_and_context[0]
-            context = rule_and_context[1]
-            grammar = Grammar(name="ccr-" + GrammarManager._get_next_id(), context=context)
-            grammar.add_rule(rule)
+        for rule_load_spec in merge_result.ccr_rules_and_contexts:
+            grammar = Grammar(name="ccr-" + GrammarManager._get_next_id(), context=rule_load_spec.context)
+            grammar.display_name = rule_load_spec.display_name
+            grammar.add_rule(rule_load_spec.rule)
             grammars.append(grammar)
         self._grammars_container.set_ccr(grammars)
         for grammar in grammars:
+            printer.out("Loading grammar {}: Currently {}".format(grammar.name, grammar.display_name))
             grammar.load()
 
         return merge_result.rules_enabled_diff
