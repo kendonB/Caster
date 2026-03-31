@@ -4,19 +4,6 @@ class CCRRuleLoadSpec(object):
         self.context = context
         self.display_name = display_name
 
-    def __getitem__(self, index):
-        if index == 0:
-            return self.rule
-        if index == 1:
-            return self.context
-        raise IndexError(index)
-
-    def __iter__(self):
-        return iter((self.rule, self.context))
-
-    def __len__(self):
-        return 2
-
 
 class MergeResult(object):
 
