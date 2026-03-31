@@ -44,7 +44,7 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         self.merger = Nexus._create_merger(self.selfmodrule_configurer, self.transformers_runner)
 
     def _extract_merged_rule_from_repeatrule(self, repeat_rule, index=0):
-        return repeat_rule[index][0]._extras["caster_base_sequence"]._child._children[0]._rule
+        return repeat_rule[index].rule._extras["caster_base_sequence"]._child._children[0]._rule
 
     def test_merge_empty(self):
         """
@@ -60,10 +60,11 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         result = self.merger.merge_rules([navigation_mr], self.sorter)
 
         self.assertEqual(1, len(result.ccr_rules_and_contexts))
-        repeat_rule = result.ccr_rules_and_contexts[0][0]
-        context = result.ccr_rules_and_contexts[0][1]
+        repeat_rule = result.ccr_rules_and_contexts[0].rule
+        context = result.ccr_rules_and_contexts[0].context
         self.assertEqual("RepeatRule", repeat_rule.__class__.__name__)
         self.assertIsInstance(context, FuncContext)
+        self.assertEqual("Navigation", result.ccr_rules_and_contexts[0].display_name)
 
     def test_merge_two(self):
         """
@@ -74,8 +75,8 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         result = self.merger.merge_rules([alphabet_mr, navigation_mr], self.sorter)
 
         self.assertEqual(1, len(result.ccr_rules_and_contexts))
-        repeat_rule = result.ccr_rules_and_contexts[0][0]
-        context = result.ccr_rules_and_contexts[0][1]
+        repeat_rule = result.ccr_rules_and_contexts[0].rule
+        context = result.ccr_rules_and_contexts[0].context
         self.assertEqual("RepeatRule", repeat_rule.__class__.__name__)
         self.assertIsInstance(context, FuncContext)
 
@@ -93,6 +94,7 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         rule = self._extract_merged_rule_from_repeatrule(result.ccr_rules_and_contexts)
         self.assertIn("two exclusive", rule._mapping)
         self.assertNotIn("one exclusive", rule._mapping)
+        self.assertEqual("FakeRuleTwo", result.ccr_rules_and_contexts[0].display_name)
 
     def test_merge_one_context_one_no_context(self):
         """
@@ -105,10 +107,10 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         result = self.merger.merge_rules([eclipse_mr, navigation_mr], self.sorter)
 
         self.assertEqual(2, len(result.ccr_rules_and_contexts))
-        self.assertEqual("RepeatRule", result.ccr_rules_and_contexts[0][0].__class__.__name__)
-        self.assertEqual("RepeatRule", result.ccr_rules_and_contexts[1][0].__class__.__name__)
-        self.assertIsInstance(result.ccr_rules_and_contexts[0][1], FuncContext)
-        self.assertIsInstance(result.ccr_rules_and_contexts[1][1], Context)
+        self.assertEqual("RepeatRule", result.ccr_rules_and_contexts[0].rule.__class__.__name__)
+        self.assertEqual("RepeatRule", result.ccr_rules_and_contexts[1].rule.__class__.__name__)
+        self.assertIsInstance(result.ccr_rules_and_contexts[0].context, FuncContext)
+        self.assertIsInstance(result.ccr_rules_and_contexts[1].context, Context)
 
     def test_words_txt_transformer(self):
         """
@@ -142,15 +144,21 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         result = self.merger.merge_rules([alphabet_mr, eclipse_app_mr, vscode_app_mr], self.sorter)
 
         self.assertEqual(3, len(result.ccr_rules_and_contexts))
-        repeat_rule_1, context_1 = result.ccr_rules_and_contexts[0]
-        repeat_rule_2, context_2 = result.ccr_rules_and_contexts[1]
-        repeat_rule_3, context_3 = result.ccr_rules_and_contexts[2]
+        repeat_rule_1 = result.ccr_rules_and_contexts[0].rule
+        context_1 = result.ccr_rules_and_contexts[0].context
+        repeat_rule_2 = result.ccr_rules_and_contexts[1].rule
+        context_2 = result.ccr_rules_and_contexts[1].context
+        repeat_rule_3 = result.ccr_rules_and_contexts[2].rule
+        context_3 = result.ccr_rules_and_contexts[2].context
         self.assertEqual("RepeatRule", repeat_rule_1.__class__.__name__)
         self.assertEqual("RepeatRule", repeat_rule_2.__class__.__name__)
         self.assertEqual("RepeatRule", repeat_rule_3.__class__.__name__)
         self.assertIsInstance(context_1, FuncContext)
         self.assertIsInstance(context_2, AppContext)
         self.assertIsInstance(context_3, AppContext)
+        self.assertEqual("Alphabet", result.ccr_rules_and_contexts[0].display_name)
+        self.assertEqual("Alphabet, EclipseCCR", result.ccr_rules_and_contexts[1].display_name)
+        self.assertEqual("Alphabet, VSCodeCcrRule", result.ccr_rules_and_contexts[2].display_name)
 
         self._evaluate_context_in_every_permutation([context_1, context_2, context_3],
             [True,False,False],
@@ -183,7 +191,7 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         vscode_app_mr = TestCCRMerger2._create_managed_rule(VSCodeCcrRule, CCRType.APP, "vscode",function = nice_function)
         result = self.merger.merge_rules([alphabet_mr, eclipse_app_mr, vscode_app_mr], self.sorter)
 
-        contexts = [x[1] for x in result.ccr_rules_and_contexts]
+        contexts = [load_spec.context for load_spec in result.ccr_rules_and_contexts]
         self.assertEqual(3, len(result.ccr_rules_and_contexts))       
 
         # check that we get the same result no matter what the order
@@ -235,7 +243,7 @@ class TestCCRMerger2(SettingsEnabledTestCase):
         vscode_app_mr = TestCCRMerger2._create_managed_rule(VSCodeCcrRule, CCRType.APP,"vscode",function = second_context)
         result = self.merger.merge_rules([alphabet_mr, eclipse_app_mr, vscode_app_mr], self.sorter)
 
-        contexts = [x[1] for x in result.ccr_rules_and_contexts]
+        contexts = [load_spec.context for load_spec in result.ccr_rules_and_contexts]
         self.assertEqual(3, len(result.ccr_rules_and_contexts))       
         for c in permutations(contexts):
             self._evaluate_contexts(c,dict(executable= "vscode", title = "hello",handle=None))
