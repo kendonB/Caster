@@ -58,6 +58,9 @@ Daanzu's [Kaldi](https://dragonfly2.readthedocs.io/en/latest/kaldi_engine.html) 
 
 - Many other highlights can be found in Daanzu's [Kaldi Documentation](https://dragonfly2.readthedocs.io/en/latest/kaldi_engine.html)
 
+- Windows Kaldi setup uses `Install_Caster_Kaldi.bat` from the project root. See [Windows Kaldi install](../Installation/Windows/Kaldi.md).
+- `Install_Caster_Kaldi.bat` creates or updates the repo-local `.venv` with uv-managed CPython `3.12`, and `Run_Caster_Kaldi.bat` always launches with `.venv\Scripts\python.exe`.
+
 Disadvantages
 
 - Does not have a GUI for editing vocabulary (User Lexicon) but can be easily edited through txt file.

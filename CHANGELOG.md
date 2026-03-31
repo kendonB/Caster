@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Migrated `Install_Caster_Kaldi.bat` and `Run_Caster_Kaldi.bat` to a `uv`-managed Python 3.12+ workflow on Windows.
+- Updated Windows Kaldi installation docs to use the interpreter metadata recorded during install.
+- Updated Windows Qt dependency handling for Python 3.12 compatibility (`PySide6` path for supported architectures, no hard `PySide2` requirement on Windows).
+
 ## [0.6.14](https://github.com/dictation-toolbox/Caster/tree/0.6.14) ("2019-12-01")
 
 [Full Changelog](https://github.com/dictation-toolbox/Caster/compare/0.5.11...0.6.14)
