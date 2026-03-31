@@ -107,9 +107,6 @@ def runtime_hidden_console_binary():
         runtime_binary = SYSTEM_INFORMATION.get("hidden console binary", "")
     if runtime_binary and os.path.isfile(runtime_binary):
         return runtime_binary
-    configured_binary = settings(["paths", "PYTHONW"], "")
-    if configured_binary and os.path.isfile(configured_binary):
-        return configured_binary
     return _hidden_console_binary_for(sys.executable)
 
 
@@ -354,9 +351,6 @@ def _get_defaults():
             "CONFIGDEBUGTXT_PATH":
                 str(Path(_USER_DIR).joinpath("data/configdebug.txt")),
 
-            # PYTHON
-            "PYTHONW":
-                SYSTEM_INFORMATION["hidden console binary"],
         },
 
         # Speech recognition engine settings

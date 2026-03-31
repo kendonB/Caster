@@ -28,6 +28,7 @@ class TestSettings(TestCase):
 
         self.assertNotIn("WSR_RUNTIME_PYTHON_PATH", defaults["paths"])
         self.assertNotIn("KALDI_RUNTIME_PYTHON_PATH", defaults["paths"])
+        self.assertNotIn("PYTHONW", defaults["paths"])
 
     def test_runtime_hidden_console_binary_prefers_active_runtime(self):
         runtime_pythonw = "C:/Caster/.venv/Scripts/pythonw.exe"
@@ -35,6 +36,14 @@ class TestSettings(TestCase):
         settings.SETTINGS = {"paths": {"PYTHONW": "C:/Legacy/pythonw.exe"}}
 
         with patch("castervoice.lib.settings.os.path.isfile", side_effect=lambda path: path == runtime_pythonw):
+            self.assertEqual(runtime_pythonw, settings.runtime_hidden_console_binary())
+
+    def test_runtime_hidden_console_binary_ignores_configured_fallback(self):
+        runtime_pythonw = "C:/Caster/.venv/Scripts/pythonw.exe"
+        settings.SETTINGS = {"paths": {"PYTHONW": "C:/Legacy/pythonw.exe"}}
+
+        with patch("castervoice.lib.settings._hidden_console_binary_for", return_value=runtime_pythonw), \
+                patch("castervoice.lib.settings.os.path.isfile", return_value=False):
             self.assertEqual(runtime_pythonw, settings.runtime_hidden_console_binary())
 
     def test_detected_user_dir_prefers_environment_override(self):
