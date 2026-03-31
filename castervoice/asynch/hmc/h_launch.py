@@ -26,12 +26,12 @@ def launch(hmc_type, data=None):
 def _get_instructions(hmc_type):
     if hmc_type == settings.QTTYPE_SETTINGS:
         return [
-            settings.SETTINGS["paths"]["PYTHONW"],
+            settings.runtime_hidden_console_binary(),
             settings.SETTINGS["paths"]["SETTINGS_WINDOW_PATH"]
         ]
     else:
         return [
-            settings.SETTINGS["paths"]["PYTHONW"],
+            settings.runtime_hidden_console_binary(),
             settings.SETTINGS["paths"]["HOMUNCULUS_PATH"], hmc_type
         ]
 
