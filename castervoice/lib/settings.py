@@ -45,23 +45,33 @@ _USER_DIR = None
 _SETTINGS_PATH = None
 
 
+def _hidden_console_binary_for(executable):
+    executable_path = Path(executable)
+    if sys.platform != "win32":
+        return str(executable_path)
+    if executable_path.name.lower() == "pythonw.exe":
+        return str(executable_path)
+    hidden_console_binary = executable_path.with_name("pythonw.exe")
+    if hidden_console_binary.is_file():
+        return str(hidden_console_binary)
+    return str(executable_path)
+
+
 def _get_platform_information():
     """Return a dictionary containing platform-specific information."""
     import sysconfig
     system_information = {"platform": sysconfig.get_platform()}
     system_information.update({"python version": sys.version_info})
     binary_path = str(Path(sys.exec_prefix).joinpath(sys.exec_prefix).joinpath("bin"))
-    hidden_console_binary = str(Path(sys.executable))
     main_binary = str(Path(sys.executable))
     if sys.platform == "win32":
         if sys.prefix == sys.base_prefix:
             main_binary = str(Path(sys.exec_prefix).joinpath("python.exe"))
-            hidden_console_binary = str(Path(sys.exec_prefix).joinpath("pythonw.exe"))
         else:
             # Virtual environment detected
             # TODO: MacOS and Linux?
             main_binary = str(Path(sys.prefix) / "Scripts" / "python.exe")
-            hidden_console_binary = str(Path(sys.prefix) / "Scripts" / "pythonw.exe")
+    hidden_console_binary = _hidden_console_binary_for(main_binary)
     system_information.update({"binary path": binary_path})
     system_information.update({"main binary": main_binary})
     system_information.update({"hidden console binary": hidden_console_binary})
@@ -71,6 +81,22 @@ def _get_platform_information():
 
 def get_filename():
     return _SETTINGS_PATH
+
+
+def detected_user_dir():
+    configured_user_dir = os.getenv("CASTER_USER_DIR")
+    if configured_user_dir is not None:
+        return configured_user_dir
+    return user_data_dir(appname="caster", appauthor=False)
+
+
+def runtime_hidden_console_binary():
+    runtime_binary = ""
+    if SYSTEM_INFORMATION is not None:
+        runtime_binary = SYSTEM_INFORMATION.get("hidden console binary", "")
+    if runtime_binary and os.path.isfile(runtime_binary):
+        return runtime_binary
+    return _hidden_console_binary_for(sys.executable)
 
 
 def _validate_engine_path():
@@ -314,9 +340,6 @@ def _get_defaults():
             "CONFIGDEBUGTXT_PATH":
                 str(Path(_USER_DIR).joinpath("data/configdebug.txt")),
 
-            # PYTHON
-            "PYTHONW":
-                SYSTEM_INFORMATION["hidden console binary"],
         },
 
         # Speech recognition engine settings
@@ -471,10 +494,7 @@ def initialize():
     # calculate prerequisites
     SYSTEM_INFORMATION = _get_platform_information()
     _BASE_PATH = str(Path(__file__).resolve().parent.parent)
-    if os.getenv("CASTER_USER_DIR") is not None:
-        _USER_DIR = os.getenv("CASTER_USER_DIR")
-    else:
-        _USER_DIR = user_data_dir(appname="caster", appauthor=False)
+    _USER_DIR = detected_user_dir()
     _SETTINGS_PATH = str(Path(_USER_DIR).joinpath("settings/settings.toml"))
 
     # Kick everything off.
