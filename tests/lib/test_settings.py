@@ -15,7 +15,6 @@ class TestSettings(TestCase):
         settings.SYSTEM_INFORMATION = None
         settings._BASE_PATH = None
         settings._USER_DIR = None
-        settings._USER_DIR_REPORTED = False
         settings._SETTINGS_PATH = None
 
     def test_runtime_python_paths_removed_from_defaults(self):
@@ -52,12 +51,3 @@ class TestSettings(TestCase):
             self.assertEqual("C:/Users/Main/CasterData", settings.detected_user_dir())
 
         user_data_dir.assert_not_called()
-
-    def test_report_user_dir_uses_default_location_once(self):
-        with patch("castervoice.lib.settings.os.getenv", return_value=None), \
-                patch("castervoice.lib.settings.user_data_dir", return_value="C:/Users/Main/AppData/Local/caster"), \
-                patch("castervoice.lib.settings.printer.out") as printer_out:
-            self.assertEqual("C:/Users/Main/AppData/Local/caster", settings.report_user_dir())
-            self.assertEqual("C:/Users/Main/AppData/Local/caster", settings.report_user_dir())
-
-        printer_out.assert_called_once_with("Caster User Directory: C:/Users/Main/AppData/Local/caster")

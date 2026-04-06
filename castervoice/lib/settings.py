@@ -42,7 +42,6 @@ SYSTEM_INFORMATION = None
 WSR = False
 _BASE_PATH = None
 _USER_DIR = None
-_USER_DIR_REPORTED = False
 _SETTINGS_PATH = None
 
 
@@ -89,16 +88,6 @@ def detected_user_dir():
     if configured_user_dir is not None:
         return configured_user_dir
     return user_data_dir(appname="caster", appauthor=False)
-
-
-def report_user_dir():
-    global _USER_DIR, _USER_DIR_REPORTED
-    if _USER_DIR is None:
-        _USER_DIR = detected_user_dir()
-    if not _USER_DIR_REPORTED:
-        printer.out("Caster User Directory: {}".format(_USER_DIR))
-        _USER_DIR_REPORTED = True
-    return _USER_DIR
 
 
 def runtime_hidden_console_binary():
@@ -519,4 +508,4 @@ def initialize():
     if _debugger_path not in sys.path and os.path.isdir(_debugger_path):
         sys.path.append(_debugger_path)
 
-    report_user_dir()
+    printer.out("Caster User Directory: {}".format(_USER_DIR))
